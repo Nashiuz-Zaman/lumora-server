@@ -1,0 +1,58 @@
+{
+  "name": "lumora-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "_moduleAliases": {
+    "@app": "dist/app",
+    "@config": "dist/config",
+    "@types": "dist/types",  
+    "@shared": "dist/shared",
+    "@utils": "dist/utils"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "rimraf dist && tsc",
+    "start": "cross-env NODE_ENV=production node dist/start.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.4.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "http-status": "^2.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "module-alias": "^2.2.3",
+    "mongoose": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.14",
+    "rimraf": "^6.0.1",
+    "sslcommerz-lts": "^1.1.0",
+    "user-agents": "^1.1.511",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/lodash": "^4.17.17",
+    "@types/mongoose": "^5.11.97",
+    "@types/multer": "^1.4.11",
+    "@types/node": "^22.0.0",
+    "@types/nodemailer": "^6.4.15",
+    "@types/user-agents": "^1.0.4",
+    "tsx": "^4.20.3",
+    "typescript": "^5.5.3"
+  }
+}

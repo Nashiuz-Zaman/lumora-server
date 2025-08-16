@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "commonjs", // ✅ Required for require() and CJS
+
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+
+    "outDir": "./dist",
+    "sourceMap": true,
+    "strict": true,
+    "skipLibCheck": true,
+
+    "baseUrl": "./src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@config/*": ["config/*"],
+      "@types/*": ["types/*"],
+      "@shared/*": ["shared/*"],
+      "@utils/*": ["utils/*"],
+      "*": ["ssl-commerce-type/*", "*"]
+    }
+  },
+  "include": ["src", "src/start.ts", "tailwind.config.js"]
+}
