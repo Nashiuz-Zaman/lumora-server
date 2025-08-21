@@ -20,7 +20,7 @@
       "@types/*": ["types/*"],
       "@shared/*": ["shared/*"],
       "@utils/*": ["utils/*"],
-      "*": ["ssl-commerce-type/*", "*"]
+      "*": ["types/*", "*"]
     }
   },
   "include": ["src", "src/start.ts", "tailwind.config.js"]

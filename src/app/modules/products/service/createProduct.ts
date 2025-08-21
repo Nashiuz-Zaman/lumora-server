@@ -1,16 +1,8 @@
-import cloneDeep from "lodash/cloneDeep";
-
 import { ProductModel } from "../product.model";
-import { TRawProduct } from "../product.type";
-import { sanitizeProductData } from "../products.helper";
-// import { CollectionModel } from "../../collections/collection.model";
+import { IProduct } from "../product.type";
 
-export const createProduct = async (product: TRawProduct) => {
-  const [cleanProduct] = await sanitizeProductData(product);
+export const createProduct = async (product: Partial<IProduct>) => {
+  const createdProduct = await ProductModel.create(product);
 
-  // ✅ Create the product
-  const createdProduct = await ProductModel.create(cloneDeep(cleanProduct));
-  if (!createdProduct?._id) return false;
-
-  return true;
+  return Boolean(createdProduct?._id);
 };

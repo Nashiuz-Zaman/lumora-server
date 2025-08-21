@@ -4,31 +4,27 @@ import { ProductModel } from "../product.model";
 import { IProduct } from "../product.type";
 
 /**
- * Fetches up to 20 products that have at least one tag in the given tags array or comma-separated string.
- * Excludes deleted products.
+ * Fetches up to 20 products that share tags with the input string.
  *
- * @param tags Array or comma-separated string of tags
+ * @param tags Comma-separated string of tags
  * @returns Promise resolving to an array of matching products
  */
 export async function getRelatedProducts(
-  tags: string[] | string | undefined | null
+  tags: string | undefined
 ): Promise<IProduct[]> {
   if (!tags) return [];
 
-  let tagsArray: string[] = [];
-
-  if (Array.isArray(tags)) {
-    tagsArray = tags
-      .filter((t) => typeof t === "string" && t.trim().length > 0)
-      .map((t) => t.trim());
-  } else if (typeof tags === "string") {
-    tagsArray = tags
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-  }
+  const tagsArray = tags
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
 
   if (tagsArray.length === 0) return [];
+
+  // Build $or with regex for each tag
+  const tagMatchConditions = tagsArray.map((t) => ({
+    tags: { $regex: new RegExp(`\\b${t}\\b`, "i") },
+  }));
 
   const relatedProductsQuery = new QueryBuilder(ProductModel, {
     page: 1,
@@ -39,42 +35,18 @@ export async function getRelatedProducts(
     .customMethod([
       {
         $match: {
-          tags: { $in: tagsArray },
           status: { $ne: ProductStatus.Deleted },
+          $or: tagMatchConditions,
         },
       },
       { $sort: { createdAt: -1 } },
       { $limit: 20 },
-      {
-        $unionWith: {
-          coll: "products",
-          pipeline: [
-            { $match: { status: { $ne: ProductStatus.Deleted } } },
-            { $sort: { createdAt: -1 } },
-            { $limit: 20 },
-          ],
-        },
-      },
-      {
-        $group: {
-          _id: "$_id",
-          doc: { $first: "$$ROOT" }, // pick first doc per _id
-        },
-      },
-      { $replaceRoot: { newRoot: "$doc" } }, // flatten grouped docs back
-      { $limit: 20 },
     ])
-    .pluckFromArray("variants", "defaultVariant", 0)
     .removeField("variants")
-    .addField("defaultPrice", "defaultVariant.price")
-    .addField("defaultOldPrice", "defaultVariant.oldPrice")
-    .removeField("defaultVariant")
-    .pluckFromArray("images", "defaultImage", 0)
     .removeField("images")
     .sort()
     .limitFields();
 
   const products = await relatedProductsQuery.exec();
-
   return products;
 }

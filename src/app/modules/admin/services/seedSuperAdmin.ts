@@ -8,7 +8,7 @@ import { UserRoles } from "@app/modules/user/user.constants";
 import { config } from "@config/env";
 import generateAvatar from "@utils/generateAvatar";
 
-export const seedInitialData = async () => {
+export const seedSuperAdmin = async () => {
   try {
     // 1️⃣ Check if roles already exist
     const existingRoles = await RoleModel.find({}).lean();
@@ -51,8 +51,6 @@ export const seedInitialData = async () => {
     });
 
     if (!existingSuperadmin) {
-      const password = config.superadminPassword;
-
       const name = "Super Admin";
       // Create user
       const superadminUser = await UserModel.create({

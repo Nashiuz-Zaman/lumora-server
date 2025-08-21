@@ -32,7 +32,7 @@ export const throwTooManyRequests = (msg: string = "Too many requests") => {
 };
 
 export const throwInternalServerError = (
-  msg: string = "Internal Server Error"
+  msg: string = "IOperation failed due to server error"
 ) => {
   throw new AppError(msg, httpStatus.INTERNAL_SERVER_ERROR);
 };

@@ -1,0 +1,83 @@
+export const topCategories = [
+  { title: "Fashion and Accessories", slug: "fashion-accessories" },
+  { title: "Gaming and Entertainment", slug: "gaming-entertainment" },
+  { title: "Food and Snacks", slug: "food-snacks" },
+  { title: "Kitchen Essentials", slug: "kitchen-essentials" },
+  {
+    title: "Home Appliances and Essentials",
+    slug: "home-appliances-essentials",
+  },
+  { title: "Health and Wellness", slug: "health-wellness" },
+];
+
+export const subCategoriesMap: Record<
+  string,
+  { title: string; slug: string }[]
+> = {
+  "Fashion and Accessories": [
+    { title: "Men's Clothing", slug: "mens-clothing" },
+    { title: "Women's Clothing", slug: "womens-clothing" },
+    { title: "T-Shirts", slug: "t-shirts" },
+    { title: "Jeans", slug: "jeans" },
+    { title: "Dresses", slug: "dresses" },
+    { title: "Shoes", slug: "shoes" },
+    { title: "Sneakers", slug: "sneakers" },
+    { title: "Boots", slug: "boots" },
+    { title: "Bags & Wallets", slug: "bags-wallets" },
+    { title: "Watches", slug: "watches" },
+    { title: "Jewelry", slug: "jewelry" },
+    { title: "Sunglasses", slug: "sunglasses" },
+  ],
+  "Gaming and Entertainment": [
+    { title: "Gaming Consoles", slug: "gaming-consoles" },
+    { title: "PC Gaming", slug: "pc-gaming" },
+    { title: "Gaming Laptops", slug: "gaming-laptops" },
+    { title: "VR Headsets", slug: "vr-headsets" },
+    { title: "Board Games", slug: "board-games" },
+    { title: "Card Games", slug: "card-games" },
+    {
+      title: "Action Figures & Collectibles",
+      slug: "action-figures-collectibles",
+    },
+    { title: "Gaming Accessories", slug: "gaming-accessories" },
+  ],
+  "Food and Snacks": [
+    { title: "Chocolates & Candy", slug: "chocolates-candy" },
+    { title: "Beverages", slug: "beverages" },
+    { title: "Chips & Snacks", slug: "chips-snacks" },
+    { title: "Organic Food", slug: "organic-food" },
+    { title: "Nuts & Dry Fruits", slug: "nuts-dry-fruits" },
+    { title: "Instant Meals", slug: "instant-meals" },
+    { title: "Sauces & Condiments", slug: "sauces-condiments" },
+  ],
+  "Kitchen Essentials": [
+    { title: "Cookware", slug: "cookware" },
+    { title: "Cutlery & Knives", slug: "cutlery-knives" },
+    { title: "Small Appliances", slug: "small-appliances" },
+    { title: "Storage & Organization", slug: "storage-organization" },
+    { title: "Blenders & Mixers", slug: "blenders-mixers" },
+    { title: "Microwave Ovens", slug: "microwave-ovens" },
+    { title: "Coffee & Tea Accessories", slug: "coffee-tea-accessories" },
+    { title: "Dinnerware & Utensils", slug: "dinnerware-utensils" },
+  ],
+  "Home Appliances and Essentials": [
+    { title: "Refrigerators", slug: "refrigerators" },
+    { title: "Washing Machines", slug: "washing-machines" },
+    { title: "Vacuum Cleaners", slug: "vacuum-cleaners" },
+    { title: "Fans & Heaters", slug: "fans-heaters" },
+    { title: "Air Conditioners", slug: "air-conditioners" },
+    { title: "Water Purifiers", slug: "water-purifiers" },
+    { title: "Doorbells & Security", slug: "doorbells-security" },
+    { title: "Lighting & Lamps", slug: "lighting-lamps" },
+  ],
+  "Health and Wellness": [
+    { title: "Vitamins & Supplements", slug: "vitamins-supplements" },
+    { title: "Personal Care", slug: "personal-care" },
+    { title: "Fitness Equipment", slug: "fitness-equipment" },
+    { title: "Medical Devices", slug: "medical-devices" },
+    { title: "Skincare & Beauty", slug: "skincare-beauty" },
+    { title: "Hair Care", slug: "hair-care" },
+    { title: "Oral Care", slug: "oral-care" },
+    { title: "Health Monitors", slug: "health-monitors" },
+  ],
+};

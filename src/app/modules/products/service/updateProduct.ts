@@ -1,19 +1,17 @@
+import { throwNotFound } from "@utils/operationalErrors";
 import { ProductModel } from "../product.model";
-import { IProduct, TRawProduct } from "../product.type";
-import { sanitizeProductData } from "../products.helper";
+import { IProduct } from "../product.type";
 
 export const updateProduct = async (
   filter: Record<string, any>,
-  product: TRawProduct
-): Promise<IProduct | null> => {
+  product: Partial<IProduct>
+): Promise<boolean> => {
   const existingProduct = await ProductModel.findOne(filter);
-  if (!existingProduct) return null;
+  if (!existingProduct) return throwNotFound("Product not found");
 
-  const [cleanProduct] = await sanitizeProductData(product);
-
-  existingProduct.set(cleanProduct);
+  existingProduct.set(product);
 
   const updatedProduct = await existingProduct.save();
 
-  return updatedProduct;
+  return Boolean(updatedProduct._id);
 };

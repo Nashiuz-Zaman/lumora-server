@@ -3,10 +3,8 @@ import { Router } from "express";
 import { getSignedUrlController } from "./controller";
 
 // create instance
-const productRouter = Router();
+const cloudinaryRouter = Router();
 
-// add route
-// frontend will call GET /api/products/upload-signature
-productRouter.get("/upload-signature", getSignedUrlController);
+cloudinaryRouter.get("/signed-url", getSignedUrlController);
 
-export default productRouter;
+export default cloudinaryRouter;

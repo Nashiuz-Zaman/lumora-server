@@ -14,6 +14,15 @@ export const connectDb = async (): Promise<void> => {
       return;
     }
 
+    // Global transform for all schemas
+    const globalSchemaConfig = {
+      virtuals: true, // keep virtuals
+      versionKey: false, // remove __v
+    };
+
+    mongoose.set("toJSON", globalSchemaConfig);
+    mongoose.set("toObject", globalSchemaConfig);
+
     const db = await mongoose.connect(config.mongoUri);
 
     if (db.connection.readyState === 1) {
@@ -25,8 +34,7 @@ export const connectDb = async (): Promise<void> => {
     }
   } catch (err) {
     connection.isConnected = false;
-    console.log("Error connecting to the database");
-
+    console.error("Error connecting to the database:", err);
     process.exit(1);
   }
 };

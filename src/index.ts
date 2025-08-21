@@ -1,25 +1,37 @@
-import { clientDomain, clientUrl, server } from "./app/app";
 import { config } from "./config/env";
-import { connectDb } from "@config/db";
-import { seedInitialData } from "@app/modules/initial/seedInitialData";
+import { clientDomain, clientUrl, server } from "./app/app";
+import { connectDb } from "./config/db";
+import { seedCategories } from "./app/modules/category/service/seedCategories";
+import { seedSuperAdmin } from "@app/modules/admin/services";
 
-// get port number
 const port = config.port;
 
-// start server
 const main = async (): Promise<void> => {
-  await connectDb();
-  await seedInitialData();
-
   try {
+    // Connect to MongoDB
+    await connectDb();
+
+    // Seed database only in development or if explicitly allowed
+    if (config.environment !== "production") {
+      console.log("Seeding initial data...");
+      try {
+        await seedSuperAdmin();
+        await seedCategories();
+        console.log("Database seeding completed ✅");
+      } catch (err) {
+        console.error("Seeding error:", err);
+        process.exit(1); // stop server if seeding fails
+      }
+    }
+
+    // Start server
     server.listen(port, () => {
       console.log(
-        `- Server working\n- Port: ${port}\n- Environment: ${config.environment}\n- Client Domain: ${clientDomain}\n- Client URL: ${clientUrl}`
+        `Server running\nPort: ${port}\nEnvironment: ${config.environment}\nClient Domain: ${clientDomain}\nClient URL: ${clientUrl}`
       );
     });
-  } catch (error) {
-    console.error(`Server failed ❌❌\n${error}`);
-
+  } catch (err) {
+    console.error("Server failed to start ❌", err);
     process.exit(1);
   }
 };

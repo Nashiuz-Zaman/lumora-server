@@ -21,7 +21,9 @@ export const getSignedUrl = (folder = "lumora/uploads") => {
     `?api_key=${apiKey}` +
     `&timestamp=${timestamp}` +
     `&signature=${signature}` +
-    `&folder=${encodeURIComponent(folder)}`;
+    `&folder=${encodeURIComponent(folder)}` +
+    `&quality=auto` +
+    `&fetch_format=auto`;
 
   return url;
 };

@@ -4,56 +4,39 @@ import { TProductStatusValue } from "./product.constants";
 export interface IVariant {
   _id: Types.ObjectId;
   sku: string;
-  price: number;
-  discountPercentage?: number;
-  oldPrice?: number;
   stock: number;
-  width?: number;
-  length?: number;
-  height?: number;
-  weight?: number;
-  [key: string]: string | number | undefined | Types.ObjectId;
+  price: number;
+  oldPrice?: number;
+  discountPercentage?: number;
+  [key: string]: unknown;
 }
 
 export interface IProduct {
   _id?: Types.ObjectId;
-  slug?: string;
+  slug: string;
   title: string;
-  store?: string;
-  brand?: string;
-  subtitle?: string;
-  images?: string[];
+  subtitle: string;
+  defaultPrice: number;
+  defaultImage: string;
+  totalStock: number;
+  brand: string;
   variants: IVariant[];
-  createdAt?: Date;
-  updatedAt?: Date;
-  specifications?: Record<string, string>;
+  videos: { url: string }[];
+  images?: string[];
+  warrantyAndSupport: string;
+  aboutProduct: string;
   status: TProductStatusValue;
+  specifications: { key: string; value: string }[];
   seoTitle?: string;
   seoDescription?: string;
-  metaKeywords?: string[];
+  metaKeywords?: string;
+  tags?: string;
   canonicalUrl?: string;
-  tags?: string[];
-  totalStock?: number;
-  aboutProduct?: string; // Added
-  warrantySupport?: string; // Added
-  productVideos?: string[]; // Added
-  frequentlyBoughtTogetherProducts: Types.ObjectId[];
+  topCategory?: string;
+  subCategory?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-// images and the collection tables where the product is added besides the main product table
-export type TRawProduct = Partial<IProduct> & {
-  images?: (Express.Multer.File | string)[];
-  collections?: { label: string; value: string }[];
-};
-
+// Mongoose hydrated document type
 export type TProductDoc = HydratedDocument<IProduct>;
-
-export type TBatchUpdateBody = {
-  selectedProducts: string[];
-  selectedCollections: string[];
-  operation: "clone" | "move";
-};
-
-export type TSoftDeleteRequestBody = {
-  productIds: string[];
-};
