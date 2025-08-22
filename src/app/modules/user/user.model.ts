@@ -3,9 +3,10 @@ import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import { IUser, IUserModel, TUserDoc } from "./user.type";
 import { AppError } from "../../classes/AppError";
-import { CounterModel } from "../counter/model/counter.model";
 import { RoleModel } from "../role/model/role.model";
 import { UserStatus } from "./user.constants";
+import { composeMongooseTransform } from "@utils/index";
+import { getNextSequence } from "../counter/counter.util";
 
 const transformProfile = (
   _: TUserDoc,
@@ -61,16 +62,8 @@ const userSchema = new Schema<IUser, IUserModel>(
   },
   {
     timestamps: true,
-    toJSON: {
-      virtuals: true,
-      versionKey: false,
-      transform: transformProfile,
-    },
-    toObject: {
-      virtuals: true,
-      versionKey: false,
-      transform: transformProfile,
-    },
+    toJSON: { transform: composeMongooseTransform(transformProfile) },
+    toObject: { transform: composeMongooseTransform(transformProfile) },
   }
 );
 
@@ -104,14 +97,10 @@ userSchema.pre("save", async function (next) {
       this.password = await bcrypt.hash(this.password, salt);
     }
 
-    // Auto-generate `id` if not present (only for new documents)
+    // Auto-generate id if not present
     if (this.isNew && !this.id) {
-      const counter = await CounterModel.findByIdAndUpdate(
-        "user",
-        { $inc: { seq: 1 } },
-        { new: true, upsert: true }
-      );
-      this.id = counter.seq.toString().padStart(4, "0");
+      const seq = await getNextSequence("user");
+      this.id = seq.toString().padStart(4, "0");
     }
 
     next();
@@ -133,7 +122,8 @@ userSchema.statics.auth = async function (email: string, password: string) {
     throw new AppError("Invalid email", httpstatus.BAD_REQUEST);
 
   if (!user.isVerified)
-    throw new AppError("Please verify your account", httpstatus.UNAUTHORIZED);
+    throw new AppError("Your account is not verified", httpstatus.UNAUTHORIZED);
+
   if (user.status !== UserStatus.active)
     throw new AppError(
       `Your account has been ${user.status}`,
@@ -149,7 +139,7 @@ userSchema.statics.auth = async function (email: string, password: string) {
   user?.save && (await user.save());
 
   const plainUser: Partial<IUser> = (user as TUserDoc).toObject();
-  //  strip password
+  //  strip unnecessary stuff
   delete plainUser.password;
   delete plainUser.isVerified;
   delete plainUser.status;

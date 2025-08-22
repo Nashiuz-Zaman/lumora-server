@@ -1,6 +1,10 @@
 export const topCategories = [
   { title: "Fashion and Accessories", slug: "fashion-accessories" },
   { title: "Gaming and Entertainment", slug: "gaming-entertainment" },
+  {
+    title: "Mobile Phones & Electronics",
+    slug: "mobile-phones-electronics",
+  },
   { title: "Food and Snacks", slug: "food-snacks" },
   { title: "Kitchen Essentials", slug: "kitchen-essentials" },
   {
@@ -40,6 +44,11 @@ export const subCategoriesMap: Record<
       slug: "action-figures-collectibles",
     },
     { title: "Gaming Accessories", slug: "gaming-accessories" },
+  ],
+  "Mobile Phones & Electronics": [
+    { title: "Smartphones", slug: "smartphones" },
+    { title: "Mobile Accessories", slug: "mobile-accessories" },
+    { title: "Consumer Electronics", slug: "consumer-electronics" },
   ],
   "Food and Snacks": [
     { title: "Chocolates & Candy", slug: "chocolates-candy" },

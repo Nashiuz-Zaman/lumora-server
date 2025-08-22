@@ -6,7 +6,7 @@ import { IUser } from "@app/modules/user/user.type";
 import { config } from "@config/env";
 import { IJwtPayload } from "@shared/type/jwtPayload";
 import { serverError } from "@utils/serverError";
-import { setAuthCookies } from "@utils/setAuthCookies";
+import { setAuthCookies } from "@app/modules/auth/setAuthCookies";
 import { createToken } from "@utils/token";
 import { verifyToken } from "@utils/verifyToken";
 import { Request, Response } from "express";
