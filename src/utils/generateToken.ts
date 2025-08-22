@@ -1,3 +1,4 @@
+import { TUserDoc } from "@app/modules/user/user.type";
 import jwt from "jsonwebtoken";
 
 export interface IJwtPayload {
@@ -5,6 +6,7 @@ export interface IJwtPayload {
   userId?: string; // user._id not user.id
   email?: string;
   role?: string;
+  userDoc?: TUserDoc;
 }
 
 type TTimeUnit = "ms" | "s" | "m" | "h" | "d" | "w" | "y";

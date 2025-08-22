@@ -1,4 +1,4 @@
-const generateAvatar = (name: string) => {
+export const generateAvatar = (name: string) => {
   const hashCode = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -9,7 +9,7 @@ const generateAvatar = (name: string) => {
 
   const intToHex = (num: number) => {
     const hex = (num & 0x00ffffff).toString(16).toUpperCase();
-    return '00000'.substring(0, 6 - hex.length) + hex;
+    return "00000".substring(0, 6 - hex.length) + hex;
   };
 
   const bgColor = intToHex(hashCode(name));
@@ -17,5 +17,3 @@ const generateAvatar = (name: string) => {
 
   return `https://placehold.co/200x200/${bgColor}/ffffff.png?text=${firstLetter}&font=Lato`;
 };
-
-export default generateAvatar;
