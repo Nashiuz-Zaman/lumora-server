@@ -1,3 +1,4 @@
+import { Response } from "express";
 import { config } from "@config/env";
 import {
   cleanCookie,
@@ -5,7 +6,6 @@ import {
   IJwtPayload,
   setCookie,
 } from "@utils/index";
-import { Response } from "express";
 
 export const setAuthCookies = (res: Response, payload: IJwtPayload) => {
   // Generate access and refresh tokens

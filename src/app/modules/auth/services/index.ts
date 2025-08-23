@@ -1,2 +1,3 @@
 export * from "./localLogin";
-export * from "./socialLogin";
+export * from "./socialLoginOrRegisterUser";
+export * from "./manageAuthCookies";

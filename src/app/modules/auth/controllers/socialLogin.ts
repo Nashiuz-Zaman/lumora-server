@@ -1,16 +1,19 @@
+// Core
 import { RequestHandler } from "express";
-import { sendSuccess } from "@utils/sendSuccess";
-import { socialLoginOrRegisterUser } from "../services/socialLogin";
-import { catchAsync } from "@utils/catchAsync";
-import { setAuthCookies } from "@app/modules/auth/setAuthCookies";
-import { IRole } from "@app/modules/role/type/role.type";
-import { throwInternalServerError } from "@utils/operationalErrors";
 
-/**
- * @route POST /auth/social-login
- * @desc Social login or registration for customer users
- * @access Public
- */
+// Models/Types
+import { IRole } from "@app/modules/role/type/role.type";
+
+// Services
+import { setAuthCookies, socialLoginOrRegisterUser } from "../services";
+
+// Utils
+import {
+  sendSuccess,
+  catchAsync,
+  throwInternalServerError,
+} from "@utils/index";
+
 export const socialLoginController: RequestHandler = catchAsync(
   async (req, res) => {
     const { name, email, image } = req.body;
@@ -23,7 +26,11 @@ export const socialLoginController: RequestHandler = catchAsync(
       // extract role
       const role = (user.role as unknown as IRole).name;
 
-      setAuthCookies(res, user?.email!, role, user?._id?.toString()!);
+      setAuthCookies(res, {
+        email: user?.email!,
+        role,
+        userId: user?._id?.toString()!,
+      });
     }
 
     return sendSuccess(res, {

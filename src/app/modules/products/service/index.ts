@@ -5,4 +5,4 @@ export * from "./getProduct";
 export * from "./getProducts";
 export * from "./getRelatedProducts";
 export * from "./updateProduct";
-export * from "./updateStock";
+// export * from "./updateStock";

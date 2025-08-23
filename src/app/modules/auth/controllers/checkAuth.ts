@@ -1,23 +1,20 @@
-// core
+// Core
 import { RequestHandler } from "express";
 
-// utils
+// Types
+import { ISecureRequest } from "@app/shared/types";
+
+// Services
+import { getUserWithProfile } from "@app/modules/user/services";
+
+// Utils
 import { catchAsync, sendSuccess } from "@utils/index";
 
-import { IJwtPayload } from "@shared/type/jwtPayload";
-import { ISecureRequest } from "@shared/type/secureRequest";
-import { UserModel } from "@app/modules/user/user.model";
-
-export const checkAuth: RequestHandler = catchAsync(
+export const checkAuthController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
-    const { email } = req.user as IJwtPayload;
+    const { email } = req.decoded!;
 
-    let user = await UserModel.getUser(
-      { email },
-      {
-        select: "id name email role image",
-      }
-    );
+    const user = await getUserWithProfile({ email });
 
     if (user?._id) {
       return sendSuccess(res, { data: { user } });

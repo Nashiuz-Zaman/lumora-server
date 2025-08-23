@@ -7,7 +7,8 @@ import {
   UserStatus,
 } from "@app/modules/user/user.constants";
 import { ISecureRequest } from "@app/shared/types";
-import { cleanAuthCookies, setAuthCookies } from "@app/modules/auth/auth.util";
+import { setAuthCookies, cleanAuthCookies } from "@app/modules/auth/services";
+
 import {
   verifyToken,
   catchAsync,
@@ -15,16 +16,14 @@ import {
   throwUnauthorized,
   throwForbidden,
 } from "@utils/index";
+import { getUserWithProfile } from "@app/modules/user/services/getUserWithProfile";
 
 const validateUserAccess = async (
   res: Response,
   email: string,
   permittedRoles: TPermittedUserRoles
 ): Promise<{ role: IRole["name"] }> => {
-  const user = await UserModel.findOne({ email })
-    .select("status role")
-    .populate<{ role: IRole }>("role")
-    .lean();
+  const user = await getUserWithProfile({email})
 
   if (!user) {
     cleanAuthCookies(res);

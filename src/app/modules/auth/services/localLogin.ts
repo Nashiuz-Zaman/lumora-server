@@ -1,7 +1,7 @@
 import { IRole } from "../../role/type/role.type";
 import { UserModel } from "../../user/user.model";
 import { Response } from "express";
-import { setAuthCookies } from "../auth.util";
+import { setAuthCookies } from "./manageAuthCookies";
 
 export const localLogin = async ({
   res,

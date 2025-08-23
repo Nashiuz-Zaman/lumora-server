@@ -1,20 +1,27 @@
+// libraries
 import { startSession } from "mongoose";
-import { UserModel } from "@app/modules/user/user.model";
-import { CustomerModel } from "@app/modules/customer/customer.model";
-import { getAdmins } from "@app/modules/admin/services/getAdmins";
-import { throwBadRequest, throwUnauthorized } from "@utils/operationalErrors";
-import generateAvatar from "@utils/generateAvatar";
-import { IUser, TUserDoc } from "@app/modules/user/user.type";
-import { ICustomer } from "@app/modules/customer/customer.type";
-import { setAuthCookies } from "@app/modules/auth/setAuthCookies";
 
-/**
- * Handles social login or user creation for customers.
- *
- * @param payload - Contains name, email, and image (from social provider)
- * @returns The existing or newly created user (plain object)
- * @throws If email is missing or belongs to an admin
- */
+// models & types
+import { UserModel } from "@app/modules/user/user.model";
+import {
+  IUser,
+  TUserDoc,
+  TUserPopulatedDoc,
+} from "@app/modules/user/user.type";
+import { CustomerModel } from "@app/modules/customer/customer.model";
+import { ICustomer } from "@app/modules/customer/customer.type";
+
+// services
+import { getAdmins } from "@app/modules/admin/services/getAdmins";
+
+// utils
+import {
+  throwBadRequest,
+  throwUnauthorized,
+  generateAvatar,
+} from "@utils/index";
+import { getUserWithProfile } from "@app/modules/user/services";
+
 export const socialLoginOrRegisterUser = async ({
   name,
   email,
@@ -33,12 +40,9 @@ export const socialLoginOrRegisterUser = async ({
     return throwUnauthorized("Admins must login using email and password");
   }
 
-  const existingUser: Partial<TUserDoc> | null = await UserModel.getUser(
-    { email },
-    {
-      select: "role image id name email phone",
-    }
-  );
+  const existingUser: TUserDoc | null = await UserModel.findOne({
+    email,
+  });
 
   if (existingUser) {
     return existingUser;
@@ -67,26 +71,23 @@ export const socialLoginOrRegisterUser = async ({
     await newCustomer.save({ session });
 
     if (newUser._id && newCustomer._id) {
-      const user: Partial<TUserDoc> | null = await UserModel.getUser(
-        { email },
-        {
-          select: "role image id name email phone",
-        }
-      );
+      const user: Partial<TUserPopulatedDoc> | null = await getUserWithProfile({
+        email,
+      });
 
       if (user) {
         user.lastLoginAt = new Date();
         user?.save && (await user.save());
 
         const plainUser: Partial<IUser> = (user as TUserDoc).toObject();
-        //  strip password
+        // strip sensitive fields
         delete plainUser.password;
         delete plainUser.isVerified;
         delete plainUser.status;
         delete plainUser.lastLoginAt;
         delete plainUser.updatedAt;
-        await session.commitTransaction();
 
+        await session.commitTransaction();
         return user;
       }
     }
