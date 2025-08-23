@@ -1,8 +1,13 @@
 import express, { Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { config } from "@config/env";
 
-const allowedOrigins = ["http://localhost:3000"];
+let allowedOrigins = [config.prodClientURL];
+
+if (config.environment !== "production") {
+  allowedOrigins = [...allowedOrigins, "http://localhost:3000"];
+}
 
 export const initialMiddlewares = (app: Express): void => {
   // Handle preflight requests first
