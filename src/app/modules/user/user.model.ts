@@ -1,31 +1,11 @@
-import httpstatus from "http-status";
 import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import { IUser, IUserModel, TUserDoc } from "./user.type";
 import { AppError } from "../../classes/AppError";
 import { RoleModel } from "../role/model/role.model";
 import { UserStatus } from "./user.constants";
-import { composeMongooseTransform } from "@utils/index";
+import { throwBadRequest, throwUnauthorized } from "@utils/index";
 import { getNextSequence } from "../counter/counter.util";
-
-const transformProfile = (
-  _: TUserDoc,
-  ret: Partial<IUser> & Record<string, any>
-) => {
-  if (ret.customerProfile) {
-    ret.profile = ret.customerProfile;
-  } else if (ret.adminProfile) {
-    ret.profile = ret.adminProfile;
-  }
-
-  delete ret.customerProfile;
-  delete ret.adminProfile;
-  delete ret.password;
-
-  return ret;
-};
-
-const populatableFields: string[] = ["role", "customerProfile", "adminProfile"];
 
 const userSchema = new Schema<IUser, IUserModel>(
   {
@@ -62,8 +42,6 @@ const userSchema = new Schema<IUser, IUserModel>(
   },
   {
     timestamps: true,
-    toJSON: { transform: composeMongooseTransform(transformProfile) },
-    toObject: { transform: composeMongooseTransform(transformProfile) },
   }
 );
 
@@ -83,7 +61,7 @@ userSchema.virtual("adminProfile", {
   justOne: true,
 });
 
-// Before save
+// presave hook
 userSchema.pre("save", async function (next) {
   try {
     // Default role
@@ -111,29 +89,33 @@ userSchema.pre("save", async function (next) {
 
 // Login for email
 userSchema.statics.auth = async function (email: string, password: string) {
-  const user: Partial<TUserDoc> | null = await this.getUser(
+  const user: Partial<TUserDoc> | null = await UserModel.findOne(
     { email },
     {
-      select: "+password isVerified status role image id name email phone",
+      password: 1,
+      isVerified: 1,
+      status: 1,
+      role: 1,
+      image: 1,
+      id: 1,
+      name: 1,
+      email: 1,
+      phone: 1,
     }
-  );
+  ).lean();
 
   if (!user || !user.password)
-    throw new AppError("Invalid email", httpstatus.BAD_REQUEST);
+    return throwBadRequest("Invalid email or password");
 
   if (!user.isVerified)
-    throw new AppError("Your account is not verified", httpstatus.UNAUTHORIZED);
+    return throwUnauthorized("Your account is not verified");
 
   if (user.status !== UserStatus.active)
-    throw new AppError(
-      `Your account has been ${user.status}`,
-      httpstatus.UNAUTHORIZED
-    );
+    return throwUnauthorized(`Your account has been ${user.status}`);
 
   // If password checking is required here:
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch)
-    throw new AppError("Incorrect password", httpstatus.UNAUTHORIZED);
+  if (!isMatch) return throwUnauthorized("Incorrect password");
 
   user.lastLoginAt = new Date();
   user?.save && (await user.save());

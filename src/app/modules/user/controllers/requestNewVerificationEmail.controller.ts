@@ -4,7 +4,7 @@ import { RequestHandler } from "express";
 // utils
 import { catchAsync, sendSuccess } from "@utils/index";
 import { clientUrl } from "@app/app";
-import { resendAccountVerificationEmail } from "../services/resendVerificationEmail";
+import { resendAccountVerificationEmail } from "@app/modules/email/service";
 
 export const requestNewVerificationEmail: RequestHandler = catchAsync(
   async (req, res) => {

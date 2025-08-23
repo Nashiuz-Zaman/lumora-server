@@ -1,16 +1,28 @@
-import { clientUrl } from "@app/app";
-import { IRole } from "@app/modules/role/type/role.type";
-import { sendAccountVerificationEmail } from "@app/modules/user/services/sendVerificationEmail";
-import { UserModel } from "@app/modules/user/user.model";
-import { IUser } from "@app/modules/user/user.type";
-import { config } from "@config/env";
-import { IJwtPayload } from "@shared/type/jwtPayload";
-import { serverError } from "@utils/serverError";
-import { setAuthCookies } from "@app/modules/auth/setAuthCookies";
-import { createToken } from "@utils/token";
-import { verifyToken } from "@utils/verifyToken";
+// libraries
 import { Request, Response } from "express";
+
+// config
+import { config } from "@config/env";
+
+// app
+import { clientUrl } from "@app/app";
+
+// models & types
+import { IUser } from "@app/modules/user/user.type";
+import { IRole } from "@app/modules/role/type/role.type";
 import { UserStatus } from "../user.constants";
+
+// services
+import { sendAccountVerificationEmail } from "@app/modules/email/service";
+import { setAuthCookies } from "@app/modules/auth/services";
+
+// utils
+import {
+  generateToken,
+  throwInternalServerError,
+  verifyToken,
+} from "@utils/index";
+import { getUserWithProfile } from "./getUserWithProfile";
 
 export const verifyUserAccountEmail = async (
   req: Request,
@@ -23,13 +35,7 @@ export const verifyUserAccountEmail = async (
   }
 
   // Find user
-  const user = await UserModel.getUser(
-    { email },
-    {
-      select:
-        "isVerified status role image id name email phone emailVerificationToken",
-    }
-  );
+  const user = await getUserWithProfile({ email });
 
   // No user or user blocked or deleted ❌
   if (!user || user.status !== UserStatus.active) {
@@ -41,14 +47,14 @@ export const verifyUserAccountEmail = async (
     return res.redirect(clientUrl);
   }
 
-  // Correct user and Token
+  // Correct user and token
   const result = await verifyToken(token as string, config.accessTokenSecret!);
 
   // Token valid
   if (result.valid) {
-    const { email: decodedEmail } = result.decoded as IJwtPayload;
+    const { email: decodedEmail } = result.decoded;
 
-    // Token valid + Wrong email ❌
+    // Token valid + wrong email ❌
     if (decodedEmail !== user.email) {
       return res.redirect(clientUrl);
     }
@@ -71,19 +77,23 @@ export const verifyUserAccountEmail = async (
 
       const role = (user.role as unknown as IRole).name;
 
-      setAuthCookies(res, user.email, role, user._id.toString());
+      setAuthCookies(res, {
+        email: user.email,
+        role,
+        userId: user._id.toString(),
+      });
 
       res.redirect(`${clientUrl}/customer`);
       return;
     }
   }
 
-  // Correct user but invalid/expired/hacked
-  const tempAccessToken = createToken(
+  // Correct user but invalid/expired/hacked token
+  const tempAccessToken = generateToken(
     {
       email: user.email!,
     },
-    config.accessTokenSecret as string,
+    config.accessTokenSecret,
     "10m"
   );
 
@@ -103,6 +113,6 @@ export const verifyUserAccountEmail = async (
       );
     }
 
-    serverError();
+    throwInternalServerError();
   }
 };

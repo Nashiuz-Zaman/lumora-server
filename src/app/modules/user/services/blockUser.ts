@@ -1,12 +1,10 @@
-import httpStatus from "http-status";
-import { AppError } from "../../../classes/AppError";
 import { UserStatus } from "../user.constants";
 import { TUserDoc } from "../user.type";
+import { throwBadRequest } from "@utils/index";
 
 export const blockUser = async (user: TUserDoc) => {
-  if (user!.status === UserStatus.blocked) {
-    throw new AppError("User is already blocked", httpStatus.BAD_REQUEST);
-  }
+  if (user!.status === UserStatus.blocked)
+    return throwBadRequest("User is already blocked");
 
   user!.status = UserStatus.blocked;
   const updated = await user!.save();

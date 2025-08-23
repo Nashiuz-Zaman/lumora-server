@@ -1,6 +1,4 @@
 import { UserRoles, UserSearchableFields } from "./../user.constants";
-// services/getPaginatedUsersByRole.ts
-
 import { QueryBuilder } from "@app/classes/QueryBuilder";
 import { AdminModel } from "@app/modules/admin/admin.model";
 import { CustomerModel } from "@app/modules/customer/customer.model";
@@ -19,9 +17,9 @@ export const getPaginatedUsersByRole = async (
 
   if (query?.status === "all") delete query.status;
 
-  const qb = new QueryBuilder(Model, query);
+  const usersQuery = new QueryBuilder(Model, query);
 
-  const users = await qb
+  const users = await usersQuery
     .populate({
       localField: "user",
       from: "users",
@@ -53,7 +51,7 @@ export const getPaginatedUsersByRole = async (
     .paginate()
     .exec();
 
-  const queryMeta = await qb.getQueryMeta();
+  const queryMeta = await usersQuery.getQueryMeta();
 
   return { queryMeta, users };
 };
