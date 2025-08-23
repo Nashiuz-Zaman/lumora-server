@@ -1,9 +1,21 @@
+// Libraries
 import express, { NextFunction, Request, Response } from "express";
-import { AppError } from "./classes/AppError";
-import { config } from "../config/env";
-import mainRouter from "./main-router";
-import { initialMiddlewares, globalErrorHandler } from "./middlewares";
 import http from "http";
+
+// Config
+import { config } from "../config/env";
+
+// Classes
+import { AppError } from "./classes/AppError";
+
+// Routers
+import mainRouter from "./main-router";
+
+// Middlewares
+import { initialMiddlewares, globalErrorHandler } from "./middlewares";
+
+// Utils
+import { renderHomePage } from "@utils/index";
 
 export const clientUrl: string =
   config.environment === "development"
@@ -22,7 +34,7 @@ initialMiddlewares(app);
 
 // Root route
 app.get("/", (_, res: Response) => {
-  res.send("Hello world");
+  res.send(renderHomePage("Hello world", "Lumora Server | Home"));
 });
 
 // Server health test route
