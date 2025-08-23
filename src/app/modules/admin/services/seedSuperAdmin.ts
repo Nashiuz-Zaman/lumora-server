@@ -6,7 +6,7 @@ import { AdminModel } from "@app/modules/admin/admin.model";
 import { TRoleDoc } from "@app/modules/role/type/role.type";
 import { UserRoles } from "@app/modules/user/user.constants";
 import { config } from "@config/env";
-import generateAvatar from "@utils/generateAvatar";
+import { generateAvatar } from "@utils/index";
 
 export const seedSuperAdmin = async () => {
   try {

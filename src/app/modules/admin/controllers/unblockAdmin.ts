@@ -1,5 +1,5 @@
 import { unblockUser } from "@app/modules/user/services/unblockUser";
-import { ISecureRequest } from "@shared/type/secureRequest";
+import { ISecureRequest } from "@app/shared/types";
 import {
   catchAsync,
   sendSuccess,
@@ -9,7 +9,7 @@ import { RequestHandler } from "express";
 
 export const unblockAdminController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
-    const result = await unblockUser(req?.userDoc!);
+    const result = await unblockUser(req?.decoded?.userDoc!);
 
     if (result)
       return sendSuccess(res, {

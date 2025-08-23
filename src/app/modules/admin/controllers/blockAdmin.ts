@@ -1,12 +1,16 @@
 import { blockUser } from "@app/modules/user/services/blockUser";
-import { ISecureRequest } from "@shared/type/secureRequest";
-import { catchAsync, sendSuccess, throwInternalServerError } from "@utils/index";
+import { ISecureRequest } from "@app/shared/types";
+import {
+  catchAsync,
+  sendSuccess,
+  throwInternalServerError,
+} from "@utils/index";
 
 import { RequestHandler } from "express";
 
 export const blockAdminController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
-    const result = await blockUser(req?.userDoc!);
+    const result = await blockUser(req?.decoded?.userDoc!);
 
     if (result)
       return sendSuccess(res, {

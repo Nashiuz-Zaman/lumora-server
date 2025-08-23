@@ -1,10 +1,6 @@
 import { RoleModel } from "@app/modules/role/model/role.model";
 import { UserModel } from "@app/modules/user/user.model";
 
-/**
- * Fetch all admin and superadmin users who have valid emails.
- * @returns Promise resolving to array of users (admins and superadmins)
- */
 export const getAdmins = async () => {
   // Fetch role IDs for admin and superadmin
   const roles = await RoleModel.find({

@@ -9,4 +9,4 @@ export * from "./setCookie";
 export * from "./generateToken";
 export * from "./cleanCookie";
 export * from "./verifyToken";
-
+export * from "./normalizeQueryParam";

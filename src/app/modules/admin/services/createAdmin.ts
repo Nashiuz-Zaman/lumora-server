@@ -1,11 +1,18 @@
+// Mongoose
 import { startSession } from "mongoose";
+
+// Models & Types
 import { UserModel } from "../../user/user.model";
 import { IUser } from "../../user/user.type";
 import { AdminModel } from "@app/modules/admin/admin.model";
 import { IAdmin } from "@app/modules/admin/admin.type";
-import generateAvatar from "@utils/generateAvatar";
 import { RoleModel } from "@app/modules/role/model/role.model";
+
+// Constants
 import { UserRoles } from "@app/modules/user/user.constants";
+
+// Utils
+import { generateAvatar } from "@utils/generateAvatar";
 
 export const createAdmin = async (user: Partial<IUser>) => {
   const session = await startSession();

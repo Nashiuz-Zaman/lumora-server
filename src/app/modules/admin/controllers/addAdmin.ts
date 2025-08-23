@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
-import { createAdmin } from "../services/createAdmin"; // Update path if needed
+import { createAdmin } from "../services";
+
 import {
   catchAsync,
   sendSuccess,

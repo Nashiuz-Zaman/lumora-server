@@ -1,15 +1,15 @@
-import { softDeleteUser } from "@app/modules/user/services/softDeleteUser";
-import { ISecureRequest } from "@shared/type/secureRequest";
+import { RequestHandler } from "express";
+import { softDeleteUser } from "@app/modules/user/services";
+import { ISecureRequest } from "@app/shared/types";
 import {
   catchAsync,
   sendSuccess,
   throwInternalServerError,
 } from "@utils/index";
-import { RequestHandler } from "express";
 
 export const deleteAdminController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
-    const result = await softDeleteUser(req?.userDoc!);
+    const result = await softDeleteUser(req?.decoded?.userDoc!);
 
     if (result)
       return sendSuccess(res, {
