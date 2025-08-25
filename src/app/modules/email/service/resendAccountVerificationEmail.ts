@@ -8,7 +8,7 @@ import { config } from "@config/env";
 import { UserStatus } from "../../user/user.constants";
 
 // services
-import { sendAccountVerificationEmail } from "./sendVerificationEmail";
+import { sendAccountVerificationEmail } from "./sendAccountVerificationEmail";
 
 // utils
 import { generateToken, throwInternalServerError } from "@utils/index";

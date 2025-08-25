@@ -6,8 +6,8 @@ import { Request } from "express";
 import { config } from "@config/env";
 
 // models & types
-import { UserModel } from "../../user/user.model";
-import { IUser } from "../../user/user.type";
+import { UserModel } from "@app/modules/user/user.model";
+import { IUser } from "@app/modules/user/user.type";
 import { CustomerModel } from "@app/modules/customer/customer.model";
 import { ICustomer } from "@app/modules/customer/customer.type";
 
@@ -49,7 +49,7 @@ export const createCustomer = async (req: Request, user: Partial<IUser>) => {
       }
     }
 
-    // If email not sent or ids missing → rollback
+    // If email not sent or ids missing rollback
     await session.abortTransaction();
     return false;
   } catch (error) {

@@ -6,6 +6,7 @@ import { RoleModel } from "../role/model/role.model";
 import { UserStatus } from "./user.constants";
 import { throwBadRequest, throwUnauthorized } from "@utils/index";
 import { getNextSequence } from "../counter/counter.util";
+import { IRole } from "../role/type/role.type";
 
 const userSchema = new Schema<IUser, IUserModel>(
   {
@@ -89,7 +90,7 @@ userSchema.pre("save", async function (next) {
 
 // Login for email
 userSchema.statics.auth = async function (email: string, password: string) {
-  const user: TUserDoc | null = await UserModel.findOne(
+  const user = await UserModel.findOne(
     { email },
     {
       password: 1,
@@ -102,7 +103,7 @@ userSchema.statics.auth = async function (email: string, password: string) {
       email: 1,
       phone: 1,
     }
-  );
+  ).populate<{ role: IRole }>("role");
 
   if (!user || !user.password)
     return throwBadRequest("Invalid email or password");
@@ -120,7 +121,9 @@ userSchema.statics.auth = async function (email: string, password: string) {
   user.lastLoginAt = new Date();
   user?.save && (await user.save());
 
-  const plainUser: Partial<IUser> = user.toObject();
+  const plainUser = user.toObject() as Partial<
+    Omit<IUser, "role"> & { role: IRole }
+  >;
   //  strip unnecessary stuff
   delete plainUser.password;
   delete plainUser.isVerified;

@@ -1,11 +1,8 @@
 // libraries
-import { Request, Response } from "express";
+import { Request } from "express";
 
 // config
 import { config } from "@config/env";
-
-// app
-import { clientUrl } from "@app/app";
 
 // models & types
 import { IUser } from "@app/modules/user/user.type";
@@ -14,7 +11,6 @@ import { UserStatus } from "../user.constants";
 
 // services
 import { sendAccountVerificationEmail } from "@app/modules/email/service";
-import { setAuthCookies } from "@app/modules/auth/services";
 
 // utils
 import {
@@ -23,43 +19,46 @@ import {
   verifyToken,
 } from "@utils/index";
 import { getUserWithProfile } from "./getUserWithProfile";
+import { clientUrl } from "@app/app";
+
+export type TVerifyUserAccountResult =
+  | { status: "redirect"; url: string }
+  | {
+      status: "success";
+      user: Partial<IUser>;
+      authData: { email: string; role: string; userId: string };
+    }
+  | { status: "verification-email-sent"; email: string };
 
 export const verifyUserAccountEmail = async (
   req: Request,
-  res: Response,
   email: string,
   token: string
-) => {
+): Promise<TVerifyUserAccountResult> => {
   if (!email || !token) {
-    return res.redirect(clientUrl);
+    return { status: "redirect", url: clientUrl }; // fallback URL
   }
 
-  // Find user
   const user = await getUserWithProfile({ email });
 
-  // No user or user blocked or deleted ❌
   if (!user || user.status !== UserStatus.active) {
-    return res.redirect(clientUrl);
+    return { status: "redirect", url: clientUrl };
   }
 
-  // Correct user but wrong token ❌
   if (user.emailVerificationToken !== token) {
-    return res.redirect(clientUrl);
+    return { status: "redirect", url: clientUrl };
   }
 
-  // Correct user and token
   const result = await verifyToken(token as string, config.accessTokenSecret!);
 
-  // Token valid
   if (result.valid) {
     const { email: decodedEmail } = result.decoded;
 
-    // Token valid + wrong email ❌
     if (decodedEmail !== user.email) {
-      return res.redirect(clientUrl);
+      return { status: "redirect", url: clientUrl };
     }
 
-    // Correct email
+    // Mark user as verified
     const date = new Date();
     user.isVerified = true;
     user.emailVerificationToken = "";
@@ -69,50 +68,43 @@ export const verifyUserAccountEmail = async (
     const updatedUser = await user.save();
 
     if (updatedUser._id) {
-      delete (user as Partial<IUser>).isVerified;
-      delete (user as Partial<IUser>).emailVerificationToken;
-      delete (user as Partial<IUser>).emailVerifiedAt;
-      delete (user as Partial<IUser>).password;
-      delete (user as Partial<IUser>).lastLoginAt;
-
       const role = (user.role as unknown as IRole).name;
 
-      setAuthCookies(res, {
+      // Clean up user object for return
+      const safeUser: Partial<IUser> = { ...user.toObject() };
+      delete safeUser.isVerified;
+      delete safeUser.emailVerificationToken;
+      delete safeUser.emailVerifiedAt;
+      delete safeUser.password;
+      delete safeUser.lastLoginAt;
+
+      const authData = {
         email: user.email,
         role,
         userId: user._id.toString(),
-      });
+      };
 
-      res.redirect(`${clientUrl}/customer`);
-      return;
+      return { status: "success", user: safeUser, authData };
     }
   }
 
-  // Correct user but invalid/expired/hacked token
+  // Correct user but invalid/expired/hacked
   const tempAccessToken = generateToken(
-    {
-      email: user.email!,
-    },
+    { email: user.email! },
     config.accessTokenSecret,
     "10m"
   );
 
   user.emailVerificationToken = tempAccessToken;
-
   const updatedUser = await user.save();
 
   if (updatedUser._id) {
-    const result = await sendAccountVerificationEmail(req, updatedUser);
+    const emailSent = await sendAccountVerificationEmail(req, updatedUser);
 
-    if (result) {
-      const encodedEmail = encodeURIComponent(user.email);
-      const encodedToken = encodeURIComponent(false);
-
-      return res.redirect(
-        `${clientUrl}/confirmation-mail-sent?email=${encodedEmail}&oldToken=${encodedToken}`
-      );
+    if (emailSent) {
+      return { status: "verification-email-sent", email: user.email };
     }
-
-    throwInternalServerError();
   }
+
+  return throwInternalServerError();
 };

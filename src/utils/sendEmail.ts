@@ -1,6 +1,7 @@
 // core
+import { config } from "@config/env";
 import nodemailer from "nodemailer";
-import { config } from "../config/env";
+
 
 export const sendEmail = async (
   to: string | string[],

@@ -13,9 +13,8 @@ export const sendAccountVerificationEmail = async (
   }&token=${user.emailVerificationToken}`;
 
   const html = await generateEmailTemplate(
-    "src/emails/emailVerificationTemplate.hbs",
+    "src/emails/accountVerification.hbs",
     {
-      name: user?.name!,
       verificationLink: verificationLink,
       year: new Date().getFullYear(),
     }

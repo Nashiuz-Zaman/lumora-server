@@ -22,8 +22,6 @@ export const requestNewVerificationEmail: RequestHandler = catchAsync(
       return;
     }
 
-    if (result) {
-      return sendSuccess(res, { message: "Confirmation email sent" });
-    }
+    if (result) return sendSuccess(res, { message: "Confirmation email sent" });
   }
 );
