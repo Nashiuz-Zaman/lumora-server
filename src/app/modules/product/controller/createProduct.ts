@@ -14,9 +14,9 @@ import { createProduct } from "../service/createProduct";
 export const createProductController: RequestHandler = catchAsync(
   async (req, res) => {
 
-    const product = JSON.parse(req.body);
+    const product = req.body
     const created = await createProduct(product);
-    if (created) return sendSuccess(res);
+    if (created) return sendSuccess(res,{message: 'Product Created Successfully'});
 
     return throwInternalServerError();
   }

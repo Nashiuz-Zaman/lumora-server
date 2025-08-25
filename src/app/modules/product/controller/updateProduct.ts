@@ -6,6 +6,7 @@ import {
   sendSuccess,
   catchAsync,
   throwInternalServerError,
+  toObjectId,
 } from "@utils/index";
 
 // Services
@@ -17,8 +18,10 @@ import { updateProduct } from "../service/updateProduct";
 export const updateProductController: RequestHandler = catchAsync(
   async (req, res) => {
     const _id = req.params.id;
-    const product = JSON.parse(req.body);
-    const success = await updateProduct({ _id }, product);
+    console.log(_id);
+    const product = req.body;
+    console.log(product);
+    const success = await updateProduct({ _id: toObjectId(_id) }, product);
 
     if (!success) return throwInternalServerError();
 

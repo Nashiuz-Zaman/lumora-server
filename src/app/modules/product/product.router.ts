@@ -1,6 +1,6 @@
 // imports
 import { Router } from "express";
-import { authenticateMiddleware } from "@app/middlewares/authenticate";
+// import { authenticateMiddleware } from "@app/middlewares/authenticate";
 import { UserRoles } from "../user/user.constants";
 import {
   bulkSoftDeleteProductsController,
@@ -20,35 +20,35 @@ const productRouter = Router();
 // GET /admin/products
 productRouter.get(
   "/admin",
-  authenticateMiddleware([admin, superAdmin]),
+  // authenticateMiddleware([admin, superAdmin]),
   getProductsForAdminController
 );
 
 // PATCH /products/bulk-delete
 productRouter.patch(
   "/bulk-delete",
-  authenticateMiddleware([admin, superAdmin]),
+  // authenticateMiddleware([admin, superAdmin]),
   bulkSoftDeleteProductsController
 );
 
 // POST create product
 productRouter.post(
   "/",
-  authenticateMiddleware([admin, superAdmin]),
+  // authenticateMiddleware([admin, superAdmin]),
   createProductController
 );
 
 // GET product for admin by id
 productRouter.get(
   "/:id/admin",
-  authenticateMiddleware([admin, superAdmin]),
+  // authenticateMiddleware([admin, superAdmin]),
   getProductForAdminController
 );
 
 // PATCH update product (general)
 productRouter.patch(
   "/:id",
-  authenticateMiddleware([admin, superAdmin]),
+  // authenticateMiddleware([admin, superAdmin]),
   updateProductController
 );
 

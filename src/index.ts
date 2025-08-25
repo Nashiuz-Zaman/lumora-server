@@ -15,8 +15,8 @@ const main = async (): Promise<void> => {
     if (config.environment !== "production") {
       console.log("Seeding initial data...");
       try {
-        await seedSuperAdmin();
-        await seedCategories();
+        // await seedSuperAdmin();
+        // await seedCategories();
         console.log("Database seeding completed ✅");
       } catch (err) {
         console.error("Seeding error:", err);

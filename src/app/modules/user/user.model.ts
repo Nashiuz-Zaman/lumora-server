@@ -89,7 +89,7 @@ userSchema.pre("save", async function (next) {
 
 // Login for email
 userSchema.statics.auth = async function (email: string, password: string) {
-  const user: Partial<TUserDoc> | null = await UserModel.findOne(
+  const user: TUserDoc | null = await UserModel.findOne(
     { email },
     {
       password: 1,
@@ -102,7 +102,7 @@ userSchema.statics.auth = async function (email: string, password: string) {
       email: 1,
       phone: 1,
     }
-  ).lean();
+  );
 
   if (!user || !user.password)
     return throwBadRequest("Invalid email or password");
@@ -120,7 +120,7 @@ userSchema.statics.auth = async function (email: string, password: string) {
   user.lastLoginAt = new Date();
   user?.save && (await user.save());
 
-  const plainUser: Partial<IUser> = (user as TUserDoc).toObject();
+  const plainUser: Partial<IUser> = user.toObject();
   //  strip unnecessary stuff
   delete plainUser.password;
   delete plainUser.isVerified;
