@@ -1,6 +1,6 @@
 export const ProductSearchableFields = Object.freeze([
   "title",
-  "variants.sku",
+  "brand",
 ] as const);
 
 export const ProductStatus = Object.freeze({

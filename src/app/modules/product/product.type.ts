@@ -32,8 +32,8 @@ export interface IProduct {
   metaKeywords?: string;
   tags?: string;
   canonicalUrl?: string;
-  topCategory?: string;
-  subCategory?: string;
+  topCategory?: Types.ObjectId;
+  subCategory?: Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }

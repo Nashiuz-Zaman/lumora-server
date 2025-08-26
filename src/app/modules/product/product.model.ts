@@ -166,8 +166,6 @@ productSchema.pre("save", async function (next) {
       .map((v) => v.stock)
       .reduce((acc, cur) => acc + cur, 0);
 
-    // -----------------------------------------------------------------------------------
-
     // Set default image from first image
     if (Array.isArray(this.images) && this.images.length > 0) {
       this.defaultImage = this.images[0];

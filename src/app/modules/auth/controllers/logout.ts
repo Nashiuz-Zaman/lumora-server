@@ -8,5 +8,5 @@ export const logout: RequestHandler = catchAsync(async (_, res) => {
   cleanCookie(res, "Access_Token");
   cleanCookie(res, "Refresh_Token");
 
-  sendSuccess(res);
+  sendSuccess(res,{message: 'Logged Out'});
 });

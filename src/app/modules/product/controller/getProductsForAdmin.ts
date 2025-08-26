@@ -11,9 +11,6 @@ import {
 // Services
 import { getProducts } from "../service/getProducts";
 
-/**
- * Controller to fetch products for admin with query-based filtering/pagination
- */
 export const getProductsForAdminController: RequestHandler = catchAsync(
   async (req, res) => {
     // Fetch products with query params

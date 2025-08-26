@@ -1,32 +1,46 @@
+import { QueryBuilder } from "@app/classes";
 import { ProductModel } from "../product.model";
-import { TProductDoc } from "../product.type";
 import { ProductSearchableFields, ProductStatus } from "../product.constants";
-import { IQueryMeta, QueryBuilder } from "../../../classes/QueryBuilder";
 import { normalizeStatusFilter } from "@utils/normalizeQueryParam";
 
-export const getProducts = async (
-  queryObj: Record<string, any>
-): Promise<{ products: Partial<TProductDoc>[]; queryMeta: IQueryMeta }> => {
+export const getProducts = async (queryObj: Record<string, unknown>) => {
   const { status, ...newQueryObj } = normalizeStatusFilter(queryObj, {
     $ne: ProductStatus.Deleted,
   });
 
   const productQuery = new QueryBuilder(ProductModel, newQueryObj);
 
-  const result = await productQuery
+  // Populate topCategory and subCategory, keeping only slug
+  productQuery
+    .populate({
+      from: "categories",
+      localField: "topCategory",
+      foreignField: "_id",
+      as: "topCategory",
+      unwind: true,
+    })
+    .addField("topCategory", "$topCategory.slug")
+    .populate({
+      from: "categories",
+      localField: "subCategory",
+      foreignField: "_id",
+      as: "subCategory",
+      unwind: true,
+    })
+    .addField("subCategory", "$subCategory.slug");
+
+  productQuery
     .filter(["status"])
-    .match("status", status)
-    .pluckFromArray("variants", "defaultVariant", 0)
-    .addField("defaultPrice", "defaultVariant.price")
-    .pluckFromArray("images", "defaultImage", 0)
-    .countArrayLength("variants", "totalVariants")
+    .match({ status })
     .search([...ProductSearchableFields])
     .sort()
     .limitFields()
-    .paginate()
-    .exec();
+    .paginate();
 
+  const products = await productQuery.exec();
+
+  // Get query metadata
   const queryMeta = await productQuery.getQueryMeta();
 
-  return { products: result, queryMeta };
+  return { products, queryMeta };
 };

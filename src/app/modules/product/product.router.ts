@@ -1,6 +1,6 @@
 // imports
 import { Router } from "express";
-// import { authenticateMiddleware } from "@app/middlewares/authenticate";
+import { authenticateMiddleware } from "@app/middlewares/authenticate";
 import { UserRoles } from "../user/user.constants";
 import {
   bulkSoftDeleteProductsController,
@@ -11,6 +11,7 @@ import {
   getRelatedProductsController,
   updateProductController,
 } from "./controller";
+import { getMegaMenuDataController } from "./controller/getMegaMenuProducts";
 
 const { admin, superAdmin } = UserRoles;
 
@@ -20,35 +21,38 @@ const productRouter = Router();
 // GET /admin/products
 productRouter.get(
   "/admin",
-  // authenticateMiddleware([admin, superAdmin]),
+  authenticateMiddleware([admin, superAdmin]),
   getProductsForAdminController
 );
+
+// GET mega menu data
+productRouter.get("/mega-menu", getMegaMenuDataController);
 
 // PATCH /products/bulk-delete
 productRouter.patch(
   "/bulk-delete",
-  // authenticateMiddleware([admin, superAdmin]),
+  authenticateMiddleware([admin, superAdmin]),
   bulkSoftDeleteProductsController
 );
 
 // POST create product
 productRouter.post(
   "/",
-  // authenticateMiddleware([admin, superAdmin]),
+  authenticateMiddleware([admin, superAdmin]),
   createProductController
 );
 
 // GET product for admin by id
 productRouter.get(
   "/:id/admin",
-  // authenticateMiddleware([admin, superAdmin]),
+  authenticateMiddleware([admin, superAdmin]),
   getProductForAdminController
 );
 
 // PATCH update product (general)
 productRouter.patch(
   "/:id",
-  // authenticateMiddleware([admin, superAdmin]),
+  authenticateMiddleware([admin, superAdmin]),
   updateProductController
 );
 

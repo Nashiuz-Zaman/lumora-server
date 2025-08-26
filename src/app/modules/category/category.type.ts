@@ -1,12 +1,17 @@
 import { HydratedDocument, Types } from "mongoose";
 
 export interface ICategory {
+  _id?: Types.ObjectId;
   title: string;
   slug: string;
   parentCategory?: Types.ObjectId | null;
-  products: Types.ObjectId[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ICategoryTreeItem {
+  topCategory: Partial<ICategory>;
+  subCategories: Partial<ICategory>[];
 }
 
 export type TCategoryDoc = HydratedDocument<ICategory>;

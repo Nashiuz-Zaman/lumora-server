@@ -31,7 +31,7 @@ export class QueryBuilder<T> {
   // Add a single computed field
   addField(fieldPath: string, value: any): this {
     this.pipeline.push({
-      $addFields: { [fieldPath]: `$${value}` },
+      $addFields: { [fieldPath]: value },
     });
 
     return this;
@@ -71,19 +71,13 @@ export class QueryBuilder<T> {
     return this;
   }
 
-  /**
-   * Adds a field by plucking an element at a given index from a current-level array.
-   *
-   * @param arrayField - The name of the array field (e.g. "images", "variants")
-   * @param newFieldName - The name of the new field to create (e.g. "defaultImage")
-   * @param index - The index of the element to extract (default is 0)
-   */
-  pluckFromArray(arrayField: string, newFieldName: string, index = 0): this {
+  extractFromArray(arrayField: string, newField: string, index: number): this {
     this.pipeline.push({
       $addFields: {
-        [newFieldName]: { $arrayElemAt: [`$${arrayField}`, index] },
+        [newField]: { $arrayElemAt: [`$${arrayField}`, index] },
       },
     });
+
     return this;
   }
 
@@ -99,22 +93,6 @@ export class QueryBuilder<T> {
     this.pipeline.push({
       $project: {
         [field]: 0,
-      },
-    });
-
-    return this;
-  }
-
-  /**
-   * Extracts an element from an array field at a specified index and assigns it to a new field.
-   * @param arrayField - The name of the array field (e.g., "images").
-   * @param newField - The name of the new field to store the extracted element (e.g., "defaultImage").
-   * @param index - The index of the element to extract (e.g., 0 for the first element).
-   */
-  extractFromArray(arrayField: string, newField: string, index: number): this {
-    this.pipeline.push({
-      $addFields: {
-        [newField]: { $arrayElemAt: [`$${arrayField}`, index] },
       },
     });
 
@@ -142,8 +120,6 @@ export class QueryBuilder<T> {
 
     // Convert to object
     const mongoQueryObject = JSON.parse(queryStr);
-
-    // If `in` or `nin` values are comma-separated strings, convert to arrays
 
     const convertToArrayOperators = ["$in", "$nin"];
 
@@ -174,7 +150,6 @@ export class QueryBuilder<T> {
     }
 
     this.pipeline.push({ $match: mongoQueryObject });
-
     return this;
   }
 
@@ -237,11 +212,6 @@ export class QueryBuilder<T> {
     return this;
   }
 
-  /**
-   * Adds a computed field that counts the number of elements in an array field.
-   * @param arrayField - The name of the array field (e.g., "variants").
-   * @param newField - The name of the field to store the count result (e.g., "variantCount").
-   */
   countArrayLength(arrayField: string, newField: string): this {
     this.pipeline.push({
       $addFields: {
@@ -260,6 +230,7 @@ export class QueryBuilder<T> {
 
   // search
   // ======================
+  // supports only 1 level deep nested arrays
   search(searchFields: string[]): this {
     const searchText = this.queryObj.search;
 
@@ -311,17 +282,11 @@ export class QueryBuilder<T> {
     }
     return this;
   }
+
   // match
   // ======================
-  match(field: string, value: any): this {
-    this.pipeline.push({
-      $match: {
-        [field]: value,
-      },
-    });
-
-    console.log(this);
-
+  match(conditions: Record<string, any>): this {
+    this.pipeline.push({ $match: conditions });
     return this;
   }
 

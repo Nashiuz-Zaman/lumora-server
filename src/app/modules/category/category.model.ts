@@ -10,7 +10,6 @@ const CategorySchema = new Schema<ICategory>(
       ref: "Category",
       default: null,
     },
-    products: [{ type: Schema.Types.ObjectId, ref: "Product", default: [] }],
   },
   { timestamps: true }
 );

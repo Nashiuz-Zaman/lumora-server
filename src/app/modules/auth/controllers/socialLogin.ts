@@ -34,7 +34,7 @@ export const socialLoginController: RequestHandler = catchAsync(
     }
 
     return sendSuccess(res, {
-      message: "Login successful",
+      message: "Login Successful",
       data: { user },
     });
   }

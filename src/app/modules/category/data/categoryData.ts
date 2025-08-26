@@ -1,24 +1,24 @@
 export const topCategories = [
-  { title: "Fashion and Accessories", slug: "fashion-accessories" },
-  { title: "Gaming and Entertainment", slug: "gaming-entertainment" },
+  { title: "Fashion & Accessories", slug: "fashion-accessories" },
+  { title: "Gaming & Entertainment", slug: "gaming-entertainment" },
   {
     title: "Mobile Phones & Electronics",
     slug: "mobile-phones-electronics",
   },
-  { title: "Food and Snacks", slug: "food-snacks" },
+  { title: "Food & Snacks", slug: "food-snacks" },
   { title: "Kitchen Essentials", slug: "kitchen-essentials" },
   {
-    title: "Home Appliances and Essentials",
+    title: "Home Appliances & Essentials",
     slug: "home-appliances-essentials",
   },
-  { title: "Health and Wellness", slug: "health-wellness" },
+  { title: "Health & Wellness", slug: "health-wellness" },
 ];
 
 export const subCategoriesMap: Record<
   string,
   { title: string; slug: string }[]
 > = {
-  "Fashion and Accessories": [
+  "Fashion & Accessories": [
     { title: "Men's Clothing", slug: "mens-clothing" },
     { title: "Women's Clothing", slug: "womens-clothing" },
     { title: "T-Shirts", slug: "t-shirts" },
@@ -32,7 +32,7 @@ export const subCategoriesMap: Record<
     { title: "Jewelry", slug: "jewelry" },
     { title: "Sunglasses", slug: "sunglasses" },
   ],
-  "Gaming and Entertainment": [
+  "Gaming & Entertainment": [
     { title: "Gaming Consoles", slug: "gaming-consoles" },
     { title: "PC Gaming", slug: "pc-gaming" },
     { title: "Gaming Laptops", slug: "gaming-laptops" },
@@ -50,7 +50,7 @@ export const subCategoriesMap: Record<
     { title: "Mobile Accessories", slug: "mobile-accessories" },
     { title: "Consumer Electronics", slug: "consumer-electronics" },
   ],
-  "Food and Snacks": [
+  "Food & Snacks": [
     { title: "Chocolates & Candy", slug: "chocolates-candy" },
     { title: "Beverages", slug: "beverages" },
     { title: "Chips & Snacks", slug: "chips-snacks" },
@@ -69,7 +69,7 @@ export const subCategoriesMap: Record<
     { title: "Coffee & Tea Accessories", slug: "coffee-tea-accessories" },
     { title: "Dinnerware & Utensils", slug: "dinnerware-utensils" },
   ],
-  "Home Appliances and Essentials": [
+  "Home Appliances & Essentials": [
     { title: "Refrigerators", slug: "refrigerators" },
     { title: "Washing Machines", slug: "washing-machines" },
     { title: "Vacuum Cleaners", slug: "vacuum-cleaners" },
@@ -79,7 +79,7 @@ export const subCategoriesMap: Record<
     { title: "Doorbells & Security", slug: "doorbells-security" },
     { title: "Lighting & Lamps", slug: "lighting-lamps" },
   ],
-  "Health and Wellness": [
+  "Health & Wellness": [
     { title: "Vitamins & Supplements", slug: "vitamins-supplements" },
     { title: "Personal Care", slug: "personal-care" },
     { title: "Fitness Equipment", slug: "fitness-equipment" },

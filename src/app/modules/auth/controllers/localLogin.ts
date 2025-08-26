@@ -15,6 +15,6 @@ export const localLoginController: RequestHandler = catchAsync(
       password: password?.trim(),
     });
 
-    return sendSuccess(res, { data: { user } });
+    return sendSuccess(res, { data: { user },message: 'Login Successful' });
   }
 );
