@@ -16,11 +16,11 @@ const convertTo2DecNum = (v: string | number) => {
 // Variant schema
 const variantSchema = new Schema<IVariant>(
   {
-    sku: { type: String, required: false, trim: true },
-    price: { type: Number, required: false, set: convertTo2DecNum },
+    sku: { type: String, required: true, trim: true },
+    price: { type: Number, required: true, set: convertTo2DecNum },
     oldPrice: { type: Number, set: convertTo2DecNum },
     discountPercentage: Number,
-    stock: { type: Number, required: false },
+    stock: { type: Number, required: true },
   },
   { _id: true, strict: false }
 );
@@ -29,10 +29,10 @@ const variantSchema = new Schema<IVariant>(
 const productSchema = new Schema<IProduct>(
   {
     slug: { type: String, unique: true },
-    title: { type: String, required: false, trim: true },
+    title: { type: String, required: true, trim: true },
     subtitle: { type: String, trim: true, default: "" },
-    brand: { type: String, trim: true, required: false },
-    variants: { type: [variantSchema], required: false },
+    brand: { type: String, trim: true, required: true },
+    variants: { type: [variantSchema], required: true },
     images: { type: [String], default: [] },
 
     videos: {
@@ -48,8 +48,8 @@ const productSchema = new Schema<IProduct>(
     specifications: {
       type: [
         {
-          key: { type: String, trim: true, required: false },
-          value: { type: String, trim: true, required: false },
+          key: { type: String, trim: true, required: true },
+          value: { type: String, trim: true, required: true },
         },
       ],
       default: [],
@@ -70,17 +70,14 @@ const productSchema = new Schema<IProduct>(
     timestamps: true,
   }
 );
-// temp disabled -- remove this later
-function disableRequired(schema: Schema) {
-  Object.keys(schema.paths).forEach((path) => {
-    if (schema.paths[path].isRequired) {
-      schema.paths[path].options.required = false;
-    }
-  });
-}
 
-disableRequired(productSchema);
-disableRequired(variantSchema);
+// Virtual for defaultOldPrice
+productSchema.virtual("defaultOldPrice").get(function (this: IProduct) {
+  if (Array.isArray(this.variants) && this.variants.length > 0) {
+    return this.variants[0].oldPrice ?? null;
+  }
+  return null;
+});
 
 // Pre-save middleware to set slug, canonicalUrl, defaultPrice, and defaultImage, totalStock
 productSchema.pre("save", async function (next) {
@@ -102,69 +99,16 @@ productSchema.pre("save", async function (next) {
     }
 
     // Set default price from first variant
-    // if (Array.isArray(this.variants) && this.variants.length > 0) {
-    //   this.defaultPrice = this.variants[0].price;
-
-    //   // Calculate total stock as sum of all variant stocks
-    //   this.totalStock = this.variants
-    //     .map((v) => v.stock)
-    //     .reduce((acc, cur) => acc + cur, 0);
-    // } else {
-    //   this.totalStock = 0;
-    // }
-
-    // ---------------------- Dummy Data Generator (for dev/testing) ----------------------
-    // Uncomment the block below to auto-generate dummy SKUs, prices, stock, and discount
-
-    /**
-     * Helper: robust empty check for both strings & numbers
-     */
-
     if (Array.isArray(this.variants) && this.variants.length > 0) {
-      for (const variant of this.variants) {
-        // ------------------- SKU Generation -------------------
-        const words = this.title ? this.title.split(" ") : [];
-        const prefix = (words[0]?.[0] ?? "") + (words[1]?.[0] ?? "");
-        const prefixLower = prefix.toLowerCase();
+      this.defaultPrice = this.variants[0].price;
 
-        const numberUnitMatch = this.title?.match(
-          /(\d+(?:\.\d+)?)\s?(GB|TB|inch|")/i
-        );
-        const numberUnit = numberUnitMatch
-          ? numberUnitMatch[0].replace(/\s/, "")
-          : "";
-
-        const seq = await getNextSequence("sku");
-        const paddedSeq = seq.toString().padStart(4, "0");
-
-        variant.sku = `${prefixLower}${numberUnit}${paddedSeq}`;
-
-        // ------------------- Price Generation -------------------
-        const price = Math.round(300 + Math.random() * (6000 - 300));
-        const oldPrice = price + Math.round(Math.random() * 300 + 50);
-
-        variant.price = price;
-        variant.oldPrice = oldPrice;
-
-        // ------------------- Stock Generation -------------------
-
-        variant.stock = Math.floor(10 + Math.random() * (300 - 10));
-
-        // ------------------- Discount -------------------
-
-        variant.discountPercentage = Math.round(
-          ((oldPrice - price) / oldPrice) * 100
-        );
-      }
+      // Calculate total stock as sum of all variant stocks
+      this.totalStock = this.variants
+        .map((v) => v.stock)
+        .reduce((acc, cur) => acc + cur, 0);
+    } else {
+      this.totalStock = 0;
     }
-
-    // Update default price from first variant after generation
-    this.defaultPrice = this.variants[0].price;
-
-    // Recalculate total stock
-    this.totalStock = this.variants
-      .map((v) => v.stock)
-      .reduce((acc, cur) => acc + cur, 0);
 
     // Set default image from first image
     if (Array.isArray(this.images) && this.images.length > 0) {

@@ -15,3 +15,4 @@ export * from "./sendSuccess";
 export * from "./setCookie";
 export * from "./toObjectId";
 export * from "./verifyToken";
+export * from "./buildInQuery";

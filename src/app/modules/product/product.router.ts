@@ -12,6 +12,7 @@ import {
   updateProductController,
 } from "./controller";
 import { getMegaMenuDataController } from "./controller/getMegaMenuProducts";
+import { getProductsForSearchPageController } from "./controller/getProductsForSearchPage"; // <-- import added
 
 const { admin, superAdmin } = UserRoles;
 
@@ -27,6 +28,9 @@ productRouter.get(
 
 // GET mega menu data
 productRouter.get("/mega-menu", getMegaMenuDataController);
+
+// GET products for search page
+productRouter.post("/search", getProductsForSearchPageController);
 
 // PATCH /products/bulk-delete
 productRouter.patch(
@@ -56,10 +60,10 @@ productRouter.patch(
   updateProductController
 );
 
-// POST related products search
+// GET related products
 productRouter.get("/related-products", getRelatedProductsController);
 
 // GET product for customer by slug
-productRouter.get("/:slug", getProductForCustomerController);
+productRouter.get("/:slug/customer", getProductForCustomerController);
 
 export default productRouter;

@@ -17,7 +17,7 @@ export interface PopulateOption {
 
 export class QueryBuilder<T> {
   private model: Model<T>;
-  private pipeline: any[];
+  pipeline: any[];
   private queryObj: Record<string, any>;
   private static defaultLimit = 50;
   private static defaultPage = 1;
@@ -29,6 +29,7 @@ export class QueryBuilder<T> {
   }
 
   // Add a single computed field
+  // ======================
   addField(fieldPath: string, value: any): this {
     this.pipeline.push({
       $addFields: { [fieldPath]: value },
@@ -37,6 +38,8 @@ export class QueryBuilder<T> {
     return this;
   }
 
+  // Select or projection
+  // ======================
   select(fields: string): this {
     if (!fields) return this;
 
@@ -71,6 +74,8 @@ export class QueryBuilder<T> {
     return this;
   }
 
+  // Pick one element from array
+  // ======================
   extractFromArray(arrayField: string, newField: string, index: number): this {
     this.pipeline.push({
       $addFields: {
@@ -81,6 +86,8 @@ export class QueryBuilder<T> {
     return this;
   }
 
+  // ReplaceRoot
+  // ======================
   replaceRoot(newRootField: string): this {
     this.pipeline.push({
       $replaceRoot: { newRoot: `$${newRootField}` },
@@ -89,6 +96,7 @@ export class QueryBuilder<T> {
   }
 
   // Remove a single field
+  // ======================
   removeField(field: string): this {
     this.pipeline.push({
       $project: {
@@ -160,6 +168,7 @@ export class QueryBuilder<T> {
   }
 
   // unwind
+  // ======================
   unwind(field: string): this {
     this.pipeline.push({ $unwind: "$" + field });
     return this;
@@ -229,8 +238,8 @@ export class QueryBuilder<T> {
   }
 
   // search
-  // ======================
   // supports only 1 level deep nested arrays
+  // ======================
   search(searchFields: string[]): this {
     const searchText = this.queryObj.search;
 
@@ -344,7 +353,6 @@ export class QueryBuilder<T> {
   // Execute pipeline
   // ======================
   async exec(): Promise<T[]> {
-    // console.log("mongo query is this", this.pipeline);
     return await this.model.aggregate(this.pipeline);
   }
 }

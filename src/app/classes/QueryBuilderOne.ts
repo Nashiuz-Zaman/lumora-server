@@ -1,4 +1,4 @@
-import { Model, Types, FilterQuery, HydratedDocument } from "mongoose";
+import { Model, Types, HydratedDocument } from "mongoose";
 
 export interface IPopulateOptions {
   path: string;
@@ -26,19 +26,21 @@ export class QueryBuilderOne<T> {
       "populate",
       ...additionalFields,
     ];
-
     exclude.forEach((f) => delete query[f]);
 
-    const operatorPattern = /\b(gte|gt|lte|lt|ne|in|nin|regex)\b/g;
-    let queryStr = JSON.stringify(query);
-    queryStr = queryStr.replace(operatorPattern, (match) => `$${match}`);
+    let queryStr = JSON.stringify(query).replace(
+      /\b(gte|gt|lte|lt|ne|in|nin|regex)\b/g,
+      (op) => `$${op}`
+    );
+
     const mongoQuery = JSON.parse(queryStr);
 
+    // Convert values to ObjectId, array, or boolean
     for (const key in mongoQuery) {
       const val = mongoQuery[key];
       if (typeof val === "string" && Types.ObjectId.isValid(val)) {
         mongoQuery[key] = new Types.ObjectId(val);
-      } else if (typeof val === "object") {
+      } else if (typeof val === "object" && val !== null) {
         for (const op in val) {
           if (["$in", "$nin"].includes(op) && typeof val[op] === "string") {
             val[op] = val[op].split(",");
@@ -55,53 +57,51 @@ export class QueryBuilderOne<T> {
 
   search(searchableFields: string[]): this {
     const searchText = this.queryObj.search;
-    if (searchText && searchableFields?.length) {
-      const orConditions = searchableFields?.map((field) => ({
-        [field]: { $regex: searchText, $options: "i" },
-      }));
+    if (!searchText || !searchableFields?.length) return this;
 
-      if (Object.keys(this.filterObj)?.length) {
-        this.filterObj = { $and: [this.filterObj, { $or: orConditions }] };
-      } else {
-        this.filterObj = { $or: orConditions };
-      }
-    }
+    const orConditions = searchableFields.map((field) => ({
+      [field]: { $regex: searchText, $options: "i" },
+    }));
+
+    this.filterObj =
+      Object.keys(this.filterObj).length > 0
+        ? { $and: [this.filterObj, { $or: orConditions }] }
+        : { $or: orConditions };
+
     return this;
   }
 
   limitFields(): this {
     if (this.queryObj.limitFields) {
-      const fields = this.queryObj.limitFields
+      this.selectedFields = this.queryObj.limitFields
         .split(",")
         .map((f: string) => f.trim())
         .join(" ");
-      this.selectedFields = fields;
     }
     return this;
   }
 
-  populate(path?: string | IPopulateOptions): this {
-    if (path) {
-      this.population.push(path);
+  populate(
+    path?: string | IPopulateOptions | (string | IPopulateOptions)[]
+  ): this {
+    if (!path && this.queryObj.populate) {
+      const rawPopulate = this.queryObj.populate;
+      if (typeof rawPopulate === "string") {
+        (rawPopulate.split(",").map((p) => p.trim()) || []).forEach(
+          (p) => p && this.population.push({ path: p })
+        );
+      } else if (Array.isArray(rawPopulate)) {
+        this.population.push(...rawPopulate);
+      } else if (typeof rawPopulate === "object" && rawPopulate.path) {
+        this.population.push(rawPopulate);
+      }
       return this;
     }
 
-    const rawPopulate = this.queryObj.populate;
-
-    if (typeof rawPopulate === "string") {
-      const paths = rawPopulate
-        .split(",")
-        .map((p) => p.trim())
-        .filter(Boolean);
-      for (const p of paths) {
-        this.population.push({ path: p });
-      }
-    } else if (Array.isArray(rawPopulate)) {
-      // For array of objects: [{ path: 'x', select: 'y' }, ...]
-      this.population.push(...rawPopulate);
-    } else if (typeof rawPopulate === "object" && rawPopulate?.path) {
-      // For single object: { path: 'x', select: 'y' }
-      this.population.push(rawPopulate);
+    if (Array.isArray(path)) {
+      this.population.push(...path);
+    } else if (path) {
+      this.population.push(path);
     }
 
     return this;
@@ -111,17 +111,13 @@ export class QueryBuilderOne<T> {
     let query = this.model.findOne(this.filterObj);
 
     for (const pop of this.population) {
-      if (typeof pop === "string") {
-        query = query.populate(pop);
-      } else {
-        query = query.populate(pop);
-      }
+      query = query.populate(pop as any);
     }
 
     if (this.selectedFields) {
       query = query.select(this.selectedFields);
     }
 
-    return await query.exec();
+    return query.exec();
   }
 }

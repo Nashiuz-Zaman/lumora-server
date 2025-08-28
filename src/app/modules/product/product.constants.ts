@@ -25,7 +25,7 @@ export const basicVariantKeys = [
 ] as const;
 
 export const stockLevels = {
-  In_Stock: 20, // 20 and above is "in stock"
-  Low_Stock: 1, // 1 to 19 is "low stock"
-  Out_Of_Stock: 0, // 0 is "out of stock"
+  In_Stock: 20, // 20 and above is in stock
+  Low_Stock: 1, // 1 to 19 is low stock
+  Out_Of_Stock: 0, // 0 is out of stock
 };

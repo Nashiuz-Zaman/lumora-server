@@ -17,7 +17,7 @@ export const getMegaMenuData = async (): Promise<TMegaMenuItem[]> => {
     const queryObj = {
       topCategory: treeItem.topCategory.slug,
       limit: 6,
-      sort: "-createdAt",
+      sort: "createdAt",
       status: ProductStatus.Active,
     };
 
