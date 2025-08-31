@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 
-import { authenticateMiddleware, approveTargetUser } from "@app/middlewares";
+import { userAuthMiddleware, approveTargetUser } from "@app/middlewares";
 
 import {
   signupCustomerController,
@@ -27,67 +27,67 @@ customerRouter.post("/", upload.none(), signupCustomerController);
 
 customerRouter.get(
   "/me/customer-profile/",
-  authenticateMiddleware([UserRoles.customer]),
+  userAuthMiddleware([UserRoles.customer]),
   getMyCustomerProfileController
 );
 
 customerRouter.get(
   "/settings-data",
-  authenticateMiddleware([customer]),
+  userAuthMiddleware([customer]),
   getCustomerSettingsDataController
 );
 
 customerRouter.patch(
   "/settings-data/basic-info",
-  authenticateMiddleware([customer]),
+  userAuthMiddleware([customer]),
   upload.none(),
   updateCustomerBasicInfoController
 );
 
 customerRouter.patch(
   "/settings-data/change-password",
-  authenticateMiddleware([customer]),
+  userAuthMiddleware([customer]),
   upload.none(),
   changeCustomerPasswordFromSettingsController
 );
 
 customerRouter.patch(
   "/settings-data/billing-address",
-  authenticateMiddleware([customer]),
+  userAuthMiddleware([customer]),
   upload.none(),
   updateBillingAddressController
 );
 
 customerRouter.patch(
   "/settings-data/shipping-address",
-  authenticateMiddleware([customer]),
+  userAuthMiddleware([customer]),
   upload.none(),
   updateShippingAddressController
 );
 
 customerRouter.get(
   "/",
-  authenticateMiddleware([superAdmin, admin]),
+  userAuthMiddleware([superAdmin, admin]),
   getCustomerListController
 );
 
 customerRouter.patch(
   "/block/:id",
-  authenticateMiddleware([admin, superAdmin]),
+  userAuthMiddleware([admin, superAdmin]),
   approveTargetUser([customer]),
   blockCustomerController
 );
 
 customerRouter.patch(
   "/unblock/:id",
-  authenticateMiddleware([admin, superAdmin]),
+  userAuthMiddleware([admin, superAdmin]),
   approveTargetUser([customer]),
   unblockCustomerController
 );
 
 customerRouter.delete(
   "/:id",
-  authenticateMiddleware([superAdmin]),
+  userAuthMiddleware([superAdmin]),
   approveTargetUser([customer]),
   deleteCustomerController
 );

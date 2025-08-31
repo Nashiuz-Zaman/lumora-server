@@ -16,3 +16,4 @@ export * from "./setCookie";
 export * from "./toObjectId";
 export * from "./verifyToken";
 export * from "./buildInQuery";
+export * from "./convertToTwoDecimalNumber";

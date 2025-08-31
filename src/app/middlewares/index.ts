@@ -1,4 +1,5 @@
 export * from "./approveTargetUser";
-export * from "./authenticate";
+export * from "./userAuthMiddleware";
 export * from "./globalErrorHandler";
 export * from "./initialMiddlewares";
+export * from "./cartAuthMiddleware";

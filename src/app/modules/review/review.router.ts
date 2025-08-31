@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authenticateMiddleware } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares";
 import { UserRoles } from "../user/user.constants";
 
 import {
@@ -18,25 +18,25 @@ reviewRouter.post("/", writeReviewController);
 
 reviewRouter.get(
   "/",
-  authenticateMiddleware([admin, superAdmin]),
+  userAuthMiddleware([admin, superAdmin]),
   getAllReviewsController
 );
 
 reviewRouter.patch(
   "/bulk-approve",
-  authenticateMiddleware([admin, superAdmin]),
+  userAuthMiddleware([admin, superAdmin]),
   bulkApproveReviewsController
 );
 
 reviewRouter.patch(
   "/bulk-delete",
-  authenticateMiddleware([admin, superAdmin]),
+  userAuthMiddleware([admin, superAdmin]),
   bulkDeleteReviewsController
 );
 
 reviewRouter.patch(
   "/:reviewId/helpful",
-  authenticateMiddleware([customer]),
+  userAuthMiddleware([customer]),
   markReviewHelpfulController
 );
 

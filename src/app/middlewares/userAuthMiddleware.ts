@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { config } from "../../config/env";
-import { UserModel } from "..//modules/user/user.model";
+import { UserModel } from "../modules/user/user.model";
 import { IRole } from "../modules/role/type/role.type";
 import {
   TPermittedUserRoles,
@@ -44,7 +44,7 @@ const validateUserAccess = async (
   return { role: populatedRole };
 };
 
-export const authenticateMiddleware = (
+export const userAuthMiddleware = (
   permittedRoles: TPermittedUserRoles = "ALL"
 ) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {

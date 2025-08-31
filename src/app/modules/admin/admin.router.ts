@@ -1,7 +1,7 @@
 // imports
 import { Router } from "express";
 import multer from "multer";
-import { authenticateMiddleware, approveTargetUser } from "@app/middlewares";
+import { userAuthMiddleware, approveTargetUser } from "@app/middlewares";
 import {
   addAdminController,
   getAdminLIstController,
@@ -21,34 +21,34 @@ const adminRouter = Router();
 // routes
 adminRouter.post(
   "/",
-  authenticateMiddleware([superAdmin]),
+  userAuthMiddleware([superAdmin]),
   upload.none(),
   addAdminController
 );
 
 adminRouter.get(
   "/",
-  authenticateMiddleware([superAdmin]),
+  userAuthMiddleware([superAdmin]),
   getAdminLIstController
 );
 
 adminRouter.patch(
   "/block/:id",
-  authenticateMiddleware([superAdmin]),
+  userAuthMiddleware([superAdmin]),
   approveTargetUser([admin]),
   blockAdminController
 );
 
 adminRouter.patch(
   "/unblock/:id",
-  authenticateMiddleware([superAdmin]),
+  userAuthMiddleware([superAdmin]),
   approveTargetUser([admin]),
   unblockAdminController
 );
 
 adminRouter.delete(
   "/:id",
-  authenticateMiddleware([superAdmin]),
+  userAuthMiddleware([superAdmin]),
   approveTargetUser([admin]),
   deleteAdminController
 );

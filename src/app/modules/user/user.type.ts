@@ -37,5 +37,5 @@ export type TUserDoc = HydratedDocument<IUser>;
 export type TUserPopulatedDoc = HydratedDocument<TUserPopulated>;
 
 export interface IUserModel extends Model<IUser> {
-  auth(email: string, password: string): Promise<Omit<IUser, "password">>;
+  auth(email: string, password: string):  Promise<Omit<IUser, "password">>;
 }

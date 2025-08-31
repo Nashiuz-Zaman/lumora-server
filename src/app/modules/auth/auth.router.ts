@@ -1,4 +1,4 @@
-import { authenticateMiddleware } from "../../middlewares/authenticate";
+import { userAuthMiddleware } from "../../middlewares/userAuthMiddleware";
 import express from "express";
 import multer from "multer";
 
@@ -13,7 +13,7 @@ import { createAdminController } from "../admin/controllers";
 const authRouter = express.Router();
 const upload = multer();
 
-authRouter.get("/me", authenticateMiddleware(), checkAuthController);
+authRouter.get("/me", userAuthMiddleware(), checkAuthController);
 authRouter.post("/login/local", upload.none(), localLoginController);
 authRouter.post("/login/social", socialLoginController);
 authRouter.post("/temp", createAdminController);

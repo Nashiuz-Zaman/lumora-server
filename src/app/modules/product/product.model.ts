@@ -1,24 +1,17 @@
-import { Schema, model, Types, CallbackError } from "mongoose";
+import { Schema, model, CallbackError } from "mongoose";
 import { IProduct, IVariant } from "./product.type";
-import { generateSlug } from "@utils/index";
-
+import { convertToTwoDecimalNumber, generateSlug } from "@utils/index";
 import { ProductStatus } from "./product.constants";
 import { getNextSequence } from "../counter/counter.util";
 import { config } from "@config/env";
-
-// Utility to convert numeric fields to 2 decimal places
-const convertTo2DecNum = (v: string | number) => {
-  const num = parseFloat(v.toString().replace(/[^\d.]/g, ""));
-  if (isNaN(num)) return 0;
-  return Number(num.toFixed(2));
-};
+import { AppError } from "@app/classes";
 
 // Variant schema
 const variantSchema = new Schema<IVariant>(
   {
     sku: { type: String, required: true, trim: true },
-    price: { type: Number, required: true, set: convertTo2DecNum },
-    oldPrice: { type: Number, set: convertTo2DecNum },
+    price: { type: Number, required: true, set: convertToTwoDecimalNumber },
+    oldPrice: { type: Number, set: convertToTwoDecimalNumber },
     discountPercentage: Number,
     stock: { type: Number, required: true },
   },
@@ -119,7 +112,7 @@ productSchema.pre("save", async function (next) {
 
     next();
   } catch (err) {
-    next(err as CallbackError);
+    next(new AppError((err as Error).message));
   }
 });
 

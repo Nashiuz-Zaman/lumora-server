@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
-import { IUser, IUserModel, TUserDoc } from "./user.type";
+import { IUser, IUserModel } from "./user.type";
 import { AppError } from "../../classes/AppError";
 import { RoleModel } from "../role/model/role.model";
 import { UserStatus } from "./user.constants";
