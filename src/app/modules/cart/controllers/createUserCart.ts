@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { createCart } from "../services/createCart";
 import { ISecureRequest } from "@app/shared/types";
-import { TDatabaseCart } from "../cart.type";
+import { ICartAction } from "../cart.type";
 import {
   catchAsync,
   sendSuccess,
@@ -12,10 +12,9 @@ import {
 export const createUserCartController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
     const userId = req.decoded?.userId;
-    const data: TDatabaseCart = req.body;
+    const actionData: ICartAction = req.body;
 
-    data.user = toObjectId(userId!);
-    const cart = await createCart(data, "user");
+    const cart = await createCart(actionData, "user", userId);
 
     if (cart._id)
       return sendSuccess(res, {

@@ -5,14 +5,14 @@ import {
   throwInternalServerError,
 } from "@utils/index";
 
-import { TDatabaseCart } from "../cart.type";
+import { ICartAction } from "../cart.type";
 import { setCartCookie, createCart } from "../services";
 
 export const createGuestCartController: RequestHandler = catchAsync(
   async (req, res) => {
-    const data: TDatabaseCart = req.body;
+    const actionData: ICartAction = req.body;
 
-    const cart = await createCart(data, "guest");
+    const cart = await createCart(actionData);
 
     if (cart._id) {
       setCartCookie(res, cart._id.toString());

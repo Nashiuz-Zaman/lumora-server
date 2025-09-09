@@ -1,23 +1,30 @@
 import { throwBadRequest } from "@utils/operationalErrors";
 import { CartModel } from "../cart.model";
-import { TDatabaseCart, TDatabaseCartItem } from "../cart.type";
+import { ICartAction, TDatabaseCart } from "../cart.type";
+import { toObjectId } from "@utils/toObjectId";
 
 export const createCart = async (
-  data: Partial<TDatabaseCart>,
-  creatorType: "user" | "guest" = "guest"
+  actionData: ICartAction,
+  creatorType: "user" | "guest" = "guest",
+  userId?: string
 ) => {
-  if (!data) return throwBadRequest("No data for cart provided");
+  if (!actionData) return throwBadRequest("No data for cart provided");
 
-  // Ensure items are at least an empty array if not provided
-  const items: TDatabaseCartItem[] = data?.items ?? [];
+  const { productId, variantId, quantity } = actionData;
 
-  if (creatorType === "user" && !data.user) {
+  if (creatorType === "user" && !userId) {
     return throwBadRequest("User ID is required for user cart creation");
   }
 
   const newCart: TDatabaseCart = {
-    user: creatorType === "user" ? data.user! : "guest",
-    items,
+    user: creatorType === "user" ? toObjectId(userId!) : "guest",
+    items: [
+      {
+        product: toObjectId(productId),
+        variant: toObjectId(variantId),
+        quantity: quantity,
+      },
+    ],
   };
   const cart = await CartModel.create(newCart);
   return cart;

@@ -3,6 +3,7 @@ import { TProductStatusValue } from "./product.constants";
 
 export interface IVariant {
   _id: Types.ObjectId;
+  id: string;
   sku: string;
   stock: number;
   price: number;

@@ -7,6 +7,8 @@ import customerRouter from "@app/modules/customer/customer.router";
 import authRouter from "@app/modules/auth/auth.router";
 import reviewRouter from "@app/modules/review/review.router";
 import cartRouter from "@app/modules/cart/cart.router";
+import orderRouter from "@app/modules/order/order.router";
+import paymentRouter from "@app/modules/payment/payment.router";
 
 // create main router
 const mainRouter = Router();
@@ -19,5 +21,7 @@ mainRouter.use("/customers", customerRouter);
 mainRouter.use("/auth", authRouter);
 mainRouter.use("/reviews", reviewRouter);
 mainRouter.use("/carts", cartRouter);
+mainRouter.use("/orders", orderRouter);
+mainRouter.use("/payments", paymentRouter);
 
 export default mainRouter;

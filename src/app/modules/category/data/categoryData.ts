@@ -12,6 +12,7 @@ export const topCategories = [
     slug: "home-appliances-essentials",
   },
   { title: "Health & Wellness", slug: "health-wellness" },
+  { title: "Outdoors", slug: "outdoors" },
 ];
 
 export const subCategoriesMap: Record<
@@ -88,5 +89,12 @@ export const subCategoriesMap: Record<
     { title: "Hair Care", slug: "hair-care" },
     { title: "Oral Care", slug: "oral-care" },
     { title: "Health Monitors", slug: "health-monitors" },
+  ],
+  Outdoors: [
+    { title: "Camping & Hiking", slug: "camping-hiking" },
+    { title: "Backpacks & Outdoor Bags", slug: "backpacks-outdoor-bags" },
+    { title: "Climbing & Mountaineering", slug: "climbing-mountaineering" },
+    { title: "Cycling & Accessories", slug: "cycling-accessories" },
+    { title: "Water Sports & Kayaking", slug: "water-sports-kayaking" },
   ],
 };

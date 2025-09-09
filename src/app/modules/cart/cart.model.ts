@@ -106,7 +106,7 @@ CartSchema.pre<TDatabaseCartDoc>("save", async function (next) {
   }
 });
 
-// ----- Static method: populate cart -----
+// Static method populate cart
 CartSchema.statics.getPopulatedCart = async function (
   cartId: Types.ObjectId
 ): Promise<TPopulatedCart | null> {
@@ -115,7 +115,7 @@ CartSchema.statics.getPopulatedCart = async function (
 
   const populatedItems: TPopulatedCartItem[] = await Promise.all(
     cart.items.map(async (item: TDatabaseCartItem) => {
-      const product = await ProductModel.findById(item.product);
+      const product = await ProductModel.findById(item.product).lean();
       if (!product) return throwNotFound(`Product ${item.product} not found`);
 
       const variant = product.variants.find(
@@ -126,9 +126,27 @@ CartSchema.statics.getPopulatedCart = async function (
           `Variant ${item.variant} not found for product ${item.product}`
         );
 
+      // Only include real-world essential fields for product and variant
+      const filteredProduct = {
+        _id: product._id,
+        title: product.title,
+        slug: product.slug,
+        defaultPrice: product.defaultPrice,
+        defaultImage: product.defaultImage,
+        brand: product.brand,
+      };
+
+      const filteredVariant = {
+        _id: variant._id,
+        sku: variant.sku,
+        price: variant.price,
+        oldPrice: variant.oldPrice,
+        discountPercentage: variant.discountPercentage,
+      };
+
       return {
-        product: product.toObject(),
-        variant,
+        product: filteredProduct,
+        variant: filteredVariant,
         quantity: item.quantity,
       };
     })

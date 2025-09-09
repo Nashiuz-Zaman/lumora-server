@@ -23,4 +23,6 @@ export const config = {
   cloudinaryCloud: process.env.CLOUDINARY_CLOUD_NAME,
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+  sslStoreId: process.env.SSL_STORE_ID,
+  sslStorePass: process.env.SSL_STORE_PASS,
 };
