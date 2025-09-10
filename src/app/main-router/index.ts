@@ -9,6 +9,7 @@ import reviewRouter from "@app/modules/review/review.router";
 import cartRouter from "@app/modules/cart/cart.router";
 import orderRouter from "@app/modules/order/order.router";
 import paymentRouter from "@app/modules/payment/payment.router";
+import productCollectionRouter from "@app/modules/productCollection/productCollection.router";
 
 // create main router
 const mainRouter = Router();
@@ -23,5 +24,6 @@ mainRouter.use("/reviews", reviewRouter);
 mainRouter.use("/carts", cartRouter);
 mainRouter.use("/orders", orderRouter);
 mainRouter.use("/payments", paymentRouter);
+mainRouter.use("/product-collections", productCollectionRouter);
 
 export default mainRouter;

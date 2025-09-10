@@ -7,7 +7,7 @@ export interface IQueryMeta {
   totalPages: number;
 }
 
-export interface PopulateOption {
+export interface IPopulateOption {
   from: string;
   localField: string;
   foreignField: string;
@@ -307,7 +307,7 @@ export class QueryBuilder<T> {
     as,
     foreignField,
     unwind = false,
-  }: PopulateOption): this {
+  }: IPopulateOption): this {
     const asField = as || localField;
 
     this.pipeline.push({

@@ -5,7 +5,7 @@ import {
 // services/review.service.ts
 
 import { ReviewModel } from "../review.model";
-import { toObjectId } from "@utils/toObjectId";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const markReviewHelpful = async (reviewId: string, userId: string) => {
   const review = await ReviewModel.findById(reviewId);

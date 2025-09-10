@@ -1,9 +1,9 @@
 import { config } from "./config/env";
 import { clientDomain, clientUrl, server } from "./app/app";
 import { connectDb } from "./config/db";
-import { seedCategories } from "./app/modules/category/service/seedCategories";
-import { seedSuperAdmin } from "@app/modules/admin/services";
-import { seedProductCollections } from "@app/modules/productCollection/service/seedProductCollections";
+// import { seedCategories } from "./app/modules/category/service/seedCategories";
+// import { seedSuperAdmin } from "@app/modules/admin/services";
+// import { seedProductCollections } from "@app/modules/productCollection/service/seedProductCollections";
 
 const port = config.port;
 

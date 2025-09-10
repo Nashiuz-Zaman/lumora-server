@@ -1,4 +1,4 @@
-import { toObjectId } from "@utils/toObjectId";
+import { toObjectId } from "@utils/objectIdUtils";
 import { CartModel } from "../cart.model";
 
 export const getUserCart = async (userId: string) => {

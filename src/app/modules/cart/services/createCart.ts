@@ -1,7 +1,7 @@
 import { throwBadRequest } from "@utils/operationalErrors";
 import { CartModel } from "../cart.model";
 import { ICartAction, TDatabaseCart } from "../cart.type";
-import { toObjectId } from "@utils/toObjectId";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const createCart = async (
   actionData: ICartAction,

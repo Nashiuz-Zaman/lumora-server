@@ -1,6 +1,6 @@
 import { getUserWithProfile } from "@app/modules/user/services";
 import { throwNotFound } from "@utils/operationalErrors";
-import { toObjectId } from "@utils/toObjectId";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const getCustomerProfileData = async (id: string) => {
   const user = await getUserWithProfile({ _id: toObjectId(id) });

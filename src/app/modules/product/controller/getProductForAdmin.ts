@@ -5,7 +5,7 @@ import { RequestHandler } from "express";
 
 import { getProduct } from "../service/getProduct";
 import { throwNotFound } from "@utils/operationalErrors";
-import { toObjectId } from "@utils/toObjectId";
+import { toObjectId } from "@utils/objectIdUtils";
 import { sendSuccess } from "@utils/sendSuccess";
 import { catchAsync } from "@utils/catchAsync";
 

@@ -1,6 +1,6 @@
 import { getUserWithProfile } from "@app/modules/user/services";
 import { throwNotFound, throwUnauthorized } from "@utils/operationalErrors";
-import { toObjectId } from "@utils/toObjectId";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const getCustomerSettingsData = async (id: string) => {
   if (!id) return throwUnauthorized("id not found");

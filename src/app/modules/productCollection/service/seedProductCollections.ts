@@ -15,8 +15,8 @@ export const seedProductCollections = async (): Promise<void> => {
     }
 
     for (const category of topCategories) {
-      const title = category.title + " Homepage";
-      const slug = category.slug + "-homepage";
+      const title = category.title;
+      const slug = category.slug;
 
       // Check if collection already exists
       const existingCollection = await ProductCollectionModel.findOne({ slug });

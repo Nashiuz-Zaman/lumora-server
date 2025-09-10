@@ -13,10 +13,9 @@ export * from "./resolveFromRoot";
 export * from "./sendEmail";
 export * from "./sendSuccess";
 export * from "./setCookie";
-export * from "./toObjectId";
+export * from "./objectIdUtils";
 export * from "./verifyToken";
 export * from "./buildInQuery";
 export * from "./convertToTwoDecimalNumber";
 export * from "./formatPrice";
 export * from "./generatePdfBufferFromHtml";
-
