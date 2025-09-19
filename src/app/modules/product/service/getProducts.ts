@@ -8,11 +8,12 @@ import { ReviewStatus } from "../../review/review.constants";
 import { IProduct } from "../product.type";
 
 export const getProducts = async (queryObj: Record<string, unknown>) => {
-  // === PREP QUERY OBJECT ===
+  // --- Prep query object ---
   let newQueryObj = normalizeStatusFilter(queryObj, {
     ne: ProductStatus.Deleted,
   });
 
+  // --- format the min and max price ---
   const { priceMin, priceMax } = newQueryObj;
 
   const priceFilter: Record<string, unknown> = {};
@@ -28,6 +29,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
     newQueryObj.defaultPrice = priceFilter;
   }
 
+  // --- format the sub category and brands filter ---
   const subCategoryFilter = buildInQuery(newQueryObj.subCategory as any);
   const brandFilter = buildInQuery(newQueryObj.brand as any);
 
@@ -48,7 +50,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(ProductModel, newQueryObj);
 
   const { brand, ...rest } = newQueryObj;
-  console.log(rest);
+
   const brandQuery = new QueryBuilder(ProductModel, rest);
 
   productQuery

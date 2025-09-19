@@ -19,3 +19,4 @@ export * from "./convertToTwoDecimalNumber";
 export * from "./formatPrice";
 export * from "./generatePdfBufferFromHtml";
 export * from "./viewDetailedLog";
+export * from "./compression";

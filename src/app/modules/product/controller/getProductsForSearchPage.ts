@@ -6,6 +6,7 @@ import {
   sendSuccess,
   catchAsync,
   throwInternalServerError,
+  decompressBase64UrlToObject,
 } from "@utils/index";
 
 // Services
@@ -13,9 +14,17 @@ import { getProducts } from "../service/getProducts";
 
 export const getProductsForSearchPageController: RequestHandler = catchAsync(
   async (req, res) => {
+    const { q, ...rest } = req.query;
+
+    let decompressedParams = {};
+    if (q) {
+      const result = await decompressBase64UrlToObject(req.query.q as string);
+      decompressedParams = result ?? {};
+    }
+
     const limitFields =
       "defaultOldPrice,defaultImage,defaultPrice,title,slug,brand";
-    const queryObj = { ...req.body, limitFields, limit: 16 };
+    const queryObj = { ...rest, ...decompressedParams, limitFields, limit: 16 };
 
     // Fetch products with query params
     const data = await getProducts(queryObj);

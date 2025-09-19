@@ -4,15 +4,15 @@ import {
   sendSuccess,
   throwInternalServerError,
 } from "@utils/index";
-import { getCollectionProductsWithReviewCountAndAvg } from "../service/getCollectionProductsWithReviewCountAndAvg";
+import { getCollectionProductsReviewCountAvg } from "../service/getCollectionProductsReviewCountAvg";
 
-export const getCollectionProductsWithReviewCountAndAvgController: RequestHandler =
+export const getCollectionProductsReviewCountAvgController: RequestHandler =
   catchAsync(async (req, res) => {
     const queryobj = req.query;
     const { slug } = req.params;
     queryobj.slug = slug;
 
-    const data = await getCollectionProductsWithReviewCountAndAvg(queryobj);
+    const data = await getCollectionProductsReviewCountAvg(queryobj);
 
     if (data)
       return sendSuccess(res, {

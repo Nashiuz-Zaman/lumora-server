@@ -3,7 +3,7 @@ import { getCollectionProducts } from "./getCollectionProducts";
 import { Types } from "mongoose";
 import { TPopulatedProductInCollectionWithReviewStats } from "@app/modules/productCollection/productCollection.type";
 
-export const getCollectionProductsWithReviewCountAndAvg = async (
+export const getCollectionProductsReviewCountAvg = async (
   queryObj: Record<string, any>
 ) => {
   // get collection products

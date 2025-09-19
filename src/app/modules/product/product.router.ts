@@ -12,7 +12,7 @@ import {
   updateProductController,
   getMegaMenuDataController,
   getProductsForSearchPageController,
-  getCollectionProductsWithReviewCountAndAvgController,
+  getCollectionProductsReviewCountAvgController,
 } from "./controller";
 
 const { admin, superAdmin } = UserRoles;
@@ -30,14 +30,14 @@ productRouter.get(
 productRouter.get("/related-products", getRelatedProductsController);
 productRouter.get(
   "/product-collection/:slug",
-  getCollectionProductsWithReviewCountAndAvgController
+  getCollectionProductsReviewCountAvgController
 );
 
 // mega menu data
 productRouter.get("/mega-menu", getMegaMenuDataController);
 
 // products for search page
-productRouter.post("/search", getProductsForSearchPageController);
+productRouter.get("/search", getProductsForSearchPageController);
 
 // products to bulk-delete
 productRouter.patch(

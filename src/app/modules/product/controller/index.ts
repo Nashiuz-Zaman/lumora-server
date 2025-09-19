@@ -8,4 +8,4 @@ export * from "./getRelatedProducts";
 export * from "./updateProduct";
 export * from "./getMegaMenuProducts";
 export * from "./getProductsForSearchPage";
-export * from "./getCollectionProductsWithReviewCountAndAvgController";
+export * from "./getCollectionProductsReviewCountAvg";
