@@ -16,8 +16,8 @@ export const connectDb = async (): Promise<void> => {
 
     // Global transform for all schemas
     const globalSchemaConfig = {
-      virtuals: true, // keep virtuals
       versionKey: false, // remove __v
+      id: false,
     };
 
     mongoose.set("toJSON", globalSchemaConfig);

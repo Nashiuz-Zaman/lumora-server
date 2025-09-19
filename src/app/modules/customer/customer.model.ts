@@ -32,8 +32,6 @@ const customerSchema = new Schema<ICustomer>(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true, versionKey: false },
-    toObject: { virtuals: true, versionKey: false },
   }
 );
 

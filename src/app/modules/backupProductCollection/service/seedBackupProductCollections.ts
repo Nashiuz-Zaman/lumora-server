@@ -1,10 +1,10 @@
 import { ICategory } from "@app/modules/category/category.type";
-import { ProductCollectionModel } from "../productCollection.model";
+import { BackupProductCollectionModel } from "../backupProductCollection.model";
 import { CategoryModel } from "@app/modules/category/category.model";
 
-export const seedProductCollections = async (): Promise<void> => {
+export const seedBackupProductCollections = async (): Promise<void> => {
   try {
-    const existingCollection = await ProductCollectionModel.findOne({
+    const existingCollection = await BackupProductCollectionModel.findOne({
       slug: "top-selling-products-homepage",
     });
 
@@ -14,7 +14,7 @@ export const seedProductCollections = async (): Promise<void> => {
       );
     } else {
       // Create a new product collection
-      const topSellingCollection = await ProductCollectionModel.create({
+      const topSellingCollection = await BackupProductCollectionModel.create({
         title: "Top Selling Products",
         slug: "top-selling-products",
         page: "homepage",
@@ -41,7 +41,9 @@ export const seedProductCollections = async (): Promise<void> => {
       const slug = `${category.slug}-homepage`;
 
       // Check if collection already exists
-      const existingCollection = await ProductCollectionModel.findOne({ slug });
+      const existingCollection = await BackupProductCollectionModel.findOne({
+        slug,
+      });
 
       if (existingCollection) {
         console.log(`Product collection already exists for category: ${title}`);
@@ -49,7 +51,7 @@ export const seedProductCollections = async (): Promise<void> => {
       }
 
       // Create a new product collection
-      await ProductCollectionModel.create({
+      await BackupProductCollectionModel.create({
         title,
         slug,
       });

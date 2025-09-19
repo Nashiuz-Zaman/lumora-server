@@ -8,9 +8,19 @@ import { IAdmin } from "@app/modules/admin/admin.type";
 
 export const getUserWithProfile = async (
   filter: Partial<IUser>,
-  includeProfile = true
+  includeProfile = true,
+  extraUserFields = ""
 ): Promise<TUserPopulatedDoc | null> => {
-  let query = UserModel.findOne(filter).populate<{ role: IRole }>("role");
+  const userFields = extraUserFields
+    ? `name _id id email image status role ${extraUserFields}`
+    : "name _id id email image status role";
+
+  let query = UserModel.findOne(filter)
+    .select(userFields)
+    .populate<{ role: IRole }>({
+      path: "role",
+      select: "name _id",
+    });
 
   // populate customer/admin profile virtuals
   if (includeProfile) {

@@ -27,8 +27,6 @@ const roleSchema = new Schema<IRole>(
     },
   },
   {
-    toJSON: { versionKey: false },
-    toObject: { versionKey: false },
     timestamps: true,
   }
 );

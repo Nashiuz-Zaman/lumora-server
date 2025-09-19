@@ -14,7 +14,7 @@ export const checkAuthController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
     const { email } = req.decoded!;
 
-    const user = await getUserWithProfile({ email });
+    const user = await getUserWithProfile({ email }, false);
 
     if (user?._id) {
       return sendSuccess(res, { data: { user } });

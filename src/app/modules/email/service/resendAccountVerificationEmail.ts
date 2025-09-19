@@ -18,7 +18,7 @@ export const resendAccountVerificationEmail = async (
   req: Request,
   email: string
 ) => {
-  const user = await getUserWithProfile({ email });
+  const user = await getUserWithProfile({ email }, false, "isVerified");
 
   // No user or already verified
   if (!user || user.isVerified || user.status !== UserStatus.active)

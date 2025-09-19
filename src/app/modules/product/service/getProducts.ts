@@ -48,6 +48,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(ProductModel, newQueryObj);
 
   const { brand, ...rest } = newQueryObj;
+  console.log(rest);
   const brandQuery = new QueryBuilder(ProductModel, rest);
 
   productQuery
@@ -72,6 +73,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
     })
     .filter()
     .search([...ProductSearchableFields])
+    .addField("totalVariants", { $size: "$variants" })
     .sort()
     .limitFields()
     .paginate();
@@ -80,7 +82,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
   const products = await productQuery.exec();
   const queryMeta = await productQuery.getQueryMeta();
 
-  // === REVIEW STATS QUERY (only for paginated products) ===
+  // REVIEW STATS QUERY (only for paginated products)
   const productIds = products.map((p: any) => p._id);
 
   const reviewStats = await ReviewModel.aggregate([
@@ -105,7 +107,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
     },
   ]);
 
-  const statsMap = reviewStats.reduce((acc, stat) => {
+  const statsMap = reviewStats?.reduce((acc, stat) => {
     acc[stat._id.toString()] = {
       averageRating: Math.round((stat.averageRating ?? 0) * 10) / 10,
       totalReviews: stat.totalReviews,

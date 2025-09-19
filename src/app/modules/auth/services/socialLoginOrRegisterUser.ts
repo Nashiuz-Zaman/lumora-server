@@ -71,24 +71,31 @@ export const socialLoginOrRegisterUser = async ({
     await newCustomer.save({ session });
 
     if (newUser._id && newCustomer._id) {
-      const user: Partial<TUserPopulatedDoc> | null = await getUserWithProfile({
-        email,
-      });
+      const user: Partial<TUserPopulatedDoc> | null = await getUserWithProfile(
+        {
+          email,
+        },
+        false
+      );
 
       if (user) {
         user.lastLoginAt = new Date();
         user?.save && (await user.save());
 
-        const plainUser: Partial<IUser> = (user as TUserDoc).toObject();
-        // strip sensitive fields
-        delete plainUser.password;
-        delete plainUser.isVerified;
-        delete plainUser.status;
-        delete plainUser.lastLoginAt;
-        delete plainUser.updatedAt;
+        const plainUser = user?.toObject && (user.toObject() as Partial<IUser>);
 
-        await session.commitTransaction();
-        return user;
+        if (plainUser) {
+          // strip sensitive fields
+          delete plainUser.password;
+          delete plainUser.isVerified;
+          delete plainUser.status;
+          delete plainUser.lastLoginAt;
+          delete plainUser.updatedAt;
+          await session.commitTransaction();
+          return user;
+        } else {
+          await session.abortTransaction();
+        }
       }
     }
 

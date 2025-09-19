@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { IProductCollection } from "./productCollection.type";
+import { IProductCollection } from "../productCollection/productCollection.type";
 
-const ProductCollectionSchema = new Schema<IProductCollection>(
+const BackupProductCollectionSchema = new Schema<IProductCollection>(
   {
     title: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
@@ -21,7 +21,7 @@ const ProductCollectionSchema = new Schema<IProductCollection>(
 );
 
 // Pre-save middleware to handle default page and slug
-ProductCollectionSchema.pre("save", function (next) {
+BackupProductCollectionSchema.pre("save", function (next) {
   if (!this.page) this.page = "homepage";
 
   if (!this.slug.endsWith(`-${this.page}`)) {
@@ -31,7 +31,7 @@ ProductCollectionSchema.pre("save", function (next) {
   next();
 });
 
-export const ProductCollectionModel = model<IProductCollection>(
-  "ProductCollection",
-  ProductCollectionSchema
+export const BackupProductCollectionModel = model<IProductCollection>(
+  "BackupProductCollection",
+  BackupProductCollectionSchema
 );

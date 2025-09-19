@@ -3,6 +3,11 @@ export const ProductSearchableFields = Object.freeze([
   "brand",
 ] as const);
 
+export const ProductSearchableFieldsForSingleProductCollectionQuery = Object.freeze([
+  "product.title",
+  "product.brand",
+] as const);
+
 export const ProductStatus = Object.freeze({
   Deleted: -1,
   Draft: 0,

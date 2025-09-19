@@ -1,14 +1,14 @@
 import { QueryBuilder } from "@app/classes";
-import { ProductCollectionModel } from "../productCollection.model";
-import { IProductCollection } from "../productCollection.type";
+import { BackupProductCollectionModel } from "../backupProductCollection.model";
+import { IBackupProductCollection } from "../backupProductCollection.type";
 
 export const getCollectionProducts = async (
   slug: string,
   query: Record<string, any>
 ) => {
   // Build the pipeline
-  const collectionProductsQuery = new QueryBuilder<IProductCollection>(
-    ProductCollectionModel,
+  const collectionProductsQuery = new QueryBuilder<IBackupProductCollection>(
+    BackupProductCollectionModel,
     query
   );
 
@@ -21,9 +21,9 @@ export const getCollectionProducts = async (
       as: "products",
     })
     .unwind("products") // flatten products array
-    .replaceRoot("products") // now we're working with Product docs only
+    .replaceRoot("products") 
     .filter(["slug"])
-    .search(["title", "slug"]) // searchable fields of Product
+    .search(["title", "slug"]) 
     .sort()
     .limitFields()
     .paginate();

@@ -23,7 +23,7 @@ const validateUserAccess = async (
   email: string,
   permittedRoles: TPermittedUserRoles
 ): Promise<{ role: IRole["name"] }> => {
-  const user = await getUserWithProfile({email})
+  const user = await getUserWithProfile({ email });
 
   if (!user) {
     cleanAuthCookies(res);
@@ -66,6 +66,7 @@ export const userAuthMiddleware = (
       if (!result?.valid) return null;
 
       const decoded = result?.decoded;
+
       const { email, userId } = decoded;
 
       if (!email || !userId) {

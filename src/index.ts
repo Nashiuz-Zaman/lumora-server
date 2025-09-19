@@ -3,7 +3,8 @@ import { clientDomain, clientUrl, server } from "./app/app";
 import { connectDb } from "./config/db";
 // import { seedCategories } from "./app/modules/category/service/seedCategories";
 // import { seedSuperAdmin } from "@app/modules/admin/services";
-// import { seedProductCollections } from "@app/modules/productCollection/service/seedProductCollections";
+import { seedProductCollections } from "@app/modules/productCollection/service/seedProductCollections";
+import { seedBackupProductCollections } from "@app/modules/backupProductCollection/service";
 
 const port = config.port;
 
@@ -19,6 +20,7 @@ const main = async (): Promise<void> => {
         // await seedSuperAdmin();
         // await seedCategories();
         // await seedProductCollections();
+        // await seedBackupProductCollections()
         console.log("Database seeding completed ✅");
       } catch (err) {
         console.error("Seeding error:", err);

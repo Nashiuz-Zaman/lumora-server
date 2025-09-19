@@ -39,7 +39,11 @@ export const verifyUserAccountEmail = async (
     return { status: "redirect", url: clientUrl }; // fallback URL
   }
 
-  const user = await getUserWithProfile({ email });
+  const user = await getUserWithProfile(
+    { email },
+    false,
+    "emailVerificationToken"
+  );
 
   if (!user || user.status !== UserStatus.active) {
     return { status: "redirect", url: clientUrl };

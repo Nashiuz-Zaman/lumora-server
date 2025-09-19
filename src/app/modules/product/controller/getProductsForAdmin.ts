@@ -1,4 +1,4 @@
-// Core / Third-party
+// Core
 import { RequestHandler } from "express";
 
 // Utilities
@@ -13,7 +13,6 @@ import { getProducts } from "../service/getProducts";
 
 export const getProductsForAdminController: RequestHandler = catchAsync(
   async (req, res) => {
-    // Fetch products with query params
     const data = await getProducts(req.query);
 
     if (data) {
@@ -22,7 +21,6 @@ export const getProductsForAdminController: RequestHandler = catchAsync(
       });
     }
 
-    // If no data found, throw server error
     return throwInternalServerError();
   }
 );

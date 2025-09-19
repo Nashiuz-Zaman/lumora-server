@@ -2,24 +2,28 @@ import { Router } from "express";
 import {
   addProductsToCollectionController,
   removeProductsFromCollectionController,
-  getCollectionProductsController,
   getAllProductCollectionsController,
 } from "./controller";
+import { userAuthMiddleware } from "@app/middlewares";
+import { UserRoles } from "../user/user.constants";
 
 const productCollectionRouter = Router();
+const { admin, superAdmin } = UserRoles;
 
-// fetch all collections (slug + title)
+// fetch all collections
 productCollectionRouter.get("/", getAllProductCollectionsController);
 
-// fetch products in a specific collection
-productCollectionRouter.get("/:slug", getCollectionProductsController);
-
 // add products to a collection
-productCollectionRouter.patch("/:id/add", addProductsToCollectionController);
+productCollectionRouter.patch(
+  "/:slug/add",
+  userAuthMiddleware([admin, superAdmin]),
+  addProductsToCollectionController
+);
 
 // remove products from a collection
 productCollectionRouter.patch(
-  "/:id/remove",
+  "/:slug/remove",
+  userAuthMiddleware([admin, superAdmin]),
   removeProductsFromCollectionController
 );
 

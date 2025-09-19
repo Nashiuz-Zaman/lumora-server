@@ -3,7 +3,7 @@ import { throwNotFound } from "@utils/operationalErrors";
 import { toObjectId } from "@utils/objectIdUtils";
 
 export const getCustomerProfileData = async (id: string) => {
-  const user = await getUserWithProfile({ _id: toObjectId(id) });
+  const user = await getUserWithProfile({ _id: toObjectId(id) }, true, "phone");
 
   if (!user || !user.customerProfile)
     return throwNotFound("Customer profile not found");

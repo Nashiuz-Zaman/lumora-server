@@ -5,8 +5,8 @@ import { toObjectId } from "@utils/objectIdUtils";
 export const getCustomerSettingsData = async (id: string) => {
   if (!id) return throwUnauthorized("id not found");
 
-  const user = await getUserWithProfile({ _id: toObjectId(id) });
-  
+  const user = await getUserWithProfile({ _id: toObjectId(id) }, true, "phone");
+
   if (!user || !user.customerProfile)
     return throwNotFound("Customer not found");
 

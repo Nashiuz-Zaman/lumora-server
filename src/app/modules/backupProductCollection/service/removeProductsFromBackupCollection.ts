@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
-import { ProductCollectionModel } from "../productCollection.model";
-import { isObjectId, throwBadRequest, toObjectId } from "@utils/index";
 
-export const removeProductsFromCollection = async (
+import { isObjectId, throwBadRequest, toObjectId } from "@utils/index";
+import { BackupProductCollectionModel } from "../backupProductCollection.model";
+
+export const removeProductsFromBackupCollection = async (
   collectionSlug: string,
   productIds: string[]
 ) => {
@@ -11,7 +12,7 @@ export const removeProductsFromCollection = async (
 
   try {
     // Check if collection exists
-    const collection = await ProductCollectionModel.findOne({
+    const collection = await BackupProductCollectionModel.findOne({
       slug: collectionSlug,
     }).session(session);
     if (!collection)

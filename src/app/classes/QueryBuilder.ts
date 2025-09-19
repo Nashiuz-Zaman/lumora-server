@@ -170,7 +170,7 @@ export class QueryBuilder<T> {
   // unwind
   // ======================
   unwind(field: string): this {
-    this.pipeline.push({ $unwind: "$" + field });
+    this.pipeline.push({ $unwind: `$${field}` });
     return this;
   }
 

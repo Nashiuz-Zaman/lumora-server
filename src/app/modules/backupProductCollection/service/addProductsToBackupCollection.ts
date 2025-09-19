@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
-import { ProductCollectionModel } from "../productCollection.model";
-import { isObjectId, throwBadRequest, toObjectId } from "@utils/index";
 
-export const addProductsToCollection = async (
+import { isObjectId, throwBadRequest, toObjectId } from "@utils/index";
+import { BackupProductCollectionModel } from "../backupProductCollection.model";
+
+export const addProductsToBackupCollection = async (
   slug: string,
   productIds: string[]
 ) => {
@@ -11,9 +12,9 @@ export const addProductsToCollection = async (
 
   try {
     // Check if collection exists
-    const collection = await ProductCollectionModel.findOne({ slug }).session(
-      session
-    );
+    const collection = await BackupProductCollectionModel.findOne({
+      slug,
+    }).session(session);
     if (!collection)
       return throwBadRequest(`No collection found with slug: ${slug}`);
 
@@ -39,7 +40,7 @@ export const addProductsToCollection = async (
       );
 
     // Get max serial using MongoDB aggregation
-    const result = await ProductCollectionModel.aggregate([
+    const result = await BackupProductCollectionModel.aggregate([
       { $match: { slug } },
       { $unwind: { path: "$products", preserveNullAndEmptyArrays: true } },
       {
