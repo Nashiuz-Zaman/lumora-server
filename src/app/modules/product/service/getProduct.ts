@@ -1,14 +1,47 @@
-import { ProductSearchableFields } from "../product.constants";
+// services/product.service.ts
+
 import { ProductModel } from "../product.model";
+import { FilterQuery } from "mongoose";
 import { IProduct } from "../product.type";
-import { QueryBuilderOne } from "@app/classes/QueryBuilderOne";
+import { throwNotFound } from "@utils/index";
 
-export const getProduct = async (queryObj: Record<string, any>) => {
-  const query = new QueryBuilderOne<IProduct>(ProductModel, queryObj)
-    .filter()
-    .search([...ProductSearchableFields])
-    .populate()
-    .limitFields();
+const populateableFields = ["topCategory", "subCategory"];
 
-  return await query.exec();
+export const getProduct = async (
+  filters: FilterQuery<IProduct>,
+  options?: {
+    populate?: string;
+    limitFields?: string;
+  }
+) => {
+  let query = ProductModel.findOne(filters);
+
+  // Apply population if requested
+  if (options?.populate) {
+    const populateKeys = options.populate
+      .split(",")
+      .map((key) => key.trim())
+      .filter((key) => populateableFields.includes(key));
+
+    if (populateKeys.length > 0) {
+      populateKeys.forEach((key) => {
+        query = query.populate(key);
+      });
+    }
+  }
+
+  // Apply field limiting if requested
+  if (options?.limitFields) {
+    const fields = options.limitFields
+      .split(",")
+      .map((field) => field.trim())
+      .join(" ");
+    query = query.select(fields);
+  }
+
+  const product = await query.exec();
+
+  if (!product) return throwNotFound("Product not found");
+
+  return product;
 };
