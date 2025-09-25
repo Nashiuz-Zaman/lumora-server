@@ -10,18 +10,17 @@ export const createCart = async (
 ) => {
   if (!actionData) return throwBadRequest("No data for cart provided");
 
-  const { productId, variantId, quantity } = actionData;
+  const { product, variant, quantity } = actionData;
 
-  if (creatorType === "user" && !userId) {
+  if (creatorType === "user" && !userId)
     return throwBadRequest("User ID is required for user cart creation");
-  }
 
   const newCart: TDatabaseCart = {
     user: creatorType === "user" ? toObjectId(userId!) : "guest",
     items: [
       {
-        product: toObjectId(productId),
-        variant: toObjectId(variantId),
+        product: toObjectId(product),
+        variant: toObjectId(variant),
         quantity: quantity,
       },
     ],

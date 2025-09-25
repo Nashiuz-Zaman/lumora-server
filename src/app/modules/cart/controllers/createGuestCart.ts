@@ -16,7 +16,7 @@ export const createGuestCartController: RequestHandler = catchAsync(
 
     if (cart._id) {
       setCartCookie(res, cart._id.toString());
-      return sendSuccess(res, { message: "Cart created successfully" });
+      return sendSuccess(res, { message: "Cart Updated" });
     }
 
     throwInternalServerError();

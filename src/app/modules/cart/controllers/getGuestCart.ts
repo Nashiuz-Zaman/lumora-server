@@ -13,7 +13,7 @@ export const getGuestCartController: RequestHandler = catchAsync(
     const cart = await CartModel.getPopulatedCart(toObjectId(cartId));
 
     return sendSuccess(res, {
-      data: cart?._id ? cart : emptyCart,
+      data: { cart: cart?._id ? cart : emptyCart },
     });
   }
 );

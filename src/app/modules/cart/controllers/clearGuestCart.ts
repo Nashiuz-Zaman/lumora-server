@@ -11,7 +11,7 @@ export const clearGuestCartController: RequestHandler = catchAsync(
     const cartId = req.params.id;
     const result = await clearCart(cartId);
 
-    if (result) return sendSuccess(res, { message: "Cleared cart" });
+    if (result) return sendSuccess(res, { message: "Cart Updated" });
 
     return throwInternalServerError();
   }

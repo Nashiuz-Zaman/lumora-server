@@ -1,5 +1,6 @@
 import { HydratedDocument, Model, Types } from "mongoose";
 import { IProduct, IVariant } from "../product/product.type";
+import { CartActions, emptyCart } from "./cart.constant";
 
 export interface ICartItem<P = Types.ObjectId, V = Types.ObjectId> {
   product: P;
@@ -8,7 +9,7 @@ export interface ICartItem<P = Types.ObjectId, V = Types.ObjectId> {
 }
 
 // unpopulated cart item:
-export type TDatabaseCartItem = ICartItem<Types.ObjectId, Types.ObjectId>;
+export type TDatabaseCartItem = ICartItem;
 
 // Populated cart item:
 export type TPopulatedCartItem = ICartItem<
@@ -32,9 +33,9 @@ export interface ICart<C> {
 }
 
 export interface ICartAction {
-  productId: string;
-  variantId: string;
-  action: "add" | "remove";
+  product: string;
+  variant: string;
+  action: keyof typeof CartActions;
   quantity: number;
 }
 
@@ -43,5 +44,7 @@ export type TPopulatedCart = ICart<TPopulatedCartItem>;
 export type TDatabaseCartDoc = HydratedDocument<TDatabaseCart>;
 
 export interface IDatabaseCartModel extends Model<TDatabaseCart> {
-  getPopulatedCart(id: Types.ObjectId): TPopulatedCart;
+  getPopulatedCart(
+    id: Types.ObjectId
+  ): Promise<TPopulatedCart | null>;
 }

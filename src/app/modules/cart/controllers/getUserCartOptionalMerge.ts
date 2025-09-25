@@ -21,7 +21,7 @@ export const getUserCartOptionalMergeController: RequestHandler = catchAsync(
     const cart = await getUserCart(userId!);
 
     return sendSuccess(res, {
-      data: cart?._id ? cart : emptyCart,
+      data: { cart: cart?._id ? cart : emptyCart },
     });
   }
 );

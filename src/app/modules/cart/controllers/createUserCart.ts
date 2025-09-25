@@ -5,7 +5,6 @@ import { ICartAction } from "../cart.type";
 import {
   catchAsync,
   sendSuccess,
-  toObjectId,
   throwInternalServerError,
 } from "@utils/index";
 
@@ -18,10 +17,10 @@ export const createUserCartController: RequestHandler = catchAsync(
 
     if (cart._id)
       return sendSuccess(res, {
-        message: "Cart created successfully",
+        message: "Cart Updated",
         data: cart,
       });
 
-    throwInternalServerError();
+    return throwInternalServerError();
   }
 );

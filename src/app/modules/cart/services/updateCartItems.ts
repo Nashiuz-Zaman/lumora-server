@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import { CartModel } from "../cart.model";
 import { ICartAction, TDatabaseCartItem } from "../cart.type";
 import { toObjectId, throwNotFound, throwBadRequest } from "@utils/index";
+import { CartActions } from "../cart.constant";
 
 export const updateCartItems = async (
   filter: { user: Types.ObjectId } | { _id: Types.ObjectId },
@@ -14,34 +15,34 @@ export const updateCartItems = async (
 
   if (!cart) return throwNotFound("Cart not found");
 
-  const productId = toObjectId(actionData.productId);
-  const variantId = toObjectId(actionData.variantId);
+  const product = toObjectId(actionData.product);
+  const variant = toObjectId(actionData.variant);
 
   // Find existing item
   const existingItem = cart.items?.find(
-    (item) => item.product.equals(productId) && item.variant.equals(variantId)
+    (item) => item.product.equals(product) && item.variant.equals(variant)
   );
 
   if (existingItem) {
-    if (actionData.action === "add") {
+    if (actionData.action === CartActions.add) {
       existingItem.quantity += actionData.quantity;
-    } else if (actionData.action === "remove") {
+    } else if (actionData.action === CartActions.remove) {
       const remainingQty = existingItem.quantity - actionData.quantity;
       if (remainingQty < 1) {
         // Remove the item completely
         cart.items = cart.items.filter(
           (item) =>
-            !(item.product.equals(productId) && item.variant.equals(variantId))
+            !(item.product.equals(product) && item.variant.equals(variant))
         );
       } else {
         existingItem.quantity = remainingQty;
       }
     }
-  } else if (actionData.action === "add") {
+  } else if (actionData.action === CartActions.add) {
     // Add new item
     const newItem: TDatabaseCartItem = {
-      product: productId,
-      variant: variantId,
+      product,
+      variant,
       quantity: actionData.quantity,
     };
     cart.items.push(newItem);

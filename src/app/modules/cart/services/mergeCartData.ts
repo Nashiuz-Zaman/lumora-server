@@ -14,6 +14,7 @@ export const mergeCartData = async (
   if (!sessionCart) return null;
 
   if (!userId) return throwBadRequest("User is required to merge");
+
   const existingUserCart = await CartModel.findOne({
     user: toObjectId(userId),
   });

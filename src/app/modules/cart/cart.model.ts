@@ -11,6 +11,7 @@ import { ProductModel } from "../product/product.model";
 import { AppError } from "@app/classes";
 import { convertToTwoDecimalNumber, throwNotFound } from "@utils/index";
 import { calculateCouponDiscount, validateCoupon } from "../coupon/service";
+import { emptyCart } from "./cart.constant";
 
 // ----- Cart Item Schema -----
 const CartItemSchema = new Schema<TDatabaseCartItem>(
@@ -111,7 +112,7 @@ CartSchema.statics.getPopulatedCart = async function (
   cartId: Types.ObjectId
 ): Promise<TPopulatedCart | null> {
   const cart = await this.findById(cartId);
-  if (!cart) return throwNotFound("Cart not found");
+  if (!cart) return null;
 
   const populatedItems: TPopulatedCartItem[] = await Promise.all(
     cart.items.map(async (item: TDatabaseCartItem) => {
@@ -136,17 +137,9 @@ CartSchema.statics.getPopulatedCart = async function (
         brand: product.brand,
       };
 
-      const filteredVariant = {
-        _id: variant._id,
-        sku: variant.sku,
-        price: variant.price,
-        oldPrice: variant.oldPrice,
-        discountPercentage: variant.discountPercentage,
-      };
-
       return {
         product: filteredProduct,
-        variant: filteredVariant,
+        variant,
         quantity: item.quantity,
       };
     })

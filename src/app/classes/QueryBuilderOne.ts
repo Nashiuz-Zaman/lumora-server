@@ -85,7 +85,9 @@ export class QueryBuilderOne<T> {
     path?: string | IPopulateOptions | (string | IPopulateOptions)[]
   ): this {
     if (!path && this.queryObj.populate) {
+
       const rawPopulate = this.queryObj.populate;
+      
       if (typeof rawPopulate === "string") {
         (rawPopulate.split(",").map((p) => p.trim()) || []).forEach(
           (p) => p && this.population.push({ path: p })
