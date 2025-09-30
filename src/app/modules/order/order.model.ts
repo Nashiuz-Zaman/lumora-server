@@ -1,0 +1,122 @@
+import { Schema, model, Types } from "mongoose";
+import { IOrder } from "./order.type";
+import { OrderStatus } from "./order.constants";
+import { getNextSequence } from "../counter/counter.util";
+import { AppError } from "@app/classes";
+
+// Activity sub-schema
+const OrderActivitySchema = new Schema(
+  {
+    time: { type: Date, required: true, default: () => new Date() },
+    status: {
+      type: Number,
+      enum: Object.values(OrderStatus),
+      required: true,
+    },
+  },
+  { _id: false }
+);
+
+// Simplified variant for order
+const OrderVariantSchema = new Schema(
+  {
+    _id: { type: Types.ObjectId, required: true },
+    sku: { type: String },
+    price: { type: Number, required: true },
+    oldPrice: { type: Number },
+    discountPercentage: { type: Number },
+  },
+  {
+    _id: false,
+    strict: false, // allow any extra unknown fields like color, size, etc.
+  }
+);
+
+// Simplified product for order
+const OrderProductSchema = new Schema(
+  {
+    _id: { type: Types.ObjectId, required: true },
+    title: { type: String, required: true },
+    slug: { type: String },
+    defaultPrice: { type: Number },
+    defaultImage: { type: String },
+    brand: { type: String },
+  },
+  { _id: false }
+);
+
+// Order item schema
+const OrderItemSchema = new Schema(
+  {
+    product: { type: OrderProductSchema, required: true },
+    variant: { type: OrderVariantSchema, required: true },
+    quantity: { type: Number, required: true },
+  },
+  { _id: false }
+);
+
+// Main order schema
+const OrderSchema = new Schema<IOrder>(
+  {
+    orderId: { type: String, unique: true },
+    user: {
+      type: Schema.Types.Mixed,
+      required: true,
+      validate: {
+        validator: (val: any) => val === "guest" || Types.ObjectId.isValid(val),
+        message: "user must be a valid ObjectId or 'guest'",
+      },
+    },
+    cartId: { type: String },
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String },
+    deliveryAddress: { type: String, required: true },
+    subtotal: { type: Number, required: true },
+    total: { type: Number, required: true },
+    shippingFee: { type: Number },
+    discount: { type: Number },
+    tax: { type: Number },
+    items: { type: [OrderItemSchema], required: true },
+    couponCode: { type: String },
+    status: {
+      type: Number,
+      enum: Object.values(OrderStatus),
+      default: OrderStatus.Pending,
+    },
+    activities: {
+      type: [OrderActivitySchema],
+      default: [
+        {
+          time: new Date(),
+          status: OrderStatus.Pending,
+        },
+      ],
+    },
+    shippingTrackingNumber: { type: String },
+    shippingCarrier: { type: String },
+    estimatedDelivery: { type: Date },
+    cancellationReason: { type: String },
+    invoice: { type: String },
+  },
+  { timestamps: true }
+);
+
+OrderSchema.pre("save", async function (next) {
+  const order = this;
+
+  // Generate orderId if missing
+  if (!order.orderId) {
+    try {
+      const seq = await getNextSequence("order");
+      const paddedSeq = seq.toString().padStart(6, "0");
+      order.orderId = `ORD${paddedSeq}`;
+    } catch (err) {
+      next(new AppError((err as Error).message));
+    }
+  }
+
+  next();
+});
+
+export const OrderModel = model<IOrder>("Order", OrderSchema);
