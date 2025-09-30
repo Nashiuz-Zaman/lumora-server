@@ -1,42 +1,32 @@
-// import mongoose from "mongoose";
-// import { toObjectId } from "@utils/toObjectId";
+import mongoose from "mongoose";
+import { IOrder } from "@app/modules/order/order.type";
+import { ProductModel } from "../product.model";
 
-// import { IOrder } from "@app/modules/order/order.type";
-// import { ProductModel } from "../product.model";
+export const updateStock = async (
+  order: IOrder,
+  action: "create" | "cancel",
+  session?: mongoose.ClientSession
+): Promise<void> => {
+  for (const item of order.items) {
+    const product = await ProductModel.findById(item.product._id).session(
+      session ?? null
+    );
 
-// /**
-//  * Updates stock quantities based on the order action.
-//  *
-//  * @param order - The order containing items to update.
-//  * @param action - Whether to confirm (reduce) or cancel (restore) stock.
-//  * @param session - Optional mongoose session to run updates in a transaction.
-//  */
-// export const updateStock = async (
-//   order: IOrder,
-//   action: "create" | "cancel",
-//   session?: mongoose.ClientSession
-// ): Promise<void> => {
-//   for (const item of order.items) {
-//     if (item.kind !== "local") continue;
+    if (!product) continue;
 
-//     const product = await ProductModel.findById(item._id).session(
-//       session ?? null
-//     );
+    const variant = product.variants.find((v) =>
+      v._id.equals(item.variant._id!)
+    );
 
-//     if (!product) continue;
+    if (!variant) continue;
 
-//     const variant = product.variants.find((v) =>
-//       v._id.equals(toObjectId(item.variantId))
-//     );
+    if (action === "create") {
+      variant.stock = Math.max(variant.stock - item.quantity, 0);
+    } else if (action === "cancel") {
+      variant.stock += item.quantity;
+    }
 
-//     if (!variant) continue;
-
-//     if (action === "create") {
-//       variant.stock = Math.max(variant.stock - item.quantity, 0);
-//     } else if (action === "cancel") {
-//       variant.stock += item.quantity;
-//     }
-
-//     await product.save({ session });
-//   }
-// };
+    // totalStock will be recalculated automatically by pre-save middleware
+    await product.save({ session });
+  }
+};

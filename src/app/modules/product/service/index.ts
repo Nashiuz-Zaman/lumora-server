@@ -8,4 +8,4 @@ export * from "./updateProduct";
 export * from "./getMegaMenuData";
 export * from "./getCollectionProducts";
 export * from "./getProductsForSearchPage";
-// export * from "./updateStock";
+export * from "./updateStock";
