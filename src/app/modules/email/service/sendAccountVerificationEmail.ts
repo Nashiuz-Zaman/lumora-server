@@ -1,8 +1,7 @@
-import { generateEmailTemplate } from "@utils/generateEmailTemplate";
 import { TUserDoc } from "@app/modules/user/user.type";
 import { Request } from "express";
-import { sendEmail } from "@utils/sendEmail";
-import { getServerUrl } from "@utils/getServerUrl";
+import { sendEmail, getServerUrl } from "@utils/index";
+import { getVerificationEmailHtml } from "../generator-helpers";
 
 export const sendAccountVerificationEmail = async (
   req: Request,
@@ -12,12 +11,9 @@ export const sendAccountVerificationEmail = async (
     user.email
   }&token=${user.emailVerificationToken}`;
 
-  const html = await generateEmailTemplate(
-    "src/emails/accountVerification.hbs",
-    {
-      verificationLink: verificationLink,
-      year: new Date().getFullYear(),
-    }
+  const html = getVerificationEmailHtml(
+    verificationLink,
+    new Date().getFullYear()
   );
 
   const result = await sendEmail(

@@ -1,19 +1,17 @@
 import { sendEmail } from "@utils/index";
 import { IOrder } from "@app/modules/order/order.type";
 
-import { generateOrderPlacedEmailHTML } from "./generateOrderPlacedEmailHTML";
+import { getOrderPlacedEmailHtml } from "../generator-helpers/getOrderPlacedEmailHtml";
 
 export const sendOrderPlacedEmail = async (
-  order: IOrder & { invoiceUrl?: string },
+  order: IOrder,
   attachment?: {
     filename: string;
     content: Buffer;
     contentType: string;
   }
 ): Promise<void> => {
-  const { invoiceUrl, ...rest } = order;
-
-  const html = generateOrderPlacedEmailHTML(rest);
+  const html = getOrderPlacedEmailHtml(order, new Date().getFullYear());
 
   await sendEmail(
     order.email,
