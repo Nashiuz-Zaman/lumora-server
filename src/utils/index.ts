@@ -20,3 +20,4 @@ export * from "./formatPrice";
 export * from "./generatePdfBufferFromHtml";
 export * from "./viewDetailedLog";
 export * from "./compression";
+export * from "./formatDateTime";

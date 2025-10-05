@@ -1,20 +1,18 @@
-export const normalizeNumberField = (
-  query: Record<string, any>,
-  field: string
-) => {
-  if (field in query) {
-    const val = Number(query[field]);
+export const normalizeNumberField = <T extends Record<string, any>>(
+  queryObj: T,
+  field: keyof T
+): T => {
+  const copy = { ...queryObj };
+  const val = Number(copy[field]);
 
-    if (!isNaN(val)) {
-      query[field] = val;
-    }
+  if (Number.isFinite(val)) {
+    copy[field] = val as T[typeof field];
   }
-
-  return query;
+  return copy;
 };
 
 export const normalizeStatusFilter = <
-  T extends { status?: any } & Record<string, any>
+  T extends { status?: any; [key: string]: any }
 >(
   queryObj: T,
   fallback?: Record<string, any>
@@ -28,7 +26,7 @@ export const normalizeStatusFilter = <
       delete newQueryObj.status;
     }
   } else {
-    return normalizeNumberField(newQueryObj, "status") as T;
+    return normalizeNumberField(newQueryObj, "status");
   }
 
   return newQueryObj;
