@@ -9,15 +9,9 @@ import { sendOrderShippedEmail } from "@app/modules/email/service/sendOrderShipp
 
 export const markOrderShippedController: RequestHandler = catchAsync(
   async (req, res) => {
-    const { shippingTrackingNumber, shippingCarrier, estimatedDelivery, _id } =
-      req.body;
-
-    const newOrder = await updateShippingDetails(_id, {
-      shippingTrackingNumber,
-      shippingCarrier,
-      estimatedDelivery,
-    });
-
+    const { _id, ...rest } = req.body;
+    const newOrder = await updateShippingDetails(_id, rest);
+    
     if (newOrder?._id) {
       sendOrderShippedEmail(newOrder).catch((err) => {
         console.error("Failed to send order shipped email:", err);
@@ -27,6 +21,6 @@ export const markOrderShippedController: RequestHandler = catchAsync(
       });
     }
 
-    return throwInternalServerError("Error updating shipping details");
+    return throwInternalServerError();
   }
 );

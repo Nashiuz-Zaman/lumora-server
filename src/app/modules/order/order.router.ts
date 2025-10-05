@@ -3,11 +3,10 @@ import {
   placeOrderController,
   getOrdersPrivateController,
   markOrderShippedController,
+  markOrdersDeliveredController
 } from "./controllers";
 import { userAuthMiddleware } from "@app/middlewares";
-
 import { UserRoles } from "../user/user.constants";
-import { markOrdersDelivered } from "./services";
 
 const orderRouter = Router();
 const { admin, superAdmin } = UserRoles;
@@ -41,7 +40,7 @@ orderRouter.patch(
 orderRouter.patch(
   "/delivered",
   userAuthMiddleware([admin, superAdmin]),
-  markOrdersDelivered
+  markOrdersDeliveredController
 );
 
 export default orderRouter;

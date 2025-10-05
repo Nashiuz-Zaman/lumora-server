@@ -7,7 +7,7 @@ export const updateShippingDetails = async (
   details: {
     shippingTrackingNumber: string;
     shippingCarrier: string;
-    estimatedDelivery: Date;
+    estimatedDelivery: string;
   }
 ) => {
   const order = await OrderModel.findById(toObjectId(_id));
@@ -19,7 +19,7 @@ export const updateShippingDetails = async (
   order.status = OrderStatus.Shipped;
   order.shippingTrackingNumber = details.shippingTrackingNumber;
   order.shippingCarrier = details.shippingCarrier;
-  order.estimatedDelivery = details.estimatedDelivery;
+  order.estimatedDelivery = new Date(details.estimatedDelivery);
   order.activities.push({ status: OrderStatus.Shipped, time: new Date() });
 
   const newOrder = await order.save();

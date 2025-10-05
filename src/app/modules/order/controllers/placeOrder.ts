@@ -17,8 +17,8 @@ export const placeOrderController: RequestHandler = catchAsync(
     const order = await createOrder(orderData);
     const paymentUrl = await initiateOrderPayment(order, serverUrl);
 
-    if (!paymentUrl) return throwInternalServerError();
+    if (paymentUrl) return sendSuccess(res, { data: { paymentUrl } });
 
-    return sendSuccess(res, { data: { paymentUrl } });
+    return throwInternalServerError();
   }
 );

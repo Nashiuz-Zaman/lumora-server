@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import { sendOrderPlacedEmail } from "@app/modules/email/service/sendOrderPlacedEmail";
 import { OrderStatus } from "../order.constants";
 import { TOrderDoc } from "../order.type";
-import { generateAndUploadInvoicePdf } from "@app/modules/order/services/generateAndUploadInvoicePdf";
+import { generateAndUploadInvoicePdf } from "./generateAndUploadInvoicePdf";
 import { updateStock } from "@app/modules/product/service";
 import { CartModel } from "@app/modules/cart/cart.model";
-import { toObjectId } from "@utils/objectIdUtils";
+import { toObjectId } from "@utils/index";
 
 export const confirmOrder = async (order: TOrderDoc): Promise<void> => {
   const session = await mongoose.startSession();

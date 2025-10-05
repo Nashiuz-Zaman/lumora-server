@@ -1,13 +1,11 @@
 import { UserModel } from "@app/modules/user/user.model";
 import { OrderModel } from "../order.model";
 import { IOrder } from "../order.type";
-
 import { throwNotFound } from "@utils/index";
 
 export const createOrder = async (
   orderData: IOrder & { city?: string; zipCode?: string }
 ) => {
-  // Assign user if not provided
   if (!orderData.user) {
     const existingUser = await UserModel.findOne({ email: orderData.email })
       .select("_id")

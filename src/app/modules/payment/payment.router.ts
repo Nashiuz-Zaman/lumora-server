@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { handleSSLIpnController } from "./controllers/handleSSLIpn";
-import { paymentResultController } from "./controllers/paymentResult";
-import { getPaymentList } from "./controllers/getPaymentList";
+import {
+  handleSslIpnController,
+  paymentResultController,
+  getPaymentList,
+} from "./controllers";
 import { userAuthMiddleware } from "@app/middlewares";
 import { UserRoles } from "../user/user.constants";
 
@@ -12,10 +14,10 @@ const { admin, superAdmin } = UserRoles;
 // Gets all the payments for admins via secure route
 paymentRouter.get("/", userAuthMiddleware([admin, superAdmin]), getPaymentList);
 
-// handles ipn callback
-paymentRouter.post("/ipn", handleSSLIpnController);
+// Handles IPN callback
+paymentRouter.post("/ipn", handleSslIpnController);
 
-// handles payment results
+// Handles payment results
 paymentRouter.post("/result", paymentResultController);
 
 export default paymentRouter;

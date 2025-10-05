@@ -1,3 +1,4 @@
+// getOrderPlacedEmailHtml.ts
 import { IOrder } from "@app/modules/order/order.type";
 import { formatPrice } from "@utils/index";
 import {
@@ -7,7 +8,6 @@ import {
   getEmailFooter,
 } from "./commonEmailParts";
 
-// Basic fields to ignore when extracting specs
 const BASIC_VARIANT_KEYS = [
   "_id",
   "id",
@@ -49,12 +49,10 @@ export const getOrderPlacedEmailHtml = (order: IOrder, year: number) => {
       return `
         <tr>
           <td>
-            <table class="product-table" width="100%" cellpadding="20" cellspacing="0" style="border-bottom:1px solid #e2e2e2;">
+            <table width="100%" cellpadding="20" cellspacing="0" style="border-bottom:1px solid #e2e2e2;">
               <tr>
-                <td class="product-image" style="width:100px;" valign="top">
-                  <img src="${
-                    item.product?.defaultImage ?? ""
-                  }" alt="Product Image" width="80" />
+                <td style="width:100px;" valign="top">
+                  <img src="${item.product?.defaultImage ?? ""}" alt="Product Image" width="80" />
                 </td>
                 <td style="width:400px;" valign="top">
                   <p style="margin:0; font-size:13px; font-weight:600; line-height:1.4;">
@@ -65,9 +63,7 @@ export const getOrderPlacedEmailHtml = (order: IOrder, year: number) => {
                 <td style="width:150px; font-size:12px; line-height:1;" valign="top" align="right">
                   <p>Qty: ${item.quantity}</p>
                   <p>Price: ${formatPrice(item.variant?.price ?? 0)}</p>
-                  <p>Subtotal: ${formatPrice(
-                    (item.variant?.price ?? 0) * item.quantity
-                  )}</p>
+                  <p>Subtotal: ${formatPrice((item.variant?.price ?? 0) * item.quantity)}</p>
                 </td>
               </tr>
             </table>
@@ -79,9 +75,7 @@ export const getOrderPlacedEmailHtml = (order: IOrder, year: number) => {
 
   return `
 ${getEmailWrapperStart("Order Confirmed")}
-  ${getEmailHeader(
-    "Thank you for your purchase! Your order has been successfully confirmed."
-  )}
+  ${getEmailHeader("Thank you for your purchase! Your order has been successfully confirmed.")}
 
   <!-- Invoice Button -->
   ${
@@ -89,16 +83,18 @@ ${getEmailWrapperStart("Order Confirmed")}
       ? `
       <tr>
         <td style="text-align:center; padding:20px;">
-          <a href="${order.invoice}" style="
-            display:inline-block;
-            padding:12px 20px;
-            background-color:#16a34a;
-            color:#ffffff;
-            text-decoration:none;
-            border-radius:6px;
-            font-size:14px;
-            font-weight:600;"
-            target="_blank" rel="noopener noreferrer">
+          <a href="${order.invoice}" target="_blank" rel="noopener noreferrer"
+            style="
+              display:inline-block;
+              padding:12px 20px;
+              background-color:#16a34a;
+              color:#ffffff;
+              text-decoration:none;
+              border-radius:6px;
+              font-size:14px;
+              font-weight:600;
+            "
+          >
             Download Invoice (PDF)
           </a>
         </td>
@@ -106,12 +102,12 @@ ${getEmailWrapperStart("Order Confirmed")}
       : ""
   }
 
-  <!-- Items -->
+  <!-- Order Items -->
   ${itemsHtml}
 
   <!-- Totals -->
   <tr>
-    <td style="padding-top:20px;">
+    <td style="padding:20px;">
       <table width="100%" cellpadding="5" cellspacing="0" style="font-size:13px;">
         <tr>
           <td align="right">Subtotal:</td>
@@ -127,23 +123,17 @@ ${getEmailWrapperStart("Order Confirmed")}
         </tr>
         <tr>
           <td align="right">Discount:</td>
-          <td align="right" style="color:#e11d48;">-${formatPrice(
-            order.discount ?? 0
-          )}</td>
+          <td align="right" style="color:#e11d48;">-${formatPrice(order.discount ?? 0)}</td>
         </tr>
         <tr>
           <td align="right" style="font-size:15px; font-weight:bold;">Total:</td>
-          <td align="right" style="font-size:15px; font-weight:bold;">${formatPrice(
-            order.total
-          )}</td>
+          <td align="right" style="font-size:15px; font-weight:bold;">${formatPrice(order.total)}</td>
         </tr>
       </table>
     </td>
   </tr>
 
-  <!-- Footer -->
   ${getEmailFooter(year)}
-
 ${emailWrapperEnd}
   `;
 };

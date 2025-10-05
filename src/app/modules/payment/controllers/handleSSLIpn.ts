@@ -2,11 +2,11 @@ import { catchAsync } from "@utils/catchAsync";
 
 import { sendSuccess } from "@utils/sendSuccess";
 import { RequestHandler } from "express";
-import { confirmSslIpnPaymentService } from "../service/confirmSslIpnPayment";
+import { confirmSslIpnPayment } from "../service/confirmSslIpnPayment";
 
-export const handleSSLIpnController: RequestHandler = catchAsync(
+export const handleSslIpnController: RequestHandler = catchAsync(
   async (req, res) => {
-    const result = await confirmSslIpnPaymentService(req.body);
+    const result = await confirmSslIpnPayment(req.body);
 
     console.log(result);
     return sendSuccess(res);

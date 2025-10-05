@@ -1,7 +1,6 @@
 export * from "./catchAsync";
 export * from "./cleanCookie";
 export * from "./generateAvatar";
-export * from "./generateEmailTemplate";
 export * from "./generateSlug";
 export * from "./generateToken";
 export * from "./getServerUrl";

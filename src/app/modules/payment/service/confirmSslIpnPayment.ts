@@ -1,15 +1,18 @@
-import httpStatus from "http-status";
-import { confirmOrder } from "@app/modules/order/services/confirmOrder";
+import { confirmOrder } from "@app/modules/order/services";
 import { createPayment } from "./createPayment";
 import { checkDuplicatePayment } from "./checkDuplicatePayment";
-import { AppError } from "@app/classes/AppError";
 import { OrderModel } from "@app/modules/order/order.model";
 
 import axios from "axios";
 import { config } from "@config/env";
-import { throwNotFound } from "@utils/operationalErrors";
+import {
+  isObjectId,
+  throwBadRequest,
+  throwNotFound,
+  toObjectId,
+} from "@utils/index";
 
-export const confirmSslIpnPaymentService = async (ipnPayload: any) => {
+export const confirmSslIpnPayment = async (ipnPayload: any) => {
   const { val_id, tran_id, value_a: cus_name, value_b: cus_email } = ipnPayload;
 
   const validationUrl =
@@ -28,23 +31,28 @@ export const confirmSslIpnPaymentService = async (ipnPayload: any) => {
         format: "json",
       },
     });
+
     validatedData = response.data;
   } catch (err) {
     console.error("SSLCommerz validation request failed:", err);
-    throw new AppError(
-      "Could not validate payment with SSLCommerz",
-      httpStatus.BAD_REQUEST
-    );
+    return throwBadRequest("Could not validate payment with SSLCommerz");
   }
 
-  const orderObjId = tran_id.split("_")[0];
-  const existingOrder = await OrderModel.findById(orderObjId);
+  // extract order _id and find the existing order
+  const orderObjId = tran_id.split("_")[0] as string;
+
+  if (!isObjectId(orderObjId)) return throwBadRequest("Invalid order _Id");
+
+  const convertedOrderObjId = toObjectId(orderObjId);
+
+  const existingOrder = await OrderModel.findById(convertedOrderObjId);
   if (!existingOrder) return throwNotFound("Order not found");
 
   const duplicateCheck = await checkDuplicatePayment(
     existingOrder._id,
     existingOrder.status
   );
+
   if (duplicateCheck) return duplicateCheck;
 
   // Save the payment record even if it failed or had mismatches
@@ -53,7 +61,7 @@ export const confirmSslIpnPaymentService = async (ipnPayload: any) => {
     name: cus_name,
     transactionId: tran_id,
     validatedData,
-    orderObjId,
+    orderObjId: convertedOrderObjId,
     rawIpnPayload: ipnPayload,
   });
 

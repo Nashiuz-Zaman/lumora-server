@@ -2,9 +2,7 @@ import { toObjectId, throwBadRequest } from "@utils/index";
 import { OrderStatus } from "../order.constants";
 import { OrderModel } from "../order.model";
 
-export const markOrdersDelivered = async (
-  _ids: string[]
-): Promise<string | false> => {
+export const markOrdersDelivered = async (_ids: string[]): Promise<string> => {
   if (!Array.isArray(_ids) || _ids.length === 0)
     return throwBadRequest("_ids array needed");
 
