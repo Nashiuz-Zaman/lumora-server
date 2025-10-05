@@ -64,7 +64,7 @@ const OrderSchema = new Schema<IOrder>(
       required: true,
       validate: {
         validator: (val: any) => val === "guest" || Types.ObjectId.isValid(val),
-        message: "user must be a valid ObjectId or 'guest'",
+        message: "User must be a valid ObjectId or 'guest'",
       },
     },
     cartId: { type: String },
@@ -110,6 +110,7 @@ OrderSchema.pre("save", async function (next) {
     try {
       const seq = await getNextSequence("order");
       const paddedSeq = seq.toString().padStart(6, "0");
+      
       order.orderId = `ORD${paddedSeq}`;
     } catch (err) {
       next(new AppError((err as Error).message));

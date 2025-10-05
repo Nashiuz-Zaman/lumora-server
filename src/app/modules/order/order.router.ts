@@ -1,9 +1,47 @@
 import { Router } from "express";
-import { placeOrderController } from "./controllers/placeOrder";
+import {
+  placeOrderController,
+  getOrdersPrivateController,
+  markOrderShippedController,
+} from "./controllers";
+import { userAuthMiddleware } from "@app/middlewares";
+
+import { UserRoles } from "../user/user.constants";
+import { markOrdersDelivered } from "./services";
 
 const orderRouter = Router();
+const { admin, superAdmin } = UserRoles;
 
-// POST /orders/guest or /orders/my
+//
+// ----------- CUSTOMER, GUEST ROUTES -----------
+//
+
+// Place order
 orderRouter.post("/", placeOrderController);
+
+//
+// ----------- ADMIN ROUTES -----------
+//
+
+//  Fetch a list of all orders based on filters
+orderRouter.get(
+  "/",
+  userAuthMiddleware([admin, superAdmin]),
+  getOrdersPrivateController
+);
+
+// Mark order as shipped
+orderRouter.patch(
+  "/shipping-details",
+  userAuthMiddleware([admin, superAdmin]),
+  markOrderShippedController
+);
+
+// Mark order as delivered
+orderRouter.patch(
+  "/delivered",
+  userAuthMiddleware([admin, superAdmin]),
+  markOrdersDelivered
+);
 
 export default orderRouter;
