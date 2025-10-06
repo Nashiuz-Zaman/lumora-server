@@ -13,7 +13,24 @@ import {
 } from "@utils/index";
 
 export const confirmSslIpnPayment = async (ipnPayload: any) => {
-  const { val_id, tran_id, value_a: cus_name, value_b: cus_email } = ipnPayload;
+  const {
+    val_id,
+    tran_id,
+    value_a: cus_name,
+    value_b: cus_email,
+    status,
+  } = ipnPayload;
+
+  // extract order _id and find the existing order
+  const orderObjId = tran_id.split("_")[0] as string;
+
+  if (!isObjectId(orderObjId)) return throwBadRequest("Invalid order _Id");
+
+  const convertedOrderObjId = toObjectId(orderObjId);
+
+  if (status !== "VALID") {
+    await OrderModel.deleteOne({ _id: convertedOrderObjId });
+  }
 
   const validationUrl =
     "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php";
@@ -38,13 +55,6 @@ export const confirmSslIpnPayment = async (ipnPayload: any) => {
     return throwBadRequest("Could not validate payment with SSLCommerz");
   }
 
-  // extract order _id and find the existing order
-  const orderObjId = tran_id.split("_")[0] as string;
-
-  if (!isObjectId(orderObjId)) return throwBadRequest("Invalid order _Id");
-
-  const convertedOrderObjId = toObjectId(orderObjId);
-
   const existingOrder = await OrderModel.findById(convertedOrderObjId);
   if (!existingOrder) return throwNotFound("Order not found");
 
@@ -66,7 +76,7 @@ export const confirmSslIpnPayment = async (ipnPayload: any) => {
   });
 
   // Only confirm the order if the payment is valid and matches expected details
-  const isValid = validatedData.status === "VALID";
+  const isValid = ["VALID", "VALIDATED"].includes(validatedData.status);
   const amountMatches =
     parseFloat(validatedData.amount) === existingOrder.total;
   const currencyMatches = validatedData.currency === "BDT";

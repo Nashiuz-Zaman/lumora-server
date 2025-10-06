@@ -31,7 +31,7 @@ export const addCouponToCart = async ({
   cart.couponCode = code;
 
   // Save cart and pre-save hook will handle recalculation
-  await cart.save();
+  const newCart = await cart.save();
 
   return cart;
 };

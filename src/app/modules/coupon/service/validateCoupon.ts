@@ -1,15 +1,14 @@
 import { CouponStatus } from "../coupon.constant";
 import { CouponModel } from "../coupon.model";
-import { ICoupon } from "../coupon.type";
 import { ClientSession } from "mongoose";
 import { throwBadRequest } from "@utils/index";
 
 export const validateCoupon = async (
   code: string,
-  cartTotal: number,
+  subtotal: number,
   session?: ClientSession
-): Promise<ICoupon> => {
-  const query = CouponModel.findOne({ code: code.toUpperCase().trim() });
+) => {
+  const query = CouponModel.findOne({ code: code.trim()?.toUpperCase() });
   if (session) query.session(session);
   const coupon = await query;
 
@@ -30,9 +29,9 @@ export const validateCoupon = async (
   )
     return throwBadRequest("This coupon has reached its usage limit");
 
-  if (cartTotal < (coupon.minimumOrderAmount ?? 0))
+  if (subtotal < (coupon.minimumOrderAmount ?? 0))
     return throwBadRequest(
-      `Minimum order amount of ৳${coupon.minimumOrderAmount} is required to use this coupon`
+      `Minimum order amount of $${coupon.minimumOrderAmount} is required to use this coupon`
     );
 
   return coupon;

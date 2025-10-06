@@ -36,7 +36,7 @@ export const payViaSslCommerz = async (
     success_url: `${paymentResultEndpoint}?status=success&orderId=${order.orderId}`,
     fail_url: `${paymentResultEndpoint}?status=fail&orderId=${order.orderId}`,
     cancel_url: `${paymentResultEndpoint}?status=cancel&orderId=${order.orderId}`,
-    ipn_url: `https://566bae7b4197.ngrok-free.app/api/v1/payments/ipn`,
+    ipn_url: `https://02f805f98c18.ngrok-free.app/api/v1/payments/ipn`,
     shipping_method: "Courier",
     product_name: productName,
     product_category: "Ecommerce",

@@ -6,7 +6,9 @@ import { ISecureRequest } from "@app/shared/types";
 export const addCouponToUserCartController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
     const { couponCode } = req.body;
-    const userId = req.decoded?.userId
+    const userId = req.decoded?.userId;
+
+    console.log( req.decoded);
 
     const updatedCart = await addCouponToCart({ userId, code: couponCode });
 

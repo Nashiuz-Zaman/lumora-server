@@ -1,4 +1,3 @@
-// src/modules/coupon/service/updateCouponStatus.ts
 import { CouponModel } from "../coupon.model";
 import { throwBadRequest, throwNotFound } from "@utils/operationalErrors";
 

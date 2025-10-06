@@ -11,7 +11,6 @@ import { ProductModel } from "../product/product.model";
 import { AppError } from "@app/classes";
 import { convertToTwoDecimalNumber, throwNotFound } from "@utils/index";
 import { calculateCouponDiscount, validateCoupon } from "../coupon/service";
-import { emptyCart } from "./cart.constant";
 
 // ----- Cart Item Schema -----
 const CartItemSchema = new Schema<TDatabaseCartItem>(
@@ -77,12 +76,15 @@ CartSchema.pre<TDatabaseCartDoc>("save", async function (next) {
 
     // Handle coupon discount if couponCode is present
     let discount = 0;
-    if (cart.couponCode && cart.couponCode?.trim() !== "") {
+
+    if (cart.couponCode && cart.couponCode.trim() !== "") {
       try {
         const coupon = await validateCoupon(cart.couponCode, subtotal);
+
         discount = calculateCouponDiscount(coupon, subtotal);
+        cart.couponCode = coupon?.code;
       } catch (err) {
-        // error means invalid so
+        next(new AppError((err as Error).message));
         cart.couponCode = "";
         discount = 0;
       }
