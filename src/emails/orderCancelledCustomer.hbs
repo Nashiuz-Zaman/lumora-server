@@ -1,0 +1,230 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      @media only screen and (max-width: 680px) { .container { width: 100%
+      !important; padding: 10px !important; } .product-table td { display: block
+      !important; width: 100% !important; text-align: left !important; }
+      .product-image { text-align: center !important; } }
+    </style>
+    <title>Order Cancelled</title>
+  </head>
+
+  <body
+    style="margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #f5f5f5;"
+  >
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background-color: #f5f5f5; padding: 20px;"
+    >
+      <tr>
+        <td>
+          <table
+            class="container"
+            width="650"
+            cellpadding="0"
+            cellspacing="0"
+            align="center"
+            style="background-color: #ffffff; padding: 20px; border-radius: 8px;"
+          >
+            <!-- Header -->
+            <tr>
+              <td>
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="background-color: #e11d27; color: #ffffff; padding: 30px 20px;"
+                >
+                  <tr>
+                    <td align="left" valign="middle" style="width: 50%;">
+                      <img
+                        src="https://res.cloudinary.com/dydv6uxzo/image/upload/f_auto,q_auto,w_200/v1745407003/lumora/logo/logo-header_ftz8ko.svg"
+                        alt="Logo"
+                        width="120"
+                      />
+                    </td>
+                    <td
+                      align="right"
+                      valign="middle"
+                      style="width: 50%; font-size: 20px; font-weight: 600;"
+                    >
+                      Order Cancelled
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Message -->
+            <tr>
+              <td style="padding: 20px 0; text-align: center;">
+                <h2
+                  style="font-size: 18px; color: #e11d27; margin-bottom: 10px;"
+                >
+                  Your order has been cancelled
+                </h2>
+                <p style="font-size: 14px; color: #555; margin: 0;">
+                  We're sorry to see you go! The following order has been
+                  successfully cancelled.
+                </p>
+              </td>
+            </tr>
+
+            <!-- Products Loop -->
+            {{#each items}}
+              <tr>
+                <td>
+                  <table
+                    class="product-table"
+                    width="100%"
+                    cellpadding="20"
+                    cellspacing="0"
+                    style="border-bottom: 1px solid #e2e2e2;"
+                  >
+                    <tr>
+                      <!-- Image -->
+                      <td
+                        class="product-image"
+                        style="width: 100px;"
+                        valign="top"
+                      >
+                        <img
+                          src="{{this.image}}"
+                          alt="Product Image"
+                          width="80"
+                        />
+                      </td>
+
+                      <!-- Name and Specs -->
+                      <td style="width: 400px;" valign="top">
+                        <p
+                          style="margin: 0; font-size:13px; font-weight: 600; line-height: 1.4"
+                        >{{this.title}}</p>
+
+                        {{#if this.specs}}
+                          <h3
+                            style="font-size: 12px; color: #6F2794; font-weight: 700; margin: 8px 0 4px 0;"
+                          >Chosen Specs</h3>
+                          <ul
+                            style="margin: 0 0 10px 0; padding-left: 5px; line-height: 1.4;"
+                          >
+                            {{#each this.specs}}
+                              <li style="font-size: 12px;"><span
+                                  style="text-transform: capitalize;"
+                                >{{@key}}:</span>
+                                {{this}}</li>
+                            {{/each}}
+                          </ul>
+                        {{/if}}
+                      </td>
+
+                      <!-- Quantity and Pricing -->
+                      <td
+                        style="width: 150px; font-size: 12px; line-height: 1;"
+                        valign="top"
+                        align="right"
+                      >
+                        <p>Qty: {{this.quantity}}</p>
+                        <p>Price: {{this.price}}</p>
+                        <p>Subtotal: {{multiply this.quantity this.price}}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            {{/each}}
+
+            <!-- Notes -->
+            {{#if customerNotes}}
+              <tr>
+                <td style="padding-top: 10px;">
+                  <h3
+                    style="font-size: 12px; color: #6F2794; font-weight: 700; margin-bottom: 6px;"
+                  >Customer Notes</h3>
+                  <p
+                    style="font-size: 12px; line-height: 1.4; margin: 0;"
+                  >{{customerNotes}}</p>
+                </td>
+              </tr>
+            {{/if}}
+
+            {{#if adminNotes}}
+              <tr>
+                <td style="padding-top: 10px;">
+                  <div
+                    style="background-color: #fff7e6; padding: 10px; border-radius: 4px;"
+                  >
+                    <h3
+                      style="font-size: 12px; font-weight: 600; color: #FF9811; margin: 0 0 4px 0;"
+                    >Admin Notes</h3>
+                    <p
+                      style="font-size: 12px; line-height: 1.4; margin: 0; color: #333;"
+                    >{{adminNotes}}</p>
+                  </div>
+                </td>
+              </tr>
+            {{/if}}
+
+            <!-- Totals -->
+            <tr>
+              <td style="padding-top: 20px;">
+                <table
+                  width="100%"
+                  cellpadding="5"
+                  style="font-size: 13px;"
+                  cellspacing="0"
+                >
+                  <tr>
+                    <td align="right">Cart Total:</td>
+                    <td align="right">{{cartTotal}}</td>
+                  </tr>
+                  <tr>
+                    <td align="right">Shipping Fee:</td>
+                    <td align="right">{{shippingFee}}</td>
+                  </tr>
+                  <tr>
+                    <td align="right">Tax:</td>
+                    <td align="right">{{tax}}</td>
+                  </tr>
+                  <tr>
+                    <td align="right">Discount:</td>
+                    <td
+                      align="right"
+                      style="color: #e11d48;"
+                    >-{{discount}}</td>
+                  </tr>
+                  <tr>
+                    <td
+                      align="right"
+                      style="font-size: 15px; font-weight: bold;"
+                    >Total:</td>
+                    <td
+                      align="right"
+                      style="font-size: 15px; font-weight: bold;"
+                    >{{orderTotal}}</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="text-align: center; padding: 30px 0;">
+                <p style="font-size: 13px; color: #888; margin: 0;">
+                  If you have any questions, please reach out to our support
+                  team.
+                </p>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

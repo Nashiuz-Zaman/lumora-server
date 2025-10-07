@@ -56,7 +56,6 @@ productRouter.post(
 //  get admin product single
 productRouter.get(
   "/:id/admin",
-  userAuthMiddleware([admin, superAdmin]),
   getProductForAdminController
 );
 
