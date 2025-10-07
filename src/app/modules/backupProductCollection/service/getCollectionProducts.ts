@@ -1,13 +1,13 @@
 import { QueryBuilder } from "@app/classes";
 import { BackupProductCollectionModel } from "../backupProductCollection.model";
-import { IBackupProductCollection } from "../backupProductCollection.type";
+import { IProductCollection } from "@app/modules/productCollection/productCollection.type";
 
 export const getCollectionProducts = async (
   slug: string,
   query: Record<string, any>
 ) => {
   // Build the pipeline
-  const collectionProductsQuery = new QueryBuilder<IBackupProductCollection>(
+  const collectionProductsQuery = new QueryBuilder<IProductCollection>(
     BackupProductCollectionModel,
     query
   );
@@ -21,9 +21,9 @@ export const getCollectionProducts = async (
       as: "products",
     })
     .unwind("products") // flatten products array
-    .replaceRoot("products") 
+    .replaceRoot("products")
     .filter(["slug"])
-    .search(["title", "slug"]) 
+    .search(["title", "slug"])
     .sort()
     .limitFields()
     .paginate();
