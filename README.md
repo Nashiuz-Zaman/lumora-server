@@ -22,7 +22,7 @@ Handles user authentication, product management, orders, and payment integration
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/lumora-server.git
+git clone https://github.com/Nashiuz-Zaman/lumora-server.git
 cd lumora-server
 ```
 
