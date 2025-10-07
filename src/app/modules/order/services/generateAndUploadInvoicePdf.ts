@@ -1,7 +1,7 @@
 import { generatePdfBufferFromHtml } from "@utils/index";
 import { uploadPdfFiles } from "@app/modules/cloudinary/service";
 import { IOrder } from "../order.type";
-import { getInvoiceHTML } from "@app/modules/email/service";
+import { getInvoiceHTML } from "@app/modules/email/generator-helpers";
 
 export const generateAndUploadInvoicePdf = async (order: IOrder) => {
   const html = getInvoiceHTML(order);

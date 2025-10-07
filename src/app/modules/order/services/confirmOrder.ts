@@ -7,7 +7,7 @@ import { updateStock } from "@app/modules/product/service";
 import { CartModel } from "@app/modules/cart/cart.model";
 import { toObjectId } from "@utils/index";
 
-export const confirmOrder = async (order: TOrderDoc): Promise<void> => {
+export const confirmOrder = async (order: TOrderDoc) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -38,17 +38,21 @@ export const confirmOrder = async (order: TOrderDoc): Promise<void> => {
 
     // 5. Commit transaction
     await session.commitTransaction();
-    session.endSession();
 
     // 6. Send order placed email (outside session)
-    await sendOrderPlacedEmail(updatedOrder.toObject(), {
+    sendOrderPlacedEmail(updatedOrder.toObject(), {
       filename: `Invoice for ${updatedOrder.orderId}.pdf`,
       content: buffer,
       contentType: "application/pdf",
+    }).catch((err) => {
+      console.error("Failed to send order placed email:", err);
     });
+
+    return updatedOrder;
   } catch (err) {
     await session.abortTransaction();
-    session.endSession();
     throw err;
+  } finally {
+    session.endSession();
   }
 };

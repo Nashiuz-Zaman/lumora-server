@@ -1,8 +1,9 @@
 import { Schema, model, Types } from "mongoose";
 import { IOrder } from "./order.type";
-import { OrderStatus } from "./order.constants";
+import { OrderStatus, TOrderStatusValue } from "./order.constants";
 import { getNextSequence } from "../counter/counter.util";
 import { AppError } from "@app/classes";
+import { decrementCouponUsageByCode } from "../coupon/service";
 
 // Activity sub-schema
 const OrderActivitySchema = new Schema(
@@ -96,28 +97,43 @@ const OrderSchema = new Schema<IOrder>(
     shippingTrackingNumber: { type: String },
     shippingCarrier: { type: String },
     estimatedDelivery: { type: Date },
-    cancellationReason: { type: String },
+    cancellationReason: { type: String, default: "Admin cancelled" },
     invoice: { type: String },
   },
   { timestamps: true }
 );
 
 OrderSchema.pre("save", async function (next) {
-  const order = this;
+  try {
+    const order = this;
 
-  // Generate orderId if missing
-  if (!order.orderId) {
-    try {
+    // Generate orderId if missing
+    if (!order.orderId) {
       const seq = await getNextSequence("order");
       const paddedSeq = seq.toString().padStart(6, "0");
-      
       order.orderId = `ORD${paddedSeq}`;
-    } catch (err) {
-      next(new AppError((err as Error).message));
     }
-  }
 
-  next();
+    // If order is being cancelled, returned, or deleted → decrement coupon usage
+    const cancelLikeStatuses: TOrderStatusValue[] = [
+      OrderStatus.Cancelled,
+      OrderStatus.Returned,
+    ];
+
+    // only run if status changed to one of those & order has a coupon
+    if (
+      order.isModified("status") &&
+      cancelLikeStatuses.includes(order.status) &&
+      order.couponCode
+    ) {
+      const session = this.$session?.() ?? undefined;
+      await decrementCouponUsageByCode(order.couponCode, session);
+    }
+
+    next();
+  } catch (err) {
+    next(new AppError((err as Error).message));
+  }
 });
 
 export const OrderModel = model<IOrder>("Order", OrderSchema);

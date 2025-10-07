@@ -1,13 +1,7 @@
 import { Types } from "mongoose";
 import { throwBadRequest } from "./operationalErrors";
 
-export const isObjectId = (id: string): boolean => {
-  if (Types.ObjectId.isValid(id)) {
-    if (String(new Types.ObjectId(id)) === id) return true;
-    return false;
-  }
-  return false;
-};
+export const isObjectId = (id: string): boolean => Types.ObjectId.isValid(id);
 
 export const toObjectId = (id: string): Types.ObjectId => {
   if (!isObjectId(id)) {

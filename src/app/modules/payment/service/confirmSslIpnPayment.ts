@@ -11,6 +11,7 @@ import {
   throwNotFound,
   toObjectId,
 } from "@utils/index";
+import { incrementCouponUsageByCode } from "@app/modules/coupon/service";
 
 export const confirmSslIpnPayment = async (ipnPayload: any) => {
   const {
@@ -82,7 +83,11 @@ export const confirmSslIpnPayment = async (ipnPayload: any) => {
   const currencyMatches = validatedData.currency === "BDT";
 
   if (isValid && amountMatches && currencyMatches) {
-    await confirmOrder(existingOrder);
+    const newOrder = await confirmOrder(existingOrder);
+
+    if (newOrder?._id && existingOrder.couponCode) {
+      await incrementCouponUsageByCode(existingOrder.couponCode);
+    }
   }
 
   return {
