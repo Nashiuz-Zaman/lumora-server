@@ -1,52 +1,26 @@
-import { QueryBuilder } from "@app/classes/QueryBuilder";
-import { ProductStatus } from "../product.constants";
-import { ProductModel } from "../product.model";
 import { IProduct } from "../product.type";
+import { getProducts } from "./getProducts";
+import { isObjectId, toObjectId } from "@utils/objectIdUtils";
+import { throwBadRequest } from "@utils/operationalErrors";
+import { ProductStatus } from "../product.constants";
 
-/**
- * Fetches up to 20 products that share tags with the input string.
- *
- * @param tags Comma-separated string of tags
- * @returns Promise resolving to an array of matching products
- */
-export async function getRelatedProducts(
-  tags: string | undefined
-): Promise<IProduct[]> {
-  if (!tags) return [];
+export const getRelatedProducts = async (
+  productId: string,
+  topCategoryId: string
+): Promise<IProduct[]> => {
+  if (!isObjectId(productId) || !isObjectId(topCategoryId))
+    return throwBadRequest("Invalid productId or topCategoryId");
 
-  const tagsArray = tags
-    .split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
-
-  if (tagsArray.length === 0) return [];
-
-  // Build $or with regex for each tag
-  const tagMatchConditions = tagsArray.map((t) => ({
-    tags: { $regex: new RegExp(`\\b${t}\\b`, "i") },
-  }));
-
-  const relatedProductsQuery = new QueryBuilder(ProductModel, {
-    page: 1,
+  const queryObj = {
     limit: 20,
-  });
+    "topCategory._id": topCategoryId,
+    _id: { ne: productId },
+    status: ProductStatus.Active,
+    limitFields:
+      "defaultImage,defaultPrice,defaultOldPrice,title,brand,slug,averageRating,totalReviews",
+  };
 
-  relatedProductsQuery
-    .customMethod([
-      {
-        $match: {
-          status: { $ne: ProductStatus.Deleted },
-          $or: tagMatchConditions,
-        },
-      },
-      { $sort: { createdAt: -1 } },
-      { $limit: 20 },
-    ])
-    .removeField("variants")
-    .removeField("images")
-    .sort()
-    .limitFields();
+  const { products } = await getProducts(queryObj);
 
-  const products = await relatedProductsQuery.exec();
   return products;
-}
+};

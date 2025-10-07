@@ -1,16 +1,23 @@
-import { RequestHandler } from "express";
-import { getRelatedProducts } from "../service/getRelatedProducts";
+import { Request, Response } from "express";
+import { getRelatedProducts } from "../service";
 import {
-  throwInternalServerError,
   sendSuccess,
   catchAsync,
+  throwInternalServerError,
 } from "@utils/index";
 
-export const getRelatedProductsController: RequestHandler = catchAsync(
-  async (req, res) => {
-    const tags = req.query.tags as string;
+export const getRelatedProductsController = catchAsync(
+  async (req: Request, res: Response) => {
+    const { productId, topCategoryId } = req.query;
 
-    const products = await getRelatedProducts(tags);
+    console.log(productId, topCategoryId);
+
+    const products = await getRelatedProducts(
+      productId as string,
+      topCategoryId as string
+    );
+
+    console.log(products);
 
     if (Array.isArray(products))
       return sendSuccess(res, { data: { products } });

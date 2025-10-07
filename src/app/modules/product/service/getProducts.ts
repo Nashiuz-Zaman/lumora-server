@@ -34,10 +34,10 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
   const brandFilter = buildInQuery(newQueryObj.brand as any);
 
   if (queryObj.subCategory) {
-    newQueryObj.subCategory = subCategoryFilter;
-  } else {
-    delete queryObj.subCategory;
+    newQueryObj["subCategory.slug"] = subCategoryFilter;
+    delete newQueryObj.subCategory;
   }
+
   if (queryObj.brand) {
     newQueryObj.brand = brandFilter;
   } else {
@@ -45,6 +45,8 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
   }
 
   newQueryObj = JSON.parse(JSON.stringify(newQueryObj).replace(/\$in/gi, "in"));
+
+  console.log(newQueryObj);
 
   // === PRODUCT QUERY ===
   const productQuery = new QueryBuilder(ProductModel, newQueryObj);
@@ -61,7 +63,6 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
       as: "topCategory",
       unwind: true,
     })
-    .addField("topCategory", "$topCategory.slug")
     .populate({
       from: "categories",
       localField: "subCategory",
@@ -69,7 +70,6 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
       as: "subCategory",
       unwind: true,
     })
-    .addField("subCategory", "$subCategory.slug")
     .addField("defaultOldPrice", {
       $ifNull: [{ $arrayElemAt: ["$variants.oldPrice", 0] }, null],
     })
@@ -138,7 +138,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
       as: "topCategory",
       unwind: true,
     })
-    .addField("topCategory", "$topCategory.slug")
+
     .populate({
       from: "categories",
       localField: "subCategory",
@@ -146,7 +146,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
       as: "subCategory",
       unwind: true,
     })
-    .addField("subCategory", "$subCategory.slug")
+
     .filter()
     .search([...ProductSearchableFields])
     .customMethod([

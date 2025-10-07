@@ -1,3 +1,5 @@
+import { isObjectId, toObjectId } from "@utils/objectIdUtils";
+import { viewDetailedLog } from "@utils/viewDetailedLog";
 import { Model, Types } from "mongoose";
 
 export interface IQueryMeta {
@@ -141,12 +143,17 @@ export class QueryBuilder<T> {
 
       // Handle $in/$nin string-to-array conversion
       else if (typeof value === "object") {
-        for (const operator in value) {
+        for (const keyInValueObj in value) {
           if (
-            convertToArrayOperators.includes(operator) &&
-            typeof value[operator] === "string"
+            convertToArrayOperators.includes(keyInValueObj) &&
+            typeof value[keyInValueObj] === "string"
           ) {
-            value[operator] = value[operator].split(",");
+            value[keyInValueObj] = value[keyInValueObj].split(",");
+          } else if (
+            typeof value[keyInValueObj] === "string" &&
+            isObjectId(value[keyInValueObj])
+          ) {
+            value[keyInValueObj] = toObjectId(value[keyInValueObj]);
           }
         }
       }
@@ -156,6 +163,8 @@ export class QueryBuilder<T> {
         mongoQueryObject[key] = value === "true";
       }
     }
+
+    viewDetailedLog({ $match: mongoQueryObject });
 
     this.pipeline.push({ $match: mongoQueryObject });
     return this;
