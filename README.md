@@ -34,7 +34,7 @@ npm install
 
 ### 3️⃣ Set up environment variables
 
-Create a `.env` file in the project root and add the following:
+Create a `.env` file inside an env folder at project root (root > env > .env) and add the following:
 
 ```env
 # Client URLs
