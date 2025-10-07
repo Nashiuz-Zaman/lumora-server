@@ -1,10 +1,10 @@
 import { config } from "./config/env";
 import { clientDomain, clientUrl, server } from "./app/app";
 import { connectDb } from "./config/db";
-// import { seedCategories } from "./app/modules/category/service/seedCategories";
-// import { seedSuperAdmin } from "@app/modules/admin/services";
+import { seedCategories } from "./app/modules/category/service/seedCategories";
 import { seedProductCollections } from "@app/modules/productCollection/service/seedProductCollections";
 import { seedBackupProductCollections } from "@app/modules/backupProductCollection/service";
+import { seedSuperAdminAndDemoAdmin } from "@app/modules/admin/services";
 
 const port = config.port;
 
@@ -17,10 +17,10 @@ const main = async (): Promise<void> => {
     if (config.environment !== "production") {
       console.log("Seeding initial data...");
       try {
-        // await seedSuperAdmin();
-        // await seedCategories();
-        // await seedProductCollections();
-        // await seedBackupProductCollections()
+        await seedSuperAdminAndDemoAdmin();
+        await seedCategories();
+        await seedProductCollections();
+        await seedBackupProductCollections()
         console.log("Database seeding completed ✅");
       } catch (err) {
         console.error("Seeding error:", err);

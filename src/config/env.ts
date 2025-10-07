@@ -20,6 +20,8 @@ export const config = {
   apiVersion: process.env.API_VERSION,
   superadminEmail: process.env.SUPERADMIN_EMAIL,
   superadminPassword: process.env.SUPERADMIN_PASSWORD,
+  demoadminEmail: process.env.DEMOADMIN_EMAIL,
+  demoadminPassword: process.env.DEMOADMIN_PASSWORD,
   cloudinaryCloud: process.env.CLOUDINARY_CLOUD_NAME,
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,

@@ -42,7 +42,7 @@ productRouter.get("/search", getProductsForSearchPageController);
 // products to bulk-delete
 productRouter.patch(
   "/bulk-delete",
-  userAuthMiddleware([admin, superAdmin]),
+  userAuthMiddleware([superAdmin]),
   bulkSoftDeleteProductsController
 );
 
@@ -54,10 +54,7 @@ productRouter.post(
 );
 
 //  get admin product single
-productRouter.get(
-  "/:id/admin",
-  getProductForAdminController
-);
+productRouter.get("/:id/admin", getProductForAdminController);
 
 // update product
 productRouter.patch(
