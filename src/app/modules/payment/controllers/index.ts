@@ -1,4 +1,4 @@
 export * from "./getPaymentList";
-export * from "./handleSslIpn";
+export * from "./axe";
 export * from "./issueRefund";
 export * from "./paymentResult";

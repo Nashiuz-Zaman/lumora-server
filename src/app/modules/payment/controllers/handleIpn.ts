@@ -4,7 +4,7 @@ import { sendSuccess } from "@utils/sendSuccess";
 import { RequestHandler } from "express";
 import { confirmSslIpnPayment } from "../service/confirmSslIpnPayment";
 
-export const handleSslIpnController: RequestHandler = catchAsync(
+export const handleIpnController: RequestHandler = catchAsync(
   async (req, res) => {
     const result = await confirmSslIpnPayment(req.body);
 

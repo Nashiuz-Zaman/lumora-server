@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  handleSslIpnController,
+  handleIpnController,
   paymentResultController,
   getPaymentList,
 } from "./controllers";
@@ -15,7 +15,7 @@ const { admin, superAdmin } = UserRoles;
 paymentRouter.get("/", userAuthMiddleware([admin, superAdmin]), getPaymentList);
 
 // Handles IPN callback
-paymentRouter.post("/ipn", handleSslIpnController);
+paymentRouter.post("/ipn", handleIpnController);
 
 // Handles payment results
 paymentRouter.post("/result", paymentResultController);
