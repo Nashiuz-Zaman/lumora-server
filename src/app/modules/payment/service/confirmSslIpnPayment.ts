@@ -31,6 +31,7 @@ export const confirmSslIpnPayment = async (ipnPayload: any) => {
 
   if (status !== "VALID") {
     await OrderModel.deleteOne({ _id: convertedOrderObjId });
+    return
   }
 
   const validationUrl =
