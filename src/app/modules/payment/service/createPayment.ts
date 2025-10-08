@@ -14,38 +14,20 @@ export const createPayment = async ({
   name: string;
   email: string;
   transactionId: string;
-  validatedData?: any; // optional
+  validatedData?: any;
   rawIpnPayload: any;
 }) => {
-  const amount = parseFloat(
-    validatedData?.amount || rawIpnPayload?.amount || "0"
-  );
-
-  const currency = validatedData?.currency || rawIpnPayload?.currency || "BDT"; // match schema enum
-
-  const status = validatedData?.status
-    ? validatedData?.status === "VALID"
-      ? PaymentStatus.Paid
-      : validatedData?.status === "FAILED"
-      ? PaymentStatus.Failed
-      : PaymentStatus.Cancelled
-    : rawIpnPayload?.status
-    ? rawIpnPayload?.status === "VALID"
-      ? PaymentStatus.Paid
-      : rawIpnPayload?.status === "FAILED"
-      ? PaymentStatus.Failed
-      : PaymentStatus.Cancelled
-    : PaymentStatus.Failed;
+  const data = validatedData || rawIpnPayload;
 
   const payment = await PaymentModel.create({
     order: orderObjId,
     name,
     email,
     transactionId,
-    amount,
-    currency,
-    status,
-    paymentDetails: validatedData?.status ? validatedData : rawIpnPayload,
+    amount: parseFloat(data.amount || "0"),
+    currency: data.currency || "BDT",
+    status: PaymentStatus.Paid,
+    paymentDetails: data,
   });
 
   return payment;
