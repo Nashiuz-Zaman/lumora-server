@@ -4,9 +4,9 @@ import { IRefundOptions } from "../payment.type";
 
 const store_id = config.sslStoreId;
 const store_passwd = config.sslStorePass;
-const is_live = false; // Set true for actual banking transactions
+const is_live = false;
 
-export const refundPayment = async ({
+export const refundViaSslCommerz = async ({
   refundAmount,
   refundReason,
   bankTranId,

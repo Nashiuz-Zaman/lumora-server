@@ -1,10 +1,17 @@
 import { RequestHandler } from "express";
 
-import { catchAsync } from "@utils/catchAsync";
-import { sendSuccess } from "@utils/sendSuccess";
-import { getPayments } from "../service/getPayments";
-
+// Shared types
 import { ISecureRequest } from "@app/shared/types";
+
+// Utils
+import {
+  catchAsync,
+  sendSuccess,
+  throwInternalServerError,
+} from "@utils/index";
+
+// Services
+import { getPayments } from "../service/getPayments";
 
 export const getPaymentList: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
@@ -12,9 +19,11 @@ export const getPaymentList: RequestHandler = catchAsync(
 
     const result = await getPayments(query);
 
-    return sendSuccess(res, {
-      message: `Payments fetched successfully`,
-      data: result,
-    });
+    if (result)
+      return sendSuccess(res, {
+        data: result,
+      });
+
+    return throwInternalServerError();
   }
 );

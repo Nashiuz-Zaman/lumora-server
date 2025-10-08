@@ -1,37 +1,27 @@
 // core
 import { RequestHandler } from "express";
-import { v4 as uuidv4 } from "uuid";
 
-// Services / helpers
-import { getPayment } from "../service/getPayment";
-import { handleRefundWithSave } from "../helpers/handleRefundWithSave";
+// services
+import { issueRefund } from "../service";
 
-// Utils
+// utils
 import {
   catchAsync,
   sendSuccess,
-  throwBadRequest,
   throwInternalServerError,
+  toObjectId,
 } from "@utils/index";
 
-export const issueRefundController: RequestHandler = catchAsync(
+export const refundPaymentController: RequestHandler = catchAsync(
   async (req, res) => {
-    const _id = req.params.id;
+    const { id: _id } = req.params;
     const { reason } = req.body;
 
-    if (!_id) return throwBadRequest("Payment _id not found");
-
-    const payment = await getPayment({ _id });
-
-    const updatedPayment = await handleRefundWithSave(
-      payment!,
-      uuidv4(),
-      reason
-    );
+    const updatedPayment = await issueRefund(toObjectId(_id), reason);
 
     if (updatedPayment?._id)
       return sendSuccess(res, { message: "Refund Issued Successfully" });
 
-    return throwInternalServerError("Error issuing refund");
+    return throwInternalServerError();
   }
 );

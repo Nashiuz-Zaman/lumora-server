@@ -1,8 +1,6 @@
-// services/getPaginatedUsersByRole.ts
-
 import { QueryBuilder } from "@app/classes/QueryBuilder";
 import { PaymentModel } from "../payment.model";
-import { PaymentSearchableFields, PaymentStatus } from "../payment.constant";
+import { PaymentSearchableFields } from "../payment.constant";
 import { normalizeStatusFilter } from "@utils/normalizeQueryParam";
 
 export const getPayments = async (queryObj: Record<string, any>) => {
@@ -11,17 +9,10 @@ export const getPayments = async (queryObj: Record<string, any>) => {
   const paymentsQuery = new QueryBuilder(PaymentModel, newQueryObj);
 
   const payments = await paymentsQuery
-    .populate({
-      localField: "order",
-      from: "orders",
-      foreignField: "_id",
-      as: "order",
-      unwind: true,
-    })
-    .addField("orderId", "order.orderId")
-    .removeField("order")
     .filter()
     .search([...PaymentSearchableFields])
+    .addField("cardType", "$paymentDetails.card_type")
+    .addField("refundReason", "$refundDetails.refundReason")
     .sort()
     .limitFields()
     .paginate()

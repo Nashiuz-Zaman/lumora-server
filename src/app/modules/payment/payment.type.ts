@@ -2,6 +2,7 @@ import { HydratedDocument, Types } from "mongoose";
 import { TPaymentStatus } from "./payment.constant";
 
 export interface IPayment {
+  _id?: Types.ObjectId;
   order: Types.ObjectId;
   orderId: string;
   name: string;

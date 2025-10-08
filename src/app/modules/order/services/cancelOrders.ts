@@ -4,6 +4,9 @@ import { OrderStatus } from "../order.constants";
 import { decrementCouponUsageByCode } from "@app/modules/coupon/service";
 import { toObjectId, throwBadRequest } from "@utils/index";
 import { updateStock } from "@app/modules/product/service";
+import { PaymentModel } from "@app/modules/payment/payment.model";
+import { PaymentStatus } from "@app/modules/payment/payment.constant";
+import { issueRefund } from "@app/modules/payment/service";
 
 export const cancelOrders = async (_ids: string[], reason?: string) => {
   if (!Array.isArray(_ids) || _ids.length === 0)
@@ -28,6 +31,17 @@ export const cancelOrders = async (_ids: string[], reason?: string) => {
       }
 
       await updateStock(order, "cancel", session);
+
+      const paymentForOrder = await PaymentModel.findOne({
+        order: order._id,
+        status: PaymentStatus.Paid,
+      })
+        .select("_id")
+        .lean();
+
+      if (paymentForOrder?._id) {
+        await issueRefund(paymentForOrder._id, "Admin Cancelled", 0, session);
+      }
     }
 
     const idsToCancel = ordersToCancel.map((o) => o._id);
