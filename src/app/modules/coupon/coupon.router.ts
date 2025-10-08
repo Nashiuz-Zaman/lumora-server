@@ -4,7 +4,6 @@ import { Router } from "express";
 import {
   createCouponController,
   getCouponList,
-  deleteCouponsController,
   expireCouponsController,
 } from "./controllers";
 
@@ -30,13 +29,6 @@ couponRouter.patch(
   "/admin-expire",
   userAuthMiddleware([admin, superAdmin]),
   expireCouponsController
-);
-
-// PATCH delete coupons
-couponRouter.patch(
-  "/admin-delete",
-  userAuthMiddleware([admin, superAdmin]),
-  deleteCouponsController
 );
 
 export default couponRouter;

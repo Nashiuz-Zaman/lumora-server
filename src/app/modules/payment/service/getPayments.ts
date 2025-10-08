@@ -6,9 +6,7 @@ import { PaymentSearchableFields, PaymentStatus } from "../payment.constant";
 import { normalizeStatusFilter } from "@utils/normalizeQueryParam";
 
 export const getPayments = async (queryObj: Record<string, any>) => {
-  const newQueryObj = normalizeStatusFilter(queryObj, {
-    ne: PaymentStatus.Deleted,
-  });
+  const newQueryObj = normalizeStatusFilter(queryObj);
 
   const paymentsQuery = new QueryBuilder(PaymentModel, newQueryObj);
 
