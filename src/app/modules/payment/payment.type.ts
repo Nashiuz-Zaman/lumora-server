@@ -3,6 +3,7 @@ import { TPaymentStatus } from "./payment.constant";
 
 export interface IPayment {
   order: Types.ObjectId;
+  orderId: string;
   name: string;
   email: string;
   status: TPaymentStatus;

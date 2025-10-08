@@ -1,16 +1,13 @@
 export const PaymentStatus = Object.freeze({
-  Deleted: -3,
-  "Partially Refunded": -2,
+  Paid: 1,
+  "Partially Refunded": 0,
   Refunded: -1,
-  Cancelled: 0,
-  Failed: 1,
-  Paid: 2,
 } as const);
 
 export type TPaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus];
 
 export const PaymentSearchableFields = Object.freeze([
   "orderId",
-  "customerName",
-  "customerEmail",
+  "name",
+  "email",
 ]);

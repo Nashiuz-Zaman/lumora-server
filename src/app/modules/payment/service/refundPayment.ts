@@ -4,13 +4,13 @@ import { IRefundOptions } from "../payment.type";
 
 const store_id = config.sslStoreId;
 const store_passwd = config.sslStorePass;
-const is_live = config.environment === "production"; // Set true for production
+const is_live = false; // Set true for actual banking transactions
 
 export const refundPayment = async ({
   refundAmount,
   refundReason,
   bankTranId,
-  refundTransId, // new unique refund identifier
+  refundTransId, 
   refeId,
 }: IRefundOptions) => {
   const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);

@@ -14,9 +14,7 @@ import { CouponModel } from "../coupon.model";
 import { ICoupon } from "../coupon.type";
 
 export const getCoupons = async (queryObj: Record<string, any>) => {
-  const newQueryObj = normalizeStatusFilter(queryObj, {
-    ne: CouponStatus.Deleted,
-  });
+  const newQueryObj = normalizeStatusFilter(queryObj);
 
   const query = new QueryBuilder<ICoupon>(CouponModel, newQueryObj);
 

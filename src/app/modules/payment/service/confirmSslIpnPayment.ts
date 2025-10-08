@@ -31,7 +31,7 @@ export const confirmSslIpnPayment = async (ipnPayload: any) => {
 
   if (status !== "VALID") {
     await OrderModel.deleteOne({ _id: convertedOrderObjId });
-    return
+    return;
   }
 
   const validationUrl =
@@ -70,6 +70,7 @@ export const confirmSslIpnPayment = async (ipnPayload: any) => {
   // Save the payment record even if it failed or had mismatches
   const newPayment = await createPayment({
     email: cus_email,
+    orderId: existingOrder.orderId!,
     name: cus_name,
     transactionId: tran_id,
     validatedData,
@@ -92,7 +93,7 @@ export const confirmSslIpnPayment = async (ipnPayload: any) => {
   }
 
   return {
-    status: validatedData.status, // VALID / FAILED / CANCELLED
+    status: validatedData.status,
     paymentId: newPayment._id,
     orderStatus: existingOrder.status,
   };

@@ -9,6 +9,11 @@ const paymentSchema = new Schema<IPayment>(
       ref: "Order",
       required: true,
     },
+    orderId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,

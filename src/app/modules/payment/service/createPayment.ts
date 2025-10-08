@@ -4,6 +4,7 @@ import { Types } from "mongoose";
 
 export const createPayment = async ({
   orderObjId,
+  orderId,
   name,
   email,
   transactionId,
@@ -11,6 +12,7 @@ export const createPayment = async ({
   rawIpnPayload,
 }: {
   orderObjId: Types.ObjectId;
+  orderId: string;
   name: string;
   email: string;
   transactionId: string;
@@ -21,12 +23,14 @@ export const createPayment = async ({
 
   const payment = await PaymentModel.create({
     order: orderObjId,
+    orderId,
     name,
     email,
     transactionId,
     amount: parseFloat(data.amount || "0"),
     currency: data.currency || "BDT",
     status: PaymentStatus.Paid,
+    gateway: "sslcommerz",
     paymentDetails: data,
   });
 
