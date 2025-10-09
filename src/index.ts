@@ -102,3 +102,5 @@ const main = async (): Promise<void> => {
 
 // Start everything
 main();
+
+export default app;
