@@ -5,7 +5,7 @@ import { TOrderDoc } from "@app/modules/order/order.type";
 
 const store_id = config.sslStoreId;
 const store_passwd = config.sslStorePass;
-const is_live = config.environment === "production"; // Set true for production
+const is_live = false // Set true for production
 
 export const payViaSslCommerz = async (
   payload: {
