@@ -2,13 +2,6 @@
   "name": "lumora-server",
   "version": "1.0.0",
   "main": "index.js",
-  "_moduleAliases": {
-    "@app": "src/app",
-    "@config": "src/config",
-    "@types": "src/types",
-    "@shared": "src/shared",
-    "@utils": "src/utils"
-  },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "rimraf dist && tsc && tsc-alias",
@@ -31,7 +24,6 @@
     "http-status": "^2.1.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
-    "module-alias": "^2.2.3",
     "mongoose": "^8.5.1",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.14",

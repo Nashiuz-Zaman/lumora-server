@@ -1,9 +1,3 @@
-if (process.env.NODE_ENV !== "production") {
-  import("module-alias/register").then(() => {
-    console.log("Module alias loaded for dev");
-  });
-}
-
 import { config } from "./config/env";
 import { clientDomain, clientUrl, server } from "./app";
 import { connectDb } from "./config/db";
