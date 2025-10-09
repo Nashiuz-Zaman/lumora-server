@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
 
-    "outDir": "./dist",
+    "outDir": "dist",
     "sourceMap": true,
     "strict": true,
     "skipLibCheck": true,
