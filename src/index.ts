@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 import { config } from "./config/env";
-import app, { clientDomain, clientUrl, server } from "./app";
+import { clientDomain, clientUrl, server } from "./app";
 import { connectDb } from "./config/db";
 import { seedCategories } from "./app/modules/category/service/seedCategories";
 import { seedProductCollections } from "@app/modules/productCollection/service/seedProductCollections";
@@ -47,5 +47,3 @@ const main = async (): Promise<void> => {
 };
 
 main();
-
-export default app;
