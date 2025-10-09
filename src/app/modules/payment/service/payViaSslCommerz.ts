@@ -5,25 +5,28 @@ import { TOrderDoc } from "@app/modules/order/order.type";
 
 const store_id = config.sslStoreId;
 const store_passwd = config.sslStorePass;
-const is_live = false // Set true for production
+const is_live = false; // always false for demo/sandbox
+
+interface IPayPayload {
+  order: TOrderDoc;
+  deliveryAddress: string;
+  city?: string;
+  zipCode?: string;
+  name: string;
+  email: string;
+  phone?: string;
+}
 
 export const payViaSslCommerz = async (
-  payload: {
-    order: TOrderDoc;
-    deliveryAddress: string;
-    city?: string;
-    zipCode?: string;
-    name: string;
-    email: string;
-    phone?: string;
-  },
+  payload: IPayPayload,
   serverUrl: string
 ) => {
   const { order, deliveryAddress, city, zipCode, name, email, phone } = payload;
 
-  // if order found Add latest phone number customer provided
-  order.phone = phone;
-  await order.save();
+  if (phone) {
+    order.phone = phone;
+    await order.save();
+  }
 
   const productName = `${order.items.length} Products from Lumora`;
   const transactionId = `${order._id}_${uuidv4()}`;
@@ -43,27 +46,39 @@ export const payViaSslCommerz = async (
     product_profile: "general",
     cus_name: name,
     cus_email: email,
-    cus_add1: "",
+    cus_add1: "N/A",
     cus_add2: "",
-    cus_city: city,
-    cus_state: "",
-    cus_postcode: zipCode,
+    cus_city: city || "Dhaka",
+    cus_state: "N/A",
+    cus_postcode: zipCode || "0000",
     cus_country: "Bangladesh",
-    cus_phone: phone,
-    cus_fax: phone,
+    cus_phone: phone || "0000000000",
+    cus_fax: phone || "0000000000",
     ship_name: name,
-    ship_add1: deliveryAddress,
+    ship_add1: deliveryAddress || "N/A",
     ship_add2: "",
-    ship_city: city,
-    ship_state: "",
-    ship_postcode: zipCode,
+    ship_city: city || "Dhaka",
+    ship_state: "N/A",
+    ship_postcode: zipCode || "0000",
     ship_country: "Bangladesh",
     value_a: name,
     value_b: email,
   };
 
-  const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
-  const apiResponse = await sslcz.init(data);
+  try {
+    const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
+    const apiResponse = await sslcz.init(data);
 
-  return apiResponse.GatewayPageURL as string;
+    if (!apiResponse?.GatewayPageURL) {
+      console.error("SSLCommerz API Response:", apiResponse);
+      throw new Error("Failed to get payment URL from SSLCommerz");
+    }
+
+    return apiResponse.GatewayPageURL as string;
+  } catch (err) {
+    console.error("SSLCommerz Init Error:", err);
+    throw new Error(
+      `Error initiating payment via SSLCommerz: ${(err as Error).message}`
+    );
+  }
 };
