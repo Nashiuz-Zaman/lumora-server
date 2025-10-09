@@ -19,7 +19,7 @@ import {
   verifyToken,
 } from "@utils/index";
 import { getUserWithProfile } from "./getUserWithProfile";
-import { clientUrl } from "app";
+import { clientUrl } from "index";
 
 export type TVerifyUserAccountResult =
   | { status: "redirect"; url: string }

@@ -8,7 +8,7 @@ import {
   TVerifyUserAccountResult,
 } from "@app/modules/user/services/verifyUserAccountEmail";
 import { setAuthCookies } from "@app/modules/auth/services";
-import { clientUrl } from "app";
+import { clientUrl } from "index";
 
 export const verifyUserAccountController: RequestHandler = catchAsync(
   async (req, res) => {

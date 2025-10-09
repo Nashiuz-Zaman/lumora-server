@@ -1,4 +1,4 @@
-import { clientUrl } from "app";
+import { clientUrl } from "index";
 import { OrderModel } from "@app/modules/order/order.model";
 import { catchAsync } from "@utils/catchAsync";
 import { RequestHandler } from "express";
