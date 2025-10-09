@@ -9,7 +9,7 @@ export const config = {
   smtpUser: process.env.SMTP_USER_EMAIL,
   emailSender: process.env.SMTP_USER_EMAIL,
   smtpPass: process.env.SMTP_APP_PASSWORD,
-  environment: process.env.NODE_ENV,
+  environment: process.env.NODE_ENV || 'development',
   devClientDomain: process.env.DEV_CLIENT_DOMAIN,
   devClientURL: process.env.DEV_CLIENT_URL,
   prodClientDomain: process.env.PROD_CLIENT_DOMAIN,

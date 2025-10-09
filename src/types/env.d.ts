@@ -5,7 +5,7 @@ declare namespace NodeJS {
     MONGO_URI: string;
     SMTP_USER_EMAIL: string;
     SMTP_APP_PASSWORD: string;
-    NODE_ENV: "development" | "production" | "test";
+    NODE_ENV: "development" | "production";
 
     DEV_CLIENT_DOMAIN: string;
     DEV_CLIENT_URL: string;
