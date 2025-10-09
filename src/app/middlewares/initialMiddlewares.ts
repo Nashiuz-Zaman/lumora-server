@@ -3,7 +3,10 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { config } from "@config/env";
 
-let allowedOrigins = [config.prodClientURL];
+let allowedOrigins = [
+  config.prodClientURL,
+  "https://lumora-client-85n1.onrender.com", // the client that was deployed in render
+];
 
 if (config.environment !== "production") {
   allowedOrigins = [...allowedOrigins, "http://localhost:3000"];
