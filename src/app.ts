@@ -3,16 +3,16 @@ import express, { NextFunction, Request, Response } from "express";
 import http from "http";
 
 // Config
-import { config } from "../config/env";
+import { config } from "@config/env";
 
 // Classes
-import { AppError } from "./classes/AppError";
+import { AppError } from "@app/classes";
 
 // Routers
-import mainRouter from "./main-router";
+import mainRouter from "@app/main-router";
 
 // Middlewares
-import { initialMiddlewares, globalErrorHandler } from "./middlewares";
+import { initialMiddlewares, globalErrorHandler } from "@app/middlewares";
 
 // Utils
 import { renderHomePage } from "@utils/index";

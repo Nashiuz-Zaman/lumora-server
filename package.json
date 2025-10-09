@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "_moduleAliases": {
-    "@app": "dist/app",
-    "@config": "dist/config",
-    "@types": "dist/types",
-    "@shared": "dist/shared",
-    "@utils": "dist/utils"
+    "@app": "src/app",
+    "@config": "src/config",
+    "@types": "src/types",
+    "@shared": "src/shared",
+    "@utils": "src/utils"
   },
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "rimraf dist && tsc",
-    "start": "cross-env NODE_ENV=production node dist/start.js"
+    "build": "rimraf dist && tsc && tsc-alias",
+    "start": "cross-env NODE_ENV=production node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -48,11 +48,13 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/lodash": "^4.17.17",
+    "@types/module-alias": "^2.0.4",
     "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.11",
     "@types/node": "^22.0.0",
     "@types/nodemailer": "^6.4.15",
     "@types/user-agents": "^1.0.4",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.20.3",
     "typescript": "^5.5.3"
   }
