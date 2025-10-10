@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { catchAsync, sendSuccess } from "@utils/index";
-import { getUserCart, mergeCartData } from "../services";
+import { getUserCart, mergeCart } from "../services";
 import { ISecureRequest } from "@app/shared/types";
 import { emptyCart } from "../cart.constant";
 
@@ -10,7 +10,7 @@ export const getUserCartOptionalMergeController: RequestHandler = catchAsync(
 
     // if cart ID from decoded cookie exists then it means there is a session cart for guest cart, we have to merge it
     if (cartId) {
-      const newMergedCart = await mergeCartData(res, userId!, cartId);
+      const newMergedCart = await mergeCart(res, userId!, cartId);
 
       return sendSuccess(res, {
         data: newMergedCart?._id ? newMergedCart : emptyCart,

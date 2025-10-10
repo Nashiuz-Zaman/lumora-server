@@ -4,7 +4,7 @@ import { cartCookieName } from "../cart.constant";
 import { toObjectId, cleanCookie, throwBadRequest } from "@utils/index";
 import { TDatabaseCartItem } from "../cart.type";
 
-export const mergeCartData = async (
+export const mergeCart = async (
   res: Response,
   userId: string,
   cartId: string
@@ -34,7 +34,8 @@ export const mergeCartData = async (
       );
 
       if (index >= 0) {
-        mergedItems[index].quantity = item.quantity;
+        mergedItems[index].quantity =
+          mergedItems[index]?.quantity + item.quantity;
       } else {
         mergedItems.push(item);
       }

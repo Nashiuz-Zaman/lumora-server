@@ -1,5 +1,5 @@
 export * from "./createCart";
-export * from "./mergeCartData";
+export * from "./mergeCart";
 export * from "./updateCartItems";
 export * from "./setCartCookie";
 export * from "./clearCart";

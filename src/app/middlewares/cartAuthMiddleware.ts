@@ -8,6 +8,8 @@ export const cartAuthMiddleware = () =>
   catchAsync(async (req: ISecureRequest, res: Response, next: NextFunction) => {
     const cartToken = req.cookies?.[cartCookieName];
 
+    console.log(req.decoded);
+
     // no cart cookie
     if (!cartToken) {
       return next();
@@ -21,7 +23,7 @@ export const cartAuthMiddleware = () =>
       return next();
     }
 
-    req.decoded = { ...req?.decoded, ...result?.decoded };
+    req.decoded = { ...req?.decoded, cartId: result?.decoded.cartId };
 
     next();
   });

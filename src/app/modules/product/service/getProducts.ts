@@ -46,7 +46,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
 
   newQueryObj = JSON.parse(JSON.stringify(newQueryObj).replace(/\$in/gi, "in"));
 
-  console.log(newQueryObj);
+
 
   // === PRODUCT QUERY ===
   const productQuery = new QueryBuilder(ProductModel, newQueryObj);

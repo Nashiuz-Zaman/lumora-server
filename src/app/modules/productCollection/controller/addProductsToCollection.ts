@@ -16,8 +16,6 @@ export const addProductsToCollectionController: RequestHandler = catchAsync(
     const { productIds } = req.body;
     const role = req.decoded?.role;
 
-    console.log(role);
-
     if (role !== UserRoles.superAdmin) {
       const result = await addProductsToCollection(slug, productIds);
       if (result.success) return sendSuccess(res, { message: result.message });
