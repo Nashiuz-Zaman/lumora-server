@@ -9,7 +9,7 @@ export const logout: RequestHandler = catchAsync(async (_, res) => {
   res.clearCookie("Access_Token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: "lax",
     domain:
       process.env.NODE_ENV === "production"
         ? "lumora-server.vercel.app"
@@ -21,7 +21,7 @@ export const logout: RequestHandler = catchAsync(async (_, res) => {
   res.clearCookie("Refresh_Token", {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
+    sameSite: "lax",
     domain: "lumora-server.vercel.app",
 
     path: "/",
