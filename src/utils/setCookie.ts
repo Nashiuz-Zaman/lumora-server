@@ -7,6 +7,8 @@ interface ICookieOptions {
   httpOnly?: boolean;
   secure?: boolean;
   sameSite?: "strict" | "lax" | "none";
+  domain?: string;
+  path?: string;
 }
 
 export const setCookie = (
@@ -18,6 +20,10 @@ export const setCookie = (
     httpOnly = true,
     secure = true,
     sameSite = "none",
+    domain = process.env.NODE_ENV === "production"
+      ? "lumora-server.vercel.app"
+      : undefined,
+    path = "/",
   }: ICookieOptions
 ) => {
   res.cookie(cookieName, cookieContent, {
@@ -25,5 +31,7 @@ export const setCookie = (
     httpOnly,
     secure,
     sameSite,
+    domain,
+    path,
   });
 };

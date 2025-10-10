@@ -3,32 +3,30 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { config } from "@config/env";
 
-let allowedOrigins = [
-  config.prodClientURL,
-  "https://lumora-client-85n1.onrender.com", // the client that was deployed in render
+const allowedOrigins = [
+  config.prodClientURL, // "https://lumora-client.vercel.app"
+  "https://lumora-client-85n1.onrender.com",
 ];
 
 if (config.environment !== "production") {
-  allowedOrigins = [...allowedOrigins, "http://localhost:3000"];
+  allowedOrigins.push("http://localhost:3000");
 }
 
-export const initialMiddlewares = (app: Express): void => {
-  // Handle preflight requests first
-  app.options(
-    "*",
-    cors({
-      origin: allowedOrigins,
-      credentials: true,
-    })
-  );
+export const initialMiddlewares = (app: Express) => {
+  // Dynamic origin check
+  const corsOptions = {
+    origin: (origin: string | undefined, callback: any) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  };
 
-  app.use(
-    cors({
-      origin: allowedOrigins,
-      credentials: true,
-    })
-  );
-
+  app.options("*", cors(corsOptions));
+  app.use(cors(corsOptions));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
