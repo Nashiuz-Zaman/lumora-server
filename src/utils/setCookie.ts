@@ -20,9 +20,7 @@ export const setCookie = (
     httpOnly = true,
     secure = true,
     sameSite = "none",
-    domain = process.env.NODE_ENV === "production"
-      ? "lumora-server.vercel.app"
-      : undefined,
+    domain = 'lumora-server.vercel.app',  
     path = "/",
   }: ICookieOptions
 ) => {
