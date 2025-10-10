@@ -2,30 +2,11 @@
 import { RequestHandler } from "express";
 
 // utils
-import { catchAsync, sendSuccess } from "@utils/index";
+import { catchAsync, cleanCookie, sendSuccess } from "@utils/index";
+import { cleanAuthCookies } from "../services";
 
 export const logout: RequestHandler = catchAsync(async (_, res) => {
-  // Clear Access_Token
-  res.clearCookie("Access_Token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    domain:
-      process.env.NODE_ENV === "production"
-        ? "lumora-server.vercel.app"
-        : undefined,
-    path: "/",
-  });
-
-  // Clear Refresh_Token
-  res.clearCookie("Refresh_Token", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    domain: "lumora-server.vercel.app",
-
-    path: "/",
-  });
+  cleanAuthCookies(res);
 
   sendSuccess(res, { message: "Logged Out" });
 });

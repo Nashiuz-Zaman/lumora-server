@@ -7,6 +7,9 @@ import {
   setCookie,
 } from "@utils/index";
 
+export const accessTokenName = "accessToken";
+export const refreshTokenName = "refreshToken";
+
 export const setAuthCookies = (res: Response, payload: IJwtPayload) => {
   // Generate access and refresh tokens
   const accessToken = generateToken(payload, config.accessTokenSecret, "15m");
@@ -14,20 +17,20 @@ export const setAuthCookies = (res: Response, payload: IJwtPayload) => {
 
   // Set access token cookie (15 mins)
   setCookie(res, {
-    cookieName: "Access_Token",
+    cookieName: accessTokenName,
     cookieContent: accessToken,
     maxAge: 15 * 60 * 1000,
   });
 
   // Set refresh token cookie (3 days)
   setCookie(res, {
-    cookieName: "Refresh_Token",
+    cookieName: refreshTokenName,
     cookieContent: refreshToken,
     maxAge: 3 * 24 * 60 * 60 * 1000,
   });
 };
 
 export const cleanAuthCookies = (res: Response) => {
-  cleanCookie(res, "Access_Token");
-  cleanCookie(res, "Refresh_Token");
+  cleanCookie(res, accessTokenName);
+  cleanCookie(res, refreshTokenName);
 };

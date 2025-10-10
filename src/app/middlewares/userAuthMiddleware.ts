@@ -1,13 +1,12 @@
 import { Response, Request, NextFunction } from "express";
 import { config } from "../../config/env";
-import { UserModel } from "../modules/user/user.model";
 import { IRole } from "../modules/role/type/role.type";
 import {
   TPermittedUserRoles,
   UserStatus,
 } from "@app/modules/user/user.constants";
 import { ISecureRequest } from "@app/shared/types";
-import { setAuthCookies, cleanAuthCookies } from "@app/modules/auth/services";
+import { setAuthCookies, cleanAuthCookies, accessTokenName, refreshTokenName } from "@app/modules/auth/services";
 
 import {
   verifyToken,
@@ -48,8 +47,8 @@ export const userAuthMiddleware = (
   permittedRoles: TPermittedUserRoles = "ALL"
 ) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const accessToken = req.cookies?.Access_Token;
-    const refreshToken = req.cookies?.Refresh_Token;
+    const accessToken = req.cookies?.[accessTokenName]
+    const refreshToken = req.cookies?.[refreshTokenName];
 
     // 🔍 Check presence
     if (!accessToken && !refreshToken) {
