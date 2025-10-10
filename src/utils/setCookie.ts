@@ -19,8 +19,8 @@ export const setCookie = (
     maxAge = 10 * 60 * 1000, // default 10 mins
     httpOnly = true,
     secure = true,
-    sameSite = "lax",
-    domain = 'lumora-server.vercel.app',  
+    sameSite = "none",
+    domain = "lumora-server.vercel.app",
     path = "/",
   }: ICookieOptions
 ) => {

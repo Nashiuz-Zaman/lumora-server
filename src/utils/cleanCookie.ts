@@ -26,4 +26,13 @@ export const cleanCookie = (
     domain,
     path,
   });
+
+  res.cookie(cookieName, "", {
+    expires: new Date(0),
+    httpOnly,
+    secure,
+    sameSite,
+    domain,
+    path,
+  });
 };
