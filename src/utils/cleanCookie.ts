@@ -5,7 +5,6 @@ interface ICleanCookieOptions {
   httpOnly?: boolean;
   secure?: boolean;
   sameSite?: "strict" | "lax" | "none";
-  domain?: string;
 }
 
 export const cleanCookie = (
@@ -16,7 +15,6 @@ export const cleanCookie = (
     httpOnly = true,
     secure = true,
     sameSite = "none",
-    domain,
   }: ICleanCookieOptions = {}
 ): void => {
   res.clearCookie(cookieName, {
@@ -24,6 +22,5 @@ export const cleanCookie = (
     httpOnly,
     secure,
     sameSite,
-    domain,
   });
 };
