@@ -6,13 +6,12 @@ import { config } from "@config/env";
 const allowedOrigins = [
   config.prodClientURL, // "https://lumora-client.vercel.app"
   "https://lumora-client-85n1.onrender.com",
+  "https://sandbox.sslcommerz.com",
 ];
 
 if (config.environment !== "production") {
   allowedOrigins.push("http://localhost:3000");
 }
-
-allowedOrigins.push("https://sandbox.sslcommerz.com");
 
 export const initialMiddlewares = (app: Express) => {
   app.use(
