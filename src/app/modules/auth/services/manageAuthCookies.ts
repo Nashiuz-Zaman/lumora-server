@@ -33,4 +33,5 @@ export const setAuthCookies = (res: Response, payload: IJwtPayload) => {
 export const cleanAuthCookies = (res: Response) => {
   cleanCookie(res, accessTokenName);
   cleanCookie(res, refreshTokenName);
+  return
 };
