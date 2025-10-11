@@ -27,6 +27,11 @@ export const initialMiddlewares = (app: Express) => {
 
   app.options("*", cors(corsOptions));
   app.use(cors(corsOptions));
+
+  // only allow SSL commerz routes other thna allowedOrigins
+  app.use("/payments/result", cors({ origin: "*" }));
+  app.use("/payments/ipn", cors({ origin: "*" }));
+
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
