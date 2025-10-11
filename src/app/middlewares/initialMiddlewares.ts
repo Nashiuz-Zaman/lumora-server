@@ -12,7 +12,7 @@ if (config.environment !== "production") {
   allowedOrigins.push("http://localhost:3000");
 }
 
-allowedOrigins.push("null");
+allowedOrigins.push("https://sandbox.sslcommerz.com");
 
 export const initialMiddlewares = (app: Express) => {
   app.use(
