@@ -12,34 +12,17 @@ if (config.environment !== "production") {
   allowedOrigins.push("http://localhost:3000");
 }
 
-export const initialMiddlewares = (app: Express) => {
-  // Dynamic origin check
-  const corsOptions = {
-    origin: (origin: string | undefined, callback: any) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  };
+allowedOrigins.push("null");
 
-  // SSLCommerz routes first (allow any origin)
+export const initialMiddlewares = (app: Express) => {
   app.use(
-    "/api/v1/payments/result",
     cors({
-      origin: (origin: string | undefined, callback: any) => {
-        if (!origin || origin === "null") return callback(null, true);
-        return callback(null, true); // or restrict if needed
-      },
+      origin: allowedOrigins,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      allowedHeaders: ["Content-Type"],
       credentials: true,
     })
   );
-
-  app.use("/api/v1/payments/ipn", cors({ origin: true, credentials: true }));
-
-  app.use(cors(corsOptions));
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
