@@ -40,6 +40,8 @@ export const clientDomain: string =
 export const app = express();
 export const server = http.createServer(app);
 
+app.set("trust proxy", 1);
+
 // Apply middlewares
 initialMiddlewares(app);
 
