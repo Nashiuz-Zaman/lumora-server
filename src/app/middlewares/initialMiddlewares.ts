@@ -25,12 +25,20 @@ export const initialMiddlewares = (app: Express) => {
     credentials: true,
   };
 
+  // SSLCommerz routes first (allow any origin)
+  app.options(
+    "/api/v1/payments/result",
+    cors({ origin: true, credentials: true })
+  );
+  app.options(
+    "/api/v1/payments/ipn",
+    cors({ origin: true, credentials: true })
+  );
+  app.use("/api/v1/payments/result", cors({ origin: true, credentials: true }));
+  app.use("/api/v1/payments/ipn", cors({ origin: true, credentials: true }));
+
   app.options("*", cors(corsOptions));
   app.use(cors(corsOptions));
-
-  // only allow SSL commerz routes other thna allowedOrigins
-  app.use("/api/v1/payments/result", cors({ origin: true }));
-  app.use("/api/v1/payments/ipn", cors({ origin: true }));
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
