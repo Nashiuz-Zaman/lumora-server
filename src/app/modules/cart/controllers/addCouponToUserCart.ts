@@ -8,8 +8,6 @@ export const addCouponToUserCartController: RequestHandler = catchAsync(
     const { couponCode } = req.body;
     const userId = req.decoded?.userId;
 
-    console.log( req.decoded);
-
     const updatedCart = await addCouponToCart({ userId, code: couponCode });
 
     sendSuccess(res, {

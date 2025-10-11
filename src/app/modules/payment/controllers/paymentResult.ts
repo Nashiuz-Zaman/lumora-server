@@ -7,6 +7,9 @@ export const paymentResultController: RequestHandler = catchAsync(
   async (req, res) => {
     const { status, orderId } = req.query;
 
+    console.log("coming from payment result route", req.body);
+    console.log("coming from payment result route",req.headers);
+
     if (status !== "success") {
       await OrderModel.deleteOne({ orderId });
     }

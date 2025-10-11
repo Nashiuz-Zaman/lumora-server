@@ -6,7 +6,12 @@ import {
   UserStatus,
 } from "@app/modules/user/user.constants";
 import { ISecureRequest } from "@app/shared/types";
-import { setAuthCookies, cleanAuthCookies, accessTokenName, refreshTokenName } from "@app/modules/auth/services";
+import {
+  setAuthCookies,
+  cleanAuthCookies,
+  accessTokenName,
+  refreshTokenName,
+} from "@app/modules/auth/services";
 
 import {
   verifyToken,
@@ -47,10 +52,10 @@ export const userAuthMiddleware = (
   permittedRoles: TPermittedUserRoles = "ALL"
 ) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const accessToken = req.cookies?.[accessTokenName]
+    const accessToken = req.cookies?.[accessTokenName];
     const refreshToken = req.cookies?.[refreshTokenName];
 
-    // 🔍 Check presence
+    // Check presence
     if (!accessToken && !refreshToken) {
       return throwUnauthorized();
     }
@@ -77,21 +82,20 @@ export const userAuthMiddleware = (
 
       if (refreshFlow) {
         setAuthCookies(res, { email, role, userId });
-        console.log("Tokens refreshed");
       }
 
       (req as ISecureRequest).decoded = decoded;
       return true;
     };
 
-    // ✅ Try access token
+    // Try access token
     if (accessToken) {
       const success = await tryAuth(accessToken, config.accessTokenSecret!);
 
       if (success) return next();
     }
 
-    // 🔁 Try refresh token
+    // Try refresh token
     if (refreshToken) {
       const success = await tryAuth(
         refreshToken,

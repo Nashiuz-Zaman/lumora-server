@@ -12,7 +12,6 @@ export const updateUserCartItemsController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
     const actionData = req.body;
     const userId = req?.decoded?.userId;
-    console.log(actionData);
 
     const result = await updateCartItems(
       { user: toObjectId(userId!) },

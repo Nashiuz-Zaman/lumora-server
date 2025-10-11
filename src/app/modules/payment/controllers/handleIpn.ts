@@ -8,7 +8,6 @@ export const handleIpnController: RequestHandler = catchAsync(
   async (req, res) => {
     const result = await confirmSslIpnPayment(req.body);
 
-    console.log(result);
     return sendSuccess(res);
   }
 );

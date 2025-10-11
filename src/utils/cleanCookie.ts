@@ -15,7 +15,9 @@ export const cleanCookie = (
     httpOnly = true,
     secure = true,
     sameSite = "none",
-    domain = "lumora-server.vercel.app",
+    domain = process.env.NODE_ENV !== "production"
+      ? "localhost"
+      : "lumora-server.vercel.app",
     path = "/",
   }: ICleanCookieOptions = {}
 ): void => {

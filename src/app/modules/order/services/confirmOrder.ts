@@ -40,12 +40,10 @@ export const confirmOrder = async (order: TOrderDoc) => {
     await session.commitTransaction();
 
     // 6. Send order placed email (outside session)
-    sendOrderPlacedEmail(updatedOrder.toObject(), {
-      filename: `Invoice for ${updatedOrder.orderId}.pdf`,
+    await sendOrderPlacedEmail(updatedOrder?.toObject(), {
+      filename: `Invoice for ${updatedOrder?.orderId}.pdf`,
       content: buffer,
       contentType: "application/pdf",
-    }).catch((err) => {
-      console.error("Failed to send order placed email:", err);
     });
 
     return updatedOrder;

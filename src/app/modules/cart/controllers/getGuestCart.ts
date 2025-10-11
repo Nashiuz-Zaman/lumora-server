@@ -7,6 +7,7 @@ import { emptyCart } from "../cart.constant";
 export const getGuestCartController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
     const cartId = req.decoded?.cartId;
+    console.log(req.decoded);
 
     if (!cartId) return sendSuccess(res, { data: emptyCart });
 
