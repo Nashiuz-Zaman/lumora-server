@@ -10,6 +10,7 @@ import cartRouter from "@app/modules/cart/cart.router";
 import orderRouter from "@app/modules/order/order.router";
 import paymentRouter from "@app/modules/payment/payment.router";
 import productCollectionRouter from "@app/modules/productCollection/productCollection.router";
+import couponRouter from "@app/modules/coupon/coupon.router";
 
 // create main router
 const mainRouter = Router();
@@ -25,5 +26,6 @@ mainRouter.use("/carts", cartRouter);
 mainRouter.use("/orders", orderRouter);
 mainRouter.use("/payments", paymentRouter);
 mainRouter.use("/product-collections", productCollectionRouter);
+mainRouter.use("/coupons", couponRouter);
 
 export default mainRouter;

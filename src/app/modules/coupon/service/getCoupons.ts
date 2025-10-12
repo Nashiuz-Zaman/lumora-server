@@ -5,7 +5,7 @@ import { QueryBuilder } from "@app/classes";
 import { normalizeStatusFilter } from "@utils/index";
 
 // Constants
-import { CouponSearchableFields, CouponStatus } from "../coupon.constant";
+import { CouponSearchableFields } from "../coupon.constant";
 
 // Models
 import { CouponModel } from "../coupon.model";

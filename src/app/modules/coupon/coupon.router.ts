@@ -3,8 +3,9 @@ import { Router } from "express";
 // Controllers
 import {
   createCouponController,
-  getCouponList,
+  getCouponsController,
   expireCouponsController,
+  deleteCouponsController, // 🆕 import
 } from "./controllers";
 
 // Middlewares & Utilities
@@ -22,13 +23,24 @@ couponRouter.post(
 );
 
 // GET list coupons
-couponRouter.get("/", userAuthMiddleware([admin, superAdmin]), getCouponList);
+couponRouter.get(
+  "/",
+  userAuthMiddleware([admin, superAdmin]),
+  getCouponsController
+);
 
 // PATCH expire coupons
 couponRouter.patch(
-  "/admin-expire",
+  "/expire",
   userAuthMiddleware([admin, superAdmin]),
   expireCouponsController
+);
+
+// DELETE coupons 
+couponRouter.patch(
+  "/delete",
+  userAuthMiddleware([admin, superAdmin]),
+  deleteCouponsController
 );
 
 export default couponRouter;

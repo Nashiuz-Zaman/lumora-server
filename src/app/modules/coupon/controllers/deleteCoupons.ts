@@ -4,13 +4,13 @@ import {
   sendSuccess,
   throwInternalServerError,
 } from "@utils/index";
-import { expireCoupons } from "../service/expireCoupons";
+import { deleteCoupons } from "../service/deleteCoupons";
 
-export const expireCouponsController: RequestHandler = catchAsync(
+export const deleteCouponsController: RequestHandler = catchAsync(
   async (req, res) => {
     const { _ids = [] } = req.body;
 
-    const message = await expireCoupons(_ids);
+    const message = await deleteCoupons(_ids);
 
     if (message) return sendSuccess(res, { message });
 
