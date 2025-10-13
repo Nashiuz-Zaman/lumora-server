@@ -11,7 +11,7 @@ export interface ICoupon {
   usageLimit?: number;
   usedCount?: number;
   minimumOrderAmount?: number;
-  status: number;
+  status?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
