@@ -17,7 +17,10 @@ export const generateAndUploadInvoicePdf = async (order: IOrder) => {
   };
 
   // Upload PDF to Cloudinary
-  const uploadedUrls = await uploadPdfFiles([pdfFile], "invoices");
+  const uploadedUrls = await uploadPdfFiles(
+    [pdfFile],
+    "lumora/upload/invoices"
+  );
 
   // Return buffer and uploaded URL
   return {
