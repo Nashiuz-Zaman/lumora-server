@@ -4,6 +4,7 @@ import { OrderStatus, TOrderStatusValue } from "./order.constants";
 import { getNextSequence } from "../counter/counter.util";
 import { AppError } from "@app/classes";
 import { decrementCouponUsageByCode } from "../coupon/service";
+import { isObjectId } from "@utils/objectIdUtils";
 
 // Activity sub-schema
 const OrderActivitySchema = new Schema(
@@ -64,7 +65,7 @@ const OrderSchema = new Schema<IOrder>(
       type: Schema.Types.Mixed,
       required: true,
       validate: {
-        validator: (val: any) => val === "guest" || Types.ObjectId.isValid(val),
+        validator: (val: any) => val === "guest" || isObjectId(val),
         message: "User must be a valid ObjectId or 'guest'",
       },
     },

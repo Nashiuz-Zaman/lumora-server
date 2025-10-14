@@ -7,7 +7,6 @@ import {
   throwBadRequest,
   throwNotFound,
   throwInternalServerError,
-  toObjectId,
 } from "@utils/index";
 import { ClientSession, Types } from "mongoose";
 

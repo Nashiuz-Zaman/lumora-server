@@ -137,8 +137,8 @@ export class QueryBuilder<T> {
       const value = mongoQueryObject[key];
 
       // Convert to ObjectId if it's a valid ObjectId string
-      if (typeof value === "string" && Types.ObjectId.isValid(value)) {
-        mongoQueryObject[key] = new Types.ObjectId(value);
+      if (typeof value === "string" && isObjectId(value)) {
+        mongoQueryObject[key] = toObjectId(value);
       }
 
       // Handle $in/$nin string-to-array conversion
