@@ -28,20 +28,22 @@ returnRequestSchema.pre("save", async function (next) {
   if (!this.isModified("orderId")) return next();
 
   try {
-    const order = await OrderModel.findOne({ orderId: this.orderId })
-      .select("_id")
-      .lean();
+    // Find and set Order _id
+    const order = await OrderModel.exists({ orderId: this.orderId });
+
     if (!order) {
       throw new Error(`Order with orderId ${this.orderId} not found`);
     }
+    this.order = order._id;
 
-    const payment = await PaymentModel.findOne({ orderId: this.orderId })
-      .select("_id")
-      .lean();
+    // Find and set Payment _id
+    const payment = await PaymentModel.exists({ orderId: this.orderId });
+
     if (!payment) {
       throw new Error(`Payment for the order in the return request not found`);
     }
     this.payment = payment._id;
+
     next();
   } catch (err) {
     next(new AppError((err as Error)?.message));

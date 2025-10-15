@@ -2,6 +2,7 @@ import { HydratedDocument, Types } from "mongoose";
 import { TReturnReason, TReturnRequestStatus } from "./returnRequest.constants";
 
 export interface IReturnRequest {
+  _id?: Types.ObjectId;
   order: Types.ObjectId;
   payment: Types.ObjectId;
   orderId: string;
