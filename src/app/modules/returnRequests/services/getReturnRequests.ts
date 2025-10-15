@@ -24,6 +24,7 @@ export const getReturnRequests = async (
     .addField("name", "$order.name")
     .addField("email", "$order.email")
     .addField("phone", "$order.phone")
+    .addField("total", "$order.total")
     .removeField("order")
     .filter()
     .search([...ReturnRequestSearchableFields])
