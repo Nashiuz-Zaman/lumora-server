@@ -14,7 +14,7 @@ export const rejectReturnRequestController: RequestHandler = catchAsync(
 
     if (updatedRequest._id)
       return sendSuccess(res, {
-        message: "Return request rejected",
+        message: "Return Request Rejected",
       });
 
     return throwInternalServerError();

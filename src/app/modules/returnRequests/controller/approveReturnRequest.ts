@@ -10,7 +10,7 @@ export const approveReturnRequestController: RequestHandler = catchAsync(
     await approveReturnRequest(id, refundAmount);
 
     return sendSuccess(res, {
-      message: "Return request approved",
+      message: "Return Request Approved",
     });
   }
 );

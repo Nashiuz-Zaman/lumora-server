@@ -1,12 +1,11 @@
 import { RequestHandler } from "express";
 import { catchAsync, sendSuccess } from "@utils/index";
-import { deleteCoupons } from "../service/deleteCoupons";
+import { deleteReturnRequests } from "../services";
 
-export const deleteCouponsController: RequestHandler = catchAsync(
+export const deleteReturnRequestsController: RequestHandler = catchAsync(
   async (req, res) => {
     const { ids: _ids = [] } = req.body;
-
-    const message = await deleteCoupons(_ids);
+    const message = await deleteReturnRequests(_ids);
     return sendSuccess(res, { message });
   }
 );

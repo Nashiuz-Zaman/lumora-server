@@ -8,7 +8,7 @@ import { expireCoupons } from "../service/expireCoupons";
 
 export const expireCouponsController: RequestHandler = catchAsync(
   async (req, res) => {
-    const { _ids = [] } = req.body;
+    const { ids: _ids = [] } = req.body;
 
     const message = await expireCoupons(_ids);
 

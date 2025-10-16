@@ -9,6 +9,7 @@ import {
 
 import { UserRoles } from "../user/user.constants";
 import { userAuthMiddleware } from "@app/middlewares";
+import { deleteReturnRequestsController } from "./controller/deleteReturnRequests";
 
 const returnRequestRouter = Router();
 const { admin, superAdmin } = UserRoles;
@@ -38,6 +39,12 @@ returnRequestRouter.patch(
   "/reject/:id",
   userAuthMiddleware([admin, superAdmin]),
   rejectReturnRequestController
+);
+
+returnRequestRouter.patch(
+  "/delete",
+  userAuthMiddleware([admin, superAdmin]),
+  deleteReturnRequestsController
 );
 
 export default returnRequestRouter;
