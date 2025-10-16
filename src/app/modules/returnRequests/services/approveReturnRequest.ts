@@ -37,6 +37,7 @@ export const approveReturnRequest = async (
   // Only mark as returned if fully refunded
   if (payment.status === PaymentStatus.Refunded) {
     order.status = OrderStatus.Returned;
+    order.returnReason = returnRequest.reason;
   }
 
   returnRequest.status = ReturnRequestStatus.Approved;

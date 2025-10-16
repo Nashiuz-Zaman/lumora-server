@@ -29,6 +29,7 @@ export interface IOrder {
   shippingCarrier?: string;
   estimatedDelivery?: Date;
   cancellationReason?: string;
+  returnReason?: string;
   invoice?: string;
   createdAt?: Date;
   updatedAt?: Date;

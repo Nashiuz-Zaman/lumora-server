@@ -98,7 +98,8 @@ const OrderSchema = new Schema<IOrder>(
     shippingTrackingNumber: { type: String },
     shippingCarrier: { type: String },
     estimatedDelivery: { type: Date },
-    cancellationReason: { type: String, default: "Admin cancelled" },
+    cancellationReason: { type: String },
+    returnReason: { type: String },
     invoice: { type: String },
   },
   { timestamps: true }
