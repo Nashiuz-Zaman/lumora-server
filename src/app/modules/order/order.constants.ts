@@ -5,7 +5,6 @@ export const OrderStatus = Object.freeze({
   Delivered: 3,
   Cancelled: 4,
   Returned: 5,
-  Deleted: 6,
 } as const);
 
 export type TOrderStatusValue = (typeof OrderStatus)[keyof typeof OrderStatus];

@@ -1,8 +1,8 @@
 import { toObjectId } from "@utils/objectIdUtils";
-import { fetchOrders } from "./fetchOrders";
+import { getOrders } from "./getOrders";
 
 export const fetchRecentOrdersForUser = async (userId: string) => {
-  const { orders } = await fetchOrders({
+  const { orders } = await getOrders({
     user: toObjectId(userId),
     sort: "-createdAt",
   });

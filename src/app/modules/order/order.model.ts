@@ -13,8 +13,9 @@ const OrderActivitySchema = new Schema(
     status: {
       type: Number,
       enum: Object.values(OrderStatus),
-      required: true,
+      required: false,
     },
+    isArchived: { type: Boolean, required: false },
   },
   { _id: false }
 );
@@ -81,6 +82,7 @@ const OrderSchema = new Schema<IOrder>(
     tax: { type: Number },
     items: { type: [OrderItemSchema], required: true },
     couponCode: { type: String },
+    isArchived: { type: Boolean, default: false },
     status: {
       type: Number,
       enum: Object.values(OrderStatus),

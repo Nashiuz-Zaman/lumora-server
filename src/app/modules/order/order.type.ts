@@ -4,7 +4,8 @@ import { TOrderStatusValue } from "./order.constants";
 
 export interface IOrderActivity {
   time: Date;
-  status: TOrderStatusValue;
+  status?: TOrderStatusValue;
+  isArchived?: boolean;
 }
 
 export interface IOrder {
@@ -21,6 +22,7 @@ export interface IOrder {
   shippingFee?: number;
   discount?: number;
   tax?: number;
+  isArchived: boolean;
   items: TPopulatedCartItem[];
   couponCode?: string;
   status: TOrderStatusValue;

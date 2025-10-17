@@ -1,13 +1,15 @@
 import { QueryBuilder } from "@app/classes/QueryBuilder";
 import { IOrder } from "../order.type";
 import { OrderSearchableFields } from "../order.constants";
-import { normalizeNumberField } from "@utils/normalizeQueryParam";
+import { normalizeStatusFilter } from "@utils/normalizeQueryParam";
 import { OrderModel } from "../order.model";
 
-export const fetchOrders = async (
+export const getOrders = async (
   queryObj: Record<string, any> & Partial<IOrder>
 ) => {
-  const newQueryObj = normalizeNumberField({ ...queryObj }, "status");
+  console.log("before", queryObj);
+  const newQueryObj = normalizeStatusFilter(queryObj);
+  console.log("after", newQueryObj);
 
   const query = new QueryBuilder<IOrder>(OrderModel, newQueryObj);
 

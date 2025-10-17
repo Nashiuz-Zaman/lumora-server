@@ -1,6 +1,5 @@
 import { isObjectId, toObjectId } from "@utils/objectIdUtils";
-import { viewDetailedLog } from "@utils/viewDetailedLog";
-import { Model, Types } from "mongoose";
+import { Model } from "mongoose";
 
 export interface IQueryMeta {
   total: number;
@@ -163,8 +162,6 @@ export class QueryBuilder<T> {
         mongoQueryObject[key] = value === "true";
       }
     }
-
-    viewDetailedLog({ $match: mongoQueryObject });
 
     this.pipeline.push({ $match: mongoQueryObject });
     return this;
