@@ -6,6 +6,7 @@ import {
   markOrdersDeliveredController,
   cancelOrdersController,
   archiveOrdersController,
+  trackOrderController,
 } from "./controllers";
 import { userAuthMiddleware } from "@app/middlewares";
 import { UserRoles } from "../user/user.constants";
@@ -16,6 +17,9 @@ const { admin, superAdmin } = UserRoles;
 //
 // ----------- CUSTOMER, GUEST ROUTES -----------
 //
+
+// Track order (public)
+orderRouter.get("/track/:orderId", trackOrderController);
 
 // Place order
 orderRouter.post("/", placeOrderController);

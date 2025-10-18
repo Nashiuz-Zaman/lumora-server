@@ -1,24 +1,40 @@
+import { OrderStatus } from "../order.constants";
 import { OrderModel } from "../order.model";
 import { toObjectId, throwBadRequest } from "@utils/index";
 
 export const archiveOrders = async (_ids: string[]) => {
-  if (!Array.isArray(_ids) || _ids.length === 0) {
-    throwBadRequest("_ids not provided");
-  }
+  if (!Array.isArray(_ids) || _ids.length === 0)
+    return throwBadRequest("_ids not provided");
 
   const objectIds = _ids.map((id) => toObjectId(id));
 
-  const result = await OrderModel.updateMany(
-    { _id: { $in: objectIds }, isArchived: { $ne: true } },
+  const result = await OrderModel.collection.updateMany(
     {
-      $set: { isArchived: true },
-      $push: {
-        activities: {
-          time: new Date(),
+      _id: { $in: objectIds },
+      isArchived: { $ne: true },
+      status: {
+        $nin: [OrderStatus.Confirmed, OrderStatus.Shipped, OrderStatus.Pending],
+      },
+    },
+    [
+      {
+        $set: {
           isArchived: true,
+          activities: {
+            $concatArrays: [
+              "$activities",
+              [
+                {
+                  time: "$$NOW",
+                  status: "$status",
+                  isArchived: true,
+                },
+              ],
+            ],
+          },
         },
       },
-    }
+    ]
   );
 
   const count = result.modifiedCount ?? 0;

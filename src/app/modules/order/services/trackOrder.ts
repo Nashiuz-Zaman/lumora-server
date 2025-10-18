@@ -10,7 +10,7 @@ export const trackOrder = async (orderId: string) => {
     orderId: order.orderId,
     items: order.items,
     total: order.total,
-    placedAt: order.createdAt,
+    createdAt: order.createdAt,
     status: order.status,
     activities: order.activities,
     name: order.name,
