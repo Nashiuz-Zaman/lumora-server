@@ -29,7 +29,7 @@ export const createReturnRequest = async (payload: {
 
   const deliveredDate = cloneDeep(order.activities)
     .reverse()
-    .find((activity) => +activity.status === OrderStatus.Delivered)?.time;
+    .find((activity) => +activity.status! === OrderStatus.Delivered)?.time;
 
   // product not delivered yet
   if (!deliveredDate)
