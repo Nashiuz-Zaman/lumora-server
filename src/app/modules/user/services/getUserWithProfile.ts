@@ -16,11 +16,12 @@ export const getUserWithProfile = async (
     : "name _id id email image status role";
 
   let query = UserModel.findOne(filter)
-    .select(userFields)
+
     .populate<{ role: IRole }>({
       path: "role",
       select: "name _id",
-    });
+    })
+    .select(userFields);
 
   // populate customer/admin profile virtuals
   if (includeProfile) {

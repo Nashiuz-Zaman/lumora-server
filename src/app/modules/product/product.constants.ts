@@ -11,7 +11,7 @@ export const ProductSearchableFieldsForSingleProductCollectionQuery = Object.fre
 export const ProductStatus = Object.freeze({
   Deleted: -1,
   Draft: 0,
-  Active: 1,
+  Active: 1, 
 } as const);
 
 export type TProductStatusValue =

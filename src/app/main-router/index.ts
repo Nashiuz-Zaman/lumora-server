@@ -12,6 +12,7 @@ import paymentRouter from "@app/modules/payment/payment.router";
 import productCollectionRouter from "@app/modules/productCollection/productCollection.router";
 import couponRouter from "@app/modules/coupon/coupon.router";
 import returnRequestRouter from "@app/modules/returnRequests/returnRequest.router";
+import analyticsRouter from "@app/modules/analytics/analytics.router";
 
 // create main router
 const mainRouter = Router();
@@ -29,5 +30,6 @@ mainRouter.use("/payments", paymentRouter);
 mainRouter.use("/product-collections", productCollectionRouter);
 mainRouter.use("/coupons", couponRouter);
 mainRouter.use("/return-requests", returnRequestRouter);
+mainRouter.use("/analytics", analyticsRouter);
 
 export default mainRouter;
