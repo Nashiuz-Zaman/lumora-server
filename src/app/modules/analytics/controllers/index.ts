@@ -1,5 +1,3 @@
-export * from "./lowTotalStockProducts";
-export * from "./lowVariantStockProducts";
 export * from "./orderStats";
 export * from "./totalCustomers";
 export * from "./totalProductsSold";
@@ -8,7 +6,6 @@ export * from "./paymentStats";
 export * from "./recentPayments";
 export * from "./topCategorySalesPercentage";
 export * from "./revenueTrends";
-export * from "./topSellingProducts";
 export * from "./totalRevenue";
 export * from "./customerGrowth";
 export * from "./orderTrendsCombined";

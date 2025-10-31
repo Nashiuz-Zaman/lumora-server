@@ -1,11 +1,11 @@
 import { PaymentModel } from "@app/modules/payment/payment.model";
-import { PaymentStatus } from "@app/modules/payment/payment.constant";
 import {
   padMissingDates,
   getMongoDateFormat,
   getGranularityFromDateRange,
   extractDateRangeFilterFromQuery,
 } from "../helpers";
+import { PaymentType } from "@app/modules/payment/payment.constant";
 
 export const getRevenueTrendsData = async (
   queryObj: Record<string, any>
@@ -15,7 +15,7 @@ export const getRevenueTrendsData = async (
   const mongoDateFormat = getMongoDateFormat(granularity);
 
   const match: Record<string, any> = {
-    status: PaymentStatus.Paid,
+    type: PaymentType.payment,
   };
   let start: Date, end: Date;
 

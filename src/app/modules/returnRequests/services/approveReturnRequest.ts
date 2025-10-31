@@ -10,7 +10,6 @@ import { OrderModel } from "@app/modules/order/order.model";
 import { OrderStatus } from "@app/modules/order/order.constants";
 import { ReturnRequestModel } from "../returnRequest.model";
 import { issueRefund } from "@app/modules/payment/service";
-import { PaymentStatus } from "@app/modules/payment/payment.constant";
 
 export const approveReturnRequest = async (
   id: string,
@@ -27,15 +26,15 @@ export const approveReturnRequest = async (
   const order = await OrderModel.findOne({ orderId: returnRequest.orderId });
   if (!order) return throwNotFound("Order from return request not found");
 
-  const payment = await issueRefund(
+  const refund = await issueRefund(
     returnRequest?.payment,
     "Settling Return Request",
     typeof customAmount === "number" && customAmount > 0 ? customAmount : 0
   );
-  if (!payment) return throwInternalServerError("Error refunding payment");
+  if (!refund) return throwInternalServerError("Error refunding payment");
 
   // Only mark as returned if fully refunded
-  if (payment.status === PaymentStatus.Refunded) {
+  if (refund.amount === order.total) {
     order.status = OrderStatus.Returned;
     order.returnReason = returnRequest.reason;
   }

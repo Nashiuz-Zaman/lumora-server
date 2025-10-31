@@ -5,7 +5,6 @@ import { decrementCouponUsageByCode } from "@app/modules/coupon/service";
 import { toObjectId, throwBadRequest } from "@utils/index";
 import { updateStock } from "@app/modules/product/service";
 import { PaymentModel } from "@app/modules/payment/payment.model";
-import { PaymentStatus } from "@app/modules/payment/payment.constant";
 import { issueRefund } from "@app/modules/payment/service";
 
 export const cancelOrders = async (_ids: string[], reason?: string) => {
@@ -34,7 +33,6 @@ export const cancelOrders = async (_ids: string[], reason?: string) => {
 
       const paymentForOrder = await PaymentModel.findOne({
         order: order._id,
-        status: PaymentStatus.Paid,
       })
         .select("_id")
         .lean();

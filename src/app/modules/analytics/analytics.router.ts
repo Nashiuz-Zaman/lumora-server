@@ -7,9 +7,6 @@ import {
   recentPaymentsController,
   revenueTrendsController,
   paymentStatsController,
-  topSellingProductsController,
-  lowTotalStockProductsController,
-  lowVariantStockProductsController,
   customerGrowthController,
   totalCustomersController,
   totalProductsSoldController,
@@ -77,33 +74,15 @@ analyticsRouter.get(
 );
 
 analyticsRouter.get(
-  "/top-selling-products",
-  userAuthMiddleware([superAdmin, admin]),
-  topSellingProductsController
-);
-
-analyticsRouter.get(
   "/top-category-sales-percentage",
   userAuthMiddleware([superAdmin, admin]),
   topCategorySalesPercentageController
-);
-
-// total stock low -->
-analyticsRouter.get(
-  "/low-total-stock-products",
-  userAuthMiddleware([superAdmin, admin]),
-  lowTotalStockProductsController
 );
 
 analyticsRouter.get(
   "/recent-payments",
   userAuthMiddleware([superAdmin, admin]),
   recentPaymentsController
-);
-
-analyticsRouter.get(
-  "/low-variant-stock-products",
-  lowVariantStockProductsController
 );
 
 export default analyticsRouter;

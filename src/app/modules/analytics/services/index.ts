@@ -3,7 +3,6 @@ export * from "./getOrderStats";
 export * from "./getOrderPlacedTrend";
 export * from "./getPaymentStats";
 export * from "./getRevenueTrendsData";
-export * from "./getTopSellingProducts";
 export * from "./getTopCategorySalesPercentage";
 export * from "./getTotalRevenue";
 export * from "./getTotalCustomers";
