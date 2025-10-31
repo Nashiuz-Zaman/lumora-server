@@ -1,5 +1,5 @@
 import { HydratedDocument, Types } from "mongoose";
-import { TPaymentStatus } from "./payment.constant";
+import { TPaymentType } from "./payment.constant";
 
 export interface IPayment {
   _id?: Types.ObjectId;
@@ -7,13 +7,10 @@ export interface IPayment {
   orderId: string;
   name: string;
   email: string;
-  status: TPaymentStatus;
-  transactionId: string;
+  type: TPaymentType;
+  transactionId?: string;
   amount: number;
-  currency: "BDT";
-  gateway: "sslcommerz";
-  paymentDetails?: Record<string, any>;
-  refundDetails?: Record<string, any>;
+  details?: Record<string, any>;
   createdAt?: Date;
   updatedAt?: Date;
 }

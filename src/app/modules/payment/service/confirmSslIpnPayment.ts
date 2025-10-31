@@ -1,6 +1,5 @@
 import { confirmOrder } from "@app/modules/order/services";
 import { createPayment } from "./createPayment";
-import { checkDuplicatePayment } from "./checkDuplicatePayment";
 import { OrderModel } from "@app/modules/order/order.model";
 
 import axios from "axios";
@@ -29,6 +28,7 @@ export const confirmSslIpnPayment = async (ipnPayload: any) => {
 
   const convertedOrderObjId = toObjectId(orderObjId);
 
+  // if payment status not valid delete the pending order and exit from this function
   if (status !== "VALID") {
     await OrderModel.deleteOne({ _id: convertedOrderObjId });
     return;
@@ -53,48 +53,45 @@ export const confirmSslIpnPayment = async (ipnPayload: any) => {
 
     validatedData = response.data;
   } catch (err) {
-    console.error("SSLCommerz validation request failed:", err);
+    console.error("SSLCommerz payment validation failed:", err);
     return throwBadRequest("Could not validate payment with SSLCommerz");
   }
 
   const existingOrder = await OrderModel.findById(convertedOrderObjId);
   if (!existingOrder) return throwNotFound("Order not found");
 
-  const duplicateCheck = await checkDuplicatePayment(
-    existingOrder._id,
-    existingOrder.status
-  );
+  if (validatedData) {
+    // Save the payment record even if it failed or had mismatches
+    const newPayment = await createPayment({
+      email: cus_email,
+      orderId: existingOrder.orderId!,
+      name: cus_name,
+      transactionId: tran_id,
+      validatedData,
+      orderObjId: convertedOrderObjId,
+    });
 
-  if (duplicateCheck) return duplicateCheck;
+    // Confirm the order if the payment is valid and matches expected details
+    const isValid = ["VALID", "VALIDATED"].includes(validatedData.status);
+    const amountMatches =
+      parseFloat(validatedData.amount) === existingOrder.total;
+    const currencyMatches = validatedData.currency === "BDT";
 
-  // Save the payment record even if it failed or had mismatches
-  const newPayment = await createPayment({
-    email: cus_email,
-    orderId: existingOrder.orderId!,
-    name: cus_name,
-    transactionId: tran_id,
-    validatedData,
-    orderObjId: convertedOrderObjId,
-    rawIpnPayload: ipnPayload,
-  });
+    if (isValid && amountMatches && currencyMatches) {
+      const newOrder = await confirmOrder(existingOrder);
 
-  // Only confirm the order if the payment is valid and matches expected details
-  const isValid = ["VALID", "VALIDATED"].includes(validatedData.status);
-  const amountMatches =
-    parseFloat(validatedData.amount) === existingOrder.total;
-  const currencyMatches = validatedData.currency === "BDT";
-
-  if (isValid && amountMatches && currencyMatches) {
-    const newOrder = await confirmOrder(existingOrder);
-
-    if (newOrder?._id && existingOrder.couponCode) {
-      await incrementCouponUsageByCode(existingOrder.couponCode);
+      if (newOrder?._id && existingOrder.couponCode) {
+        await incrementCouponUsageByCode(existingOrder.couponCode);
+      }
     }
-  }
 
-  return {
-    status: validatedData.status,
-    paymentId: newPayment._id,
-    orderStatus: existingOrder.status,
-  };
+    return {
+      status: validatedData.status,
+      paymentId: newPayment._id,
+      orderStatus: existingOrder.status,
+    };
+  } else {
+    await OrderModel.deleteOne({ _id: convertedOrderObjId });
+    return;
+  }
 };

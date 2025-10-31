@@ -8,7 +8,7 @@ import {
 
 export const getCustomerGrowthTrends = async (
   query: Record<string, any>
-): Promise<Array<{ date: string; totalCustomers: number }>> => {
+): Promise<{ date: string; totalCustomers: number }[]> => {
   const dateRange = extractDateRangeFilterFromQuery(query);
   const granularity = getGranularityFromDateRange(dateRange);
   const mongoDateFormat = getMongoDateFormat(granularity);

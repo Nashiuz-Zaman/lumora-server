@@ -1,33 +1,23 @@
+import { PaymentType } from "@app/modules/payment/payment.constant";
 import {
   extractDateRangeFilterFromQuery,
   extractComparedData,
 } from "../helpers";
-import { PaymentStatus } from "@app/modules/payment/payment.constant";
 import { PaymentModel } from "@app/modules/payment/payment.model";
 
 const paymentStatsGroupStage = {
   _id: null,
   paidPayments: {
     $sum: {
-      $cond: [{ $eq: ["$status", PaymentStatus.Paid] }, "$amount", 0],
+      $cond: [{ $eq: ["$type", PaymentType.payment] }, "$amount", 0],
     },
   },
   refundedPayments: {
     $sum: {
-      $cond: [{ $eq: ["$status", PaymentStatus.Refunded] }, "$amount", 0],
-    },
-  },
-  partiallyRefunded: {
-    $sum: {
-      $cond: [
-        { $eq: ["$status", PaymentStatus["Partially Refunded"]] },
-        "$amount",
-        0,
-      ],
+      $cond: [{ $eq: ["$type", PaymentType.refund] }, "$amount", 0],
     },
   },
 };
-
 
 const getAggregatedPaymentStats = async (
   matchStage: Record<string, any> = {}
@@ -46,14 +36,25 @@ const getAggregatedPaymentStats = async (
   return {
     paidPayments: stats.paidPayments || 0,
     refundedPayments: stats.refundedPayments || 0,
-    partiallyRefundedPayments: stats.partiallyRefundedPayments || 0,
   };
 };
 
-/**
- * Gets order stats for dashboard (with comparison support)
- */
-export const getPaymentStats = async (queryObj: Record<string, any>) => {
+interface IPaymentComparison {
+  current: number;
+  previous?: number;
+  difference?: number;
+  percentageChange?: number;
+}
+
+interface IGetPaymentStatsReturn {
+  paidPayments: IPaymentComparison;
+  refundedPayments: IPaymentComparison;
+  comparisonText?: string;
+}
+
+export const getPaymentStats = async (
+  queryObj: Record<string, any>
+): Promise<IGetPaymentStatsReturn> => {
   const dateRange = extractDateRangeFilterFromQuery(queryObj);
 
   if (!dateRange) {
@@ -62,7 +63,6 @@ export const getPaymentStats = async (queryObj: Record<string, any>) => {
     return {
       paidPayments: { current: current.paidPayments },
       refundedPayments: { current: current.refundedPayments },
-      partiallyRefundedPayments: { current: current.partiallyRefundedPayments },
     };
   }
 
@@ -92,7 +92,6 @@ export const getPaymentStats = async (queryObj: Record<string, any>) => {
       previous,
       "refundedPayments"
     ),
-    partiallyRefundedPayments: extractComparedData(current, previous, "partiallyRefundedPayments"),
     comparisonText,
   };
 };

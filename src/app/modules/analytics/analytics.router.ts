@@ -4,7 +4,6 @@ import { UserRoles } from "../user/user.constants";
 import {
   orderStatsController,
   totalRevenueController,
-  orderTrendsController,
   recentPaymentsController,
   revenueTrendsController,
   paymentStatsController,
@@ -12,6 +11,11 @@ import {
   lowTotalStockProductsController,
   lowVariantStockProductsController,
   customerGrowthController,
+  totalCustomersController,
+  totalProductsSoldController,
+  averageOrderTotalController,
+  topCategorySalesPercentageController,
+  orderTrendsCombinedController,
 } from "./controllers";
 import { userAuthMiddleware } from "@app/middlewares";
 
@@ -22,6 +26,12 @@ analyticsRouter.get(
   "/order-stats",
   userAuthMiddleware([superAdmin, admin]),
   orderStatsController
+);
+
+analyticsRouter.get(
+  "/total-products-sold",
+  userAuthMiddleware([superAdmin, admin]),
+  totalProductsSoldController
 );
 
 analyticsRouter.get(
@@ -37,9 +47,21 @@ analyticsRouter.get(
 );
 
 analyticsRouter.get(
-  "/orders/trends",
+  "/order/trends",
   userAuthMiddleware([superAdmin, admin]),
-  orderTrendsController
+  orderTrendsCombinedController
+);
+
+analyticsRouter.get(
+  "/total-customers",
+  userAuthMiddleware([superAdmin, admin]),
+  totalCustomersController
+);
+
+analyticsRouter.get(
+  "/average-order-total",
+  userAuthMiddleware([superAdmin, admin]),
+  averageOrderTotalController
 );
 
 analyticsRouter.get(
@@ -58,6 +80,12 @@ analyticsRouter.get(
   "/top-selling-products",
   userAuthMiddleware([superAdmin, admin]),
   topSellingProductsController
+);
+
+analyticsRouter.get(
+  "/top-category-sales-percentage",
+  userAuthMiddleware([superAdmin, admin]),
+  topCategorySalesPercentageController
 );
 
 // total stock low -->

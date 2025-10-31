@@ -10,7 +10,7 @@ export const refundViaSslCommerz = async ({
   refundAmount,
   refundReason,
   bankTranId,
-  refundTransId, 
+  refundTransId,
   refeId,
 }: IRefundOptions) => {
   const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);

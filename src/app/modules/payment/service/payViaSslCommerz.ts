@@ -41,7 +41,7 @@ export const payViaSslCommerz = async (
     cancel_url: `${paymentResultEndpoint}?status=cancel&orderId=${order.orderId}`,
     ipn_url: `${
       process.env.NODE_ENV !== "production"
-        ? "https://3495cff73320.ngrok-free.app/api/v1"
+        ? "https://a57444b245cc.ngrok-free.app/api/v1"
         : serverUrl
     }/payments/ipn`,
     shipping_method: "Courier",

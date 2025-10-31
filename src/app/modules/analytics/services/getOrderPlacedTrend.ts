@@ -1,22 +1,19 @@
-import { PaymentModel } from "@app/modules/payment/payment.model";
-import { PaymentStatus } from "@app/modules/payment/payment.constant";
+import { OrderModel } from "@app/modules/order/order.model";
 import {
-  padMissingDates,
-  getMongoDateFormat,
-  getGranularityFromDateRange,
   extractDateRangeFilterFromQuery,
+  getGranularityFromDateRange,
+  padMissingDates,
+  getMongoDateFormat, 
 } from "../helpers";
 
-export const getRevenueTrendsData = async (
+export const getOrderTrendsData = async (
   queryObj: Record<string, any>
-): Promise<{ date: string; totalRevenue: number }[]> => {
+): Promise<{ date: string; totalOrders: number }[]> => {
   const dateRange = extractDateRangeFilterFromQuery(queryObj);
   const granularity = getGranularityFromDateRange(dateRange);
   const mongoDateFormat = getMongoDateFormat(granularity);
 
-  const match: Record<string, any> = {
-    status: PaymentStatus.Paid,
-  };
+  const match: Record<string, any> = {};
   let start: Date, end: Date;
 
   if (dateRange) {
@@ -29,7 +26,7 @@ export const getRevenueTrendsData = async (
     end = now;
   }
 
-  const raw = await PaymentModel.aggregate([
+  const raw = await OrderModel.aggregate([
     { $match: match },
     {
       $group: {
@@ -39,7 +36,7 @@ export const getRevenueTrendsData = async (
             date: "$createdAt",
           },
         },
-        totalRevenue: { $sum: "$amount" },
+        totalOrders: { $sum: 1 },
       },
     },
     { $sort: { _id: 1 } },
@@ -47,10 +44,10 @@ export const getRevenueTrendsData = async (
       $project: {
         _id: 0,
         date: "$_id",
-        totalRevenue: 1,
+        totalOrders: 1,
       },
     },
   ]);
 
-  return padMissingDates(raw, start, end, granularity, "totalRevenue");
+  return padMissingDates(raw, start, end, granularity, "totalOrders");
 };

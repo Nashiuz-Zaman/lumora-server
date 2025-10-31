@@ -4,7 +4,7 @@ import { OrderStatus, TOrderStatusValue } from "./order.constants";
 import { getNextSequence } from "../counter/counter.util";
 import { AppError } from "@app/classes";
 import { decrementCouponUsageByCode } from "../coupon/service";
-import { isObjectId } from "@utils/objectIdUtils";
+import { isObjectId } from "@utils/index";
 
 // Activity sub-schema
 const OrderActivitySchema = new Schema(

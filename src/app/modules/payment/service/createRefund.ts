@@ -2,20 +2,20 @@ import { PaymentType } from "../payment.constant";
 import { PaymentModel } from "../payment.model";
 import { Types } from "mongoose";
 
-export const createPayment = async ({
+export const createRefund = async ({
   orderObjId,
   orderId,
   name,
   email,
   transactionId,
-  validatedData,
+  details,
 }: {
   orderObjId: Types.ObjectId;
   orderId: string;
   name: string;
   email: string;
   transactionId: string;
-  validatedData?: any;
+  details: any;
 }) => {
   const payment = await PaymentModel.create({
     order: orderObjId,
@@ -23,9 +23,9 @@ export const createPayment = async ({
     name,
     email,
     transactionId,
-    amount: parseFloat(validatedData.amount || "0"),
-    type: PaymentType.payment,
-    details: validatedData,
+    amount: parseFloat(details.refundAmount || "0"),
+    type: PaymentType.refund,
+    details,
   });
 
   return payment;

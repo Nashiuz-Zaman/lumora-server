@@ -54,6 +54,12 @@ export const cancelOrders = async (_ids: string[], reason?: string) => {
           status: OrderStatus.Cancelled,
           cancellationReason: reason,
         },
+        $push: {
+          activities: {
+            time: new Date(),
+            status: OrderStatus.Cancelled,
+          },
+        },
       }
     ).session(session);
 

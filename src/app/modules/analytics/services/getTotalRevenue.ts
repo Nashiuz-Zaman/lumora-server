@@ -1,18 +1,31 @@
-import { PaymentStatus } from "@app/modules/payment/payment.constant";
-import { PaymentModel } from "@app/modules/payment/payment.model";
+import { OrderModel } from "@app/modules/order/order.model";
+import { OrderStatus } from "@app/modules/order/order.constants";
+import { throwInternalServerError } from "@utils/index";
 
-export const getTotalRevenue = async () => {
-  const result = await PaymentModel.aggregate([
+export const getTotalRevenue = async (): Promise<number> => {
+  const result = await OrderModel.aggregate([
     {
-      $match: { status: PaymentStatus.Paid },
+      $match: {
+        status: {
+          $nin: [
+            OrderStatus.Pending,
+            OrderStatus.Returned,
+            OrderStatus.Cancelled,
+          ],
+        },
+      },
     },
     {
       $group: {
         _id: null,
-        totalRevenue: { $sum: "$amount" },
+        totalRevenue: { $sum: "$total" },
       },
     },
   ]);
 
-  return result[0]?.totalRevenue || 0;
+  const totalRevenue = result[0]?.totalRevenue ?? 0;
+
+  if (typeof totalRevenue !== "number") return throwInternalServerError();
+
+  return totalRevenue;
 };

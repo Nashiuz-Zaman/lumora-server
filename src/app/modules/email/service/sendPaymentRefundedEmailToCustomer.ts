@@ -6,22 +6,25 @@ import { getRefundProcessedEmailHtml } from "../generator-helpers";
 import { throwNotFound } from "@utils/operationalErrors";
 
 export const sendPaymentRefundedEmail = async (
-  payment: IPayment
+  financialTransaction: IPayment
 ): Promise<void> => {
-  const order = await OrderModel.findById(payment.order, "orderId").exec();
+  const order = await OrderModel.findById(
+    financialTransaction.order,
+    "orderId"
+  ).exec();
 
   if (!order) return throwNotFound("Order not found");
 
   const html = getRefundProcessedEmailHtml(
-    payment?.name,
+    financialTransaction?.name,
     order.orderId!,
-    formatPrice(payment?.amount),
-    payment?.refundDetails?.refundReason || "Refund processed by admin",
+    formatPrice(financialTransaction?.amount),
+    financialTransaction?.details?.refundReason || "Refund processed by admin",
     new Date().getFullYear()
   );
 
   await sendEmail(
-    payment.email,
+    financialTransaction.email,
     `Refund Processed – Order #${order?.orderId}`,
     html
   );

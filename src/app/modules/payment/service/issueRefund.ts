@@ -1,14 +1,14 @@
 import { v4 as uuidv4 } from "uuid";
 import { PaymentModel } from "../payment.model";
-import { PaymentStatus } from "../payment.constant";
 import { refundViaSslCommerz } from ".";
-import { sendPaymentRefundedEmail } from "../../email/service/sendPaymentRefundedEmailToCustomer";
+import { sendPaymentRefundedEmail } from "@app/modules/email/service";
 import {
   throwBadRequest,
   throwNotFound,
   throwInternalServerError,
 } from "@utils/index";
 import { ClientSession, Types } from "mongoose";
+import { createRefund } from "./createRefund";
 
 export const issueRefund = async (
   _id: Types.ObjectId,
@@ -30,7 +30,7 @@ export const issueRefund = async (
     refundAmount,
     refundReason: reason,
     refundTransId: uuidv4(),
-    bankTranId: payment.paymentDetails?.bank_tran_id,
+    bankTranId: payment.details?.bank_tran_id,
     refeId: payment.order.toString(),
   });
 
@@ -43,23 +43,23 @@ export const issueRefund = async (
     );
   }
 
-  payment.refundDetails = {
-    ...refundResult,
-    refundReason: reason,
-    refundAmount,
-  };
+  const refund = await createRefund({
+    email: payment.email,
+    name: payment.name,
+    orderId: payment.orderId,
+    orderObjId: payment.order,
+    transactionId: refundResult.trans_id!,
+    details: {
+      ...refundResult,
+      refundReason: reason,
+      refundAmount,
+    },
+  });
 
-  payment.status =
-    refundAmount < payment.amount
-      ? PaymentStatus["Partially Refunded"]
-      : PaymentStatus.Refunded;
-
-  const updatedPayment = await payment.save({ session });
-
-  if (updatedPayment?._id) {
-    sendPaymentRefundedEmail(updatedPayment).catch((err) =>
+  if (refund._id) {
+    sendPaymentRefundedEmail(refund).catch((err) =>
       console.log("Failed to send refund email:", err)
     );
-    return updatedPayment;
+    return refund;
   }
 };

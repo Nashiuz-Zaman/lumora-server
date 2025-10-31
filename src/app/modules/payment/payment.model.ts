@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
-import { PaymentStatus } from "./payment.constant";
 import { IPayment } from "./payment.type";
+import { PaymentType } from "./payment.constant";
 
 const paymentSchema = new Schema<IPayment>(
   {
@@ -25,36 +25,24 @@ const paymentSchema = new Schema<IPayment>(
       trim: true,
       lowercase: true,
     },
-    status: {
-      type: Number,
-      enum: Object.values(PaymentStatus),
+    type: {
+      type: String,
+      enum: Object.values(PaymentType),
       required: true,
+      index: true,
     },
     transactionId: {
       type: String,
-      required: true,
       unique: true,
+      required: false,
+      trim: true,
     },
     amount: {
       type: Number,
       required: true,
       min: 0,
     },
-    currency: {
-      type: String,
-      enum: ["BDT"],
-      default: "BDT",
-    },
-    gateway: {
-      type: String,
-      enum: ["sslcommerz"],
-      default: "sslcommerz",
-    },
-    paymentDetails: {
-      type: Schema.Types.Mixed,
-      default: null,
-    },
-    refundDetails: {
+    details: {
       type: Schema.Types.Mixed,
       default: null,
     },
