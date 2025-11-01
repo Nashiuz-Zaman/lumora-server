@@ -1,8 +1,21 @@
 import { OrderStatus } from "@app/modules/order/order.constants";
 import { CategoryModel } from "@app/modules/category/category.model";
-import { throwInternalServerError } from "@utils/operationalErrors";
+import { throwInternalServerError } from "@utils/index";
+import { extractDateRangeFilterFromQuery } from "../helpers";
 
-export const getTopCategorySalesPercentage = async () => {
+export const getTopCategorySalesPercentage = async (
+  queryObj: Record<string, any>
+) => {
+  const dateRange = extractDateRangeFilterFromQuery(queryObj);
+
+  const ordersMatchobj: Record<string, any> = {
+    status: { $nin: [OrderStatus.Cancelled, OrderStatus.Pending] },
+  };
+
+  if (dateRange) {
+    ordersMatchobj.createdAt = dateRange.current;
+  }
+
   const result = await CategoryModel.aggregate([
     {
       $match: {
@@ -15,9 +28,7 @@ export const getTopCategorySalesPercentage = async () => {
         let: { categoryId: "$_id" },
         pipeline: [
           {
-            $match: {
-              status: { $nin: [OrderStatus.Cancelled, OrderStatus.Pending] },
-            },
+            $match: ordersMatchobj,
           },
           { $unwind: "$items" },
           {
