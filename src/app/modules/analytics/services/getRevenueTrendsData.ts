@@ -14,9 +14,7 @@ export const getRevenueTrendsData = async (
   const granularity = getGranularityFromDateRange(dateRange);
   const mongoDateFormat = getMongoDateFormat(granularity);
 
-  const match: Record<string, any> = {
-    type: PaymentType.payment,
-  };
+  const match: Record<string, any> = {};
   let start: Date, end: Date;
 
   if (dateRange) {
@@ -39,7 +37,16 @@ export const getRevenueTrendsData = async (
             date: "$createdAt",
           },
         },
-        totalRevenue: { $sum: "$amount" },
+        // Subtract refunds by applying sign based on type
+        totalRevenue: {
+          $sum: {
+            $cond: [
+              { $eq: ["$type", PaymentType.payment] },
+              "$amount",
+              { $multiply: ["$amount", -1] },
+            ],
+          },
+        },
       },
     },
     { $sort: { _id: 1 } },
