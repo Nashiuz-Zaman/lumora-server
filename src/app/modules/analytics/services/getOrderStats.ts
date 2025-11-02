@@ -6,9 +6,9 @@ import { extractComparedData } from "../helpers/extractComparedData";
 const orderStatsGroupingStageObject = {
   _id: null,
   totalOrders: { $sum: 1 },
-  confirmedOrders: {
+  completedOrders: {
     $sum: {
-      $cond: [{ $eq: ["$status", OrderStatus.Confirmed] }, 1, 0],
+      $cond: [{ $gte: ["$status", OrderStatus.Delivered] }, 1, 0],
     },
   },
   cancelledOrders: {
@@ -39,7 +39,7 @@ const getAggregatedOrderStats = async (
 
   return {
     totalOrders: stats?.totalOrders || 0,
-    confirmedOrders: stats?.confirmedOrders || 0,
+    completedOrders: stats?.completedOrders || 0,
     cancelledOrders: stats?.cancelledOrders || 0,
     returnedOrders: stats?.returnedOrders || 0,
   };
@@ -54,13 +54,13 @@ export const getOrderStats = async (queryObj: Record<string, any>) => {
 
     return {
       totalOrders: { current: current.totalOrders },
-      confirmedOrders: { current: current.confirmedOrders },
+      completedOrders: { current: current.completedOrders },
       cancelledOrders: { current: current.cancelledOrders },
       returnedOrders: { current: current.returnedOrders },
     };
   }
 
-  // if date range
+  // If date range
   const {
     current: currentRange,
     previous: previousRange,
@@ -81,7 +81,7 @@ export const getOrderStats = async (queryObj: Record<string, any>) => {
 
   return {
     totalOrders: extractComparedData(current, previous, "totalOrders"),
-    confirmedOrders: extractComparedData(current, previous, "confirmedOrders"),
+    completedOrders: extractComparedData(current, previous, "completedOrders"),
     cancelledOrders: extractComparedData(current, previous, "cancelledOrders"),
     returnedOrders: extractComparedData(current, previous, "returnedOrders"),
     comparisonText,

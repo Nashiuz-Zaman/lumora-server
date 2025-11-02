@@ -1,13 +1,12 @@
 import { QueryBuilder } from "@app/classes";
 import { ProductModel } from "../product.model";
 import { ProductSearchableFields, ProductStatus } from "../product.constants";
-import { normalizeStatusFilter } from "@utils/normalizeQueryParam";
-import { buildInQuery } from "@utils/index";
+import { normalizeStatusFilter, buildInQuery } from "@utils/index";
 import { ReviewModel } from "../../review/review.model";
 import { ReviewStatus } from "../../review/review.constants";
 import { IProduct } from "../product.type";
 
-export const getProducts = async (queryObj: Record<string, unknown>) => {
+export const getProducts = async (queryObj: Record<string, any>) => {
   // --- Prep query object ---
   let newQueryObj = normalizeStatusFilter(queryObj, {
     ne: ProductStatus.Deleted,
@@ -16,7 +15,7 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
   // --- format the min and max price ---
   const { priceMin, priceMax } = newQueryObj;
 
-  const priceFilter: Record<string, unknown> = {};
+  const priceFilter: Record<string, any> = {};
   if (priceMin !== undefined && priceMin !== null)
     priceFilter.gte = Number(priceMin);
   if (priceMax !== undefined && priceMax !== null)
@@ -45,8 +44,6 @@ export const getProducts = async (queryObj: Record<string, unknown>) => {
   }
 
   newQueryObj = JSON.parse(JSON.stringify(newQueryObj).replace(/\$in/gi, "in"));
-
-
 
   // === PRODUCT QUERY ===
   const productQuery = new QueryBuilder(ProductModel, newQueryObj);
