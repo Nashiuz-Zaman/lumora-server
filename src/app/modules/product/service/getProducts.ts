@@ -1,7 +1,11 @@
 import { QueryBuilder } from "@app/classes";
 import { ProductModel } from "../product.model";
 import { ProductSearchableFields, ProductStatus } from "../product.constants";
-import { normalizeStatusFilter, buildInQuery } from "@utils/index";
+import {
+  normalizeStatusFilter,
+  buildInQuery,
+  viewDetailedLog,
+} from "@utils/index";
 import { ReviewModel } from "../../review/review.model";
 import { ReviewStatus } from "../../review/review.constants";
 import { IProduct } from "../product.type";
@@ -44,6 +48,8 @@ export const getProducts = async (queryObj: Record<string, any>) => {
   }
 
   newQueryObj = JSON.parse(JSON.stringify(newQueryObj).replace(/\$in/gi, "in"));
+
+  viewDetailedLog(newQueryObj);
 
   // === PRODUCT QUERY ===
   const productQuery = new QueryBuilder(ProductModel, newQueryObj);
