@@ -22,9 +22,6 @@ export const subCategoriesMap: Record<
   "Fashion & Accessories": [
     { title: "Men's Clothing", slug: "mens-clothing" },
     { title: "Women's Clothing", slug: "womens-clothing" },
-    { title: "T-Shirts", slug: "t-shirts" },
-    { title: "Jeans", slug: "jeans" },
-    { title: "Dresses", slug: "dresses" },
     { title: "Shoes", slug: "shoes" },
     { title: "Sneakers", slug: "sneakers" },
     { title: "Boots", slug: "boots" },

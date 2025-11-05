@@ -33,7 +33,6 @@ const paymentSchema = new Schema<IPayment>(
     },
     transactionId: {
       type: String,
-      unique: true,
       required: false,
       trim: true,
     },

@@ -12,7 +12,7 @@ const paymentRouter = Router();
 
 const { admin, superAdmin } = UserRoles;
 
-// Gets all the payments for admins via secure route
+// Gets all the payments for admins
 paymentRouter.get("/", userAuthMiddleware([admin, superAdmin]), getPaymentList);
 
 // Issues refund for a payment
