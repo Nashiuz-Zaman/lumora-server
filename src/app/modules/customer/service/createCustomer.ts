@@ -13,9 +13,15 @@ import { ICustomer } from "@app/modules/customer/customer.type";
 
 // services & utils
 import { sendAccountVerificationEmail } from "@app/modules/email/service";
-import { generateToken, generateAvatar } from "@utils/index";
+import { generateToken, generateAvatar, throwBadRequest } from "@utils/index";
 
 export const createCustomer = async (req: Request, user: Partial<IUser>) => {
+  // Check if email user already exists
+  const userExists = await UserModel.exists({ email: user.email });
+
+  // If already signed up user, return with an error message
+  if (userExists) return throwBadRequest("User already exists, login instead");
+
   const session = await startSession();
 
   try {
