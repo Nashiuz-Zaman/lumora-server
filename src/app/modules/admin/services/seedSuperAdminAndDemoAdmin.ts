@@ -59,7 +59,6 @@ export const seedSuperAdminAndDemoAdmin = async () => {
         password: config.superadminPassword,
         role: superadminRole._id,
         isVerified: true,
-        displayName: name,
         emailVerifiedAt: new Date(),
       });
       await AdminModel.create({ user: superadminUser._id });
@@ -82,7 +81,6 @@ export const seedSuperAdminAndDemoAdmin = async () => {
         password: config.demoadminPassword,
         role: adminRole._id,
         isVerified: true,
-        displayName: name,
         emailVerifiedAt: new Date(),
       });
       await AdminModel.create({ user: demoAdminUser._id });

@@ -14,19 +14,20 @@ import {
   blockCustomerController,
   unblockCustomerController,
   deleteCustomerController,
+  getMyCustomerProfileController,
 } from "./controllers";
 
 import { UserRoles } from "../user/user.constants";
-import { getMyCustomerProfileController } from "./controllers/getMyCustomerProfile";
-const { customer, admin, superAdmin } = UserRoles;
 
+// Router for customer-related endpoints
+const { customer, admin, superAdmin } = UserRoles;
 const customerRouter = Router();
 const upload = multer();
 
 customerRouter.post("/", upload.none(), signupCustomerController);
 
 customerRouter.get(
-  "/me/customer-profile/",
+  "/profile",
   userAuthMiddleware([UserRoles.customer]),
   getMyCustomerProfileController
 );

@@ -22,7 +22,6 @@ export const createAdmin = async (user: Partial<IUser>) => {
 
     // Fill in required values
     user.image = generateAvatar(user?.name!);
-    user.displayName = user.name;
     user.isVerified = true;
     user.emailVerifiedAt = new Date();
     user.role = (await RoleModel.findOne({ name: UserRoles.admin }))?._id;

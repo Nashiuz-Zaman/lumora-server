@@ -10,7 +10,6 @@ import { IRole } from "../role/type/role.type";
 
 const userSchema = new Schema<IUser, IUserModel>(
   {
-    displayName: String,
     name: { type: String },
     id: { type: String, unique: true },
 

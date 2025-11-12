@@ -1,13 +1,12 @@
-import { Request, RequestHandler, Response } from "express";
+import { RequestHandler } from "express";
 import { getCustomerProfileData } from "../service/getCustomerProfileData";
 import { sendSuccess, catchAsync } from "@utils/index";
+import { ISecureRequest } from "@app/shared/types";
 
 export const getMyCustomerProfileController: RequestHandler = catchAsync(
-  async (req, res) => {
-    const userId = req.params.id;
-
-    const data = await getCustomerProfileData(userId);
-
-    return sendSuccess(res, { data });
+  async (req: ISecureRequest, res) => {
+    const _id = req.decoded?.userId as string;
+    const customerProfileData = await getCustomerProfileData(_id);
+    return sendSuccess(res, { data: { customerProfileData } });
   }
 );

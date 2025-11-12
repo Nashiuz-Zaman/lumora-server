@@ -6,12 +6,11 @@ export const updateBasicInfo = async (
     name: string;
     email: string;
     phone: string;
-    displayName: string;
   }>
 ) => {
   const user = await UserModel.findById(userId);
 
-  const allowedFields = ["name", "email", "phone", "displayName"] as const;
+  const allowedFields = ["name", "email", "phone"] as const;
 
   for (const key of allowedFields) {
     if (payload[key] !== undefined) {
