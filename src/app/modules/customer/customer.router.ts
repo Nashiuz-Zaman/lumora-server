@@ -39,9 +39,8 @@ customerRouter.get(
 );
 
 customerRouter.patch(
-  "/settings-data/basic-info",
+  "/basic-info",
   userAuthMiddleware([customer]),
-  upload.none(),
   updateCustomerBasicInfoController
 );
 

@@ -1,25 +1,27 @@
 import { UserModel } from "@app/modules/user/user.model";
+import { ICustomerProfile } from "../customer.type";
+import {
+  throwInternalServerError,
+  throwNotFound,
+} from "@utils/operationalErrors";
 
 export const updateBasicInfo = async (
   userId: string,
-  payload: Partial<{
-    name: string;
-    email: string;
-    phone: string;
-  }>
+  data: Partial<ICustomerProfile>
 ) => {
   const user = await UserModel.findById(userId);
+  if (!user) return throwNotFound("User not found");
 
-  const allowedFields = ["name", "email", "phone"] as const;
+  const allowedFields = ["name", "email", "phone", "image"] as const;
 
   for (const key of allowedFields) {
-    if (payload[key] !== undefined) {
-      (user as any)[key] = payload[key];
+    if (data[key] !== undefined) {
+      (user as any)[key] = data[key];
     }
   }
 
   const updated = await user?.save();
 
   if (updated?._id) return true;
-  else return false;
+  else return throwInternalServerError("Failed to update user basic info");
 };

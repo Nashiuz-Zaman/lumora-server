@@ -8,23 +8,14 @@ import { ISecureRequest } from "@app/shared/types";
 import { updateBasicInfo } from "../service/updateBasicInfo";
 
 // utils
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { catchAsync, sendSuccess } from "@utils/index";
 
 export const updateCustomerBasicInfoController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
     const { userId } = req.decoded!;
-
-    const updated = await updateBasicInfo(userId!, req.body);
-
-    if (updated)
-      return sendSuccess(res, {
-        message: "Customer info updated successfully",
-      });
-
-    throwInternalServerError();
+    await updateBasicInfo(userId!, req.body);
+    return sendSuccess(res, {
+      message: "Customer info updated successfully",
+    });
   }
 );
