@@ -47,21 +47,18 @@ customerRouter.patch(
 customerRouter.patch(
   "/settings-data/change-password",
   userAuthMiddleware([customer]),
-  upload.none(),
   changeCustomerPasswordFromSettingsController
 );
 
 customerRouter.patch(
-  "/settings-data/billing-address",
+  "/billing-address",
   userAuthMiddleware([customer]),
-  upload.none(),
   updateBillingAddressController
 );
 
 customerRouter.patch(
-  "/settings-data/shipping-address",
+  "/shipping-address",
   userAuthMiddleware([customer]),
-  upload.none(),
   updateShippingAddressController
 );
 
