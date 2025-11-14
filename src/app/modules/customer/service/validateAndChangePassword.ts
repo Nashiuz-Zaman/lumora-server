@@ -1,7 +1,10 @@
 import { UserModel } from "@app/modules/user/user.model";
 import bcrypt from "bcrypt";
-
-import { throwBadRequest, throwUnauthorized } from "@utils/operationalErrors";
+import {
+  throwBadRequest,
+  throwInternalServerError,
+  throwUnauthorized,
+} from "@utils/operationalErrors";
 
 export const validateAndChangePassword = async (
   userId: string,
@@ -17,5 +20,8 @@ export const validateAndChangePassword = async (
   if (!isMatch) return throwUnauthorized("Current password is incorrect");
 
   user.password = newPassword;
-  return await user.save();
+  const updated = await user.save();
+
+  if (!updated) return throwInternalServerError();
+  return updated;
 };

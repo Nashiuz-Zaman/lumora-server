@@ -45,7 +45,7 @@ customerRouter.patch(
 );
 
 customerRouter.patch(
-  "/settings-data/change-password",
+  "/settings/change-password",
   userAuthMiddleware([customer]),
   changeCustomerPasswordFromSettingsController
 );
