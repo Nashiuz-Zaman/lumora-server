@@ -24,6 +24,8 @@ export const confirmOrder = async (order: TOrderDoc) => {
 
     if (uploadedUrl) {
       order.invoice = uploadedUrl;
+    }else{
+      order.invoice= 'Invoice generation failed';
     }
 
     const cartId = order.cartId;

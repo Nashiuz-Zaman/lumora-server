@@ -6,6 +6,7 @@ import { ISecureRequest } from "@app/shared/types";
 export const getOrdersForCustomerController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
     const userId = toObjectId(req.decoded?.userId!);
+
     const queryObj = {
       ...req.query,
       userId,
