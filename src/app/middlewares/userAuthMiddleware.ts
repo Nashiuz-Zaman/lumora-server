@@ -35,6 +35,7 @@ const validateUserAccess = async (
   }
 
   const populatedRole = user.role.name;
+  console.log("Permitted:", permittedRoles, "Role from DB:", populatedRole);
 
   if (permittedRoles !== "ALL" && !permittedRoles.includes(populatedRole)) {
     return throwUnauthorized("User not authorized");
@@ -79,6 +80,8 @@ export const userAuthMiddleware = (
 
       const { role } = await validateUserAccess(res, email!, permittedRoles);
       decoded.role = role;
+
+      console.log(role);
 
       if (refreshFlow) {
         setAuthCookies(res, { email, role, userId });

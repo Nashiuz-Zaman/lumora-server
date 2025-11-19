@@ -7,12 +7,13 @@ import {
   cancelOrdersController,
   archiveOrdersController,
   trackOrderController,
+  getOrdersForCustomerController,
 } from "./controllers";
 import { userAuthMiddleware } from "@app/middlewares";
 import { UserRoles } from "../user/user.constants";
 
 const orderRouter = Router();
-const { admin, superAdmin } = UserRoles;
+const { admin, superAdmin, customer } = UserRoles;
 
 //
 // ----------- CUSTOMER, GUEST ROUTES -----------
@@ -20,6 +21,13 @@ const { admin, superAdmin } = UserRoles;
 
 // Track order (public)
 orderRouter.get("/track/:orderId", trackOrderController);
+
+// Get orders for the logged-in customer
+orderRouter.get(
+  "/customers",
+  userAuthMiddleware([customer]),
+  getOrdersForCustomerController
+);
 
 // Place order
 orderRouter.post("/", placeOrderController);
@@ -30,7 +38,7 @@ orderRouter.post("/", placeOrderController);
 
 // Fetch a list of all orders based on filters
 orderRouter.get(
-  "/",
+  "/admin",
   userAuthMiddleware([admin, superAdmin]),
   getOrdersPrivateController
 );

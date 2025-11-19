@@ -3,13 +3,19 @@ import { IOrder } from "../order.type";
 import { OrderSearchableFields } from "../order.constants";
 import { normalizeStatusFilter } from "@utils/normalizeQueryParam";
 import { OrderModel } from "../order.model";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const getOrders = async (
   queryObj: Record<string, any> & Partial<IOrder>
 ) => {
-  console.log("before", queryObj);
   const newQueryObj = normalizeStatusFilter(queryObj);
-  console.log("after", newQueryObj);
+
+  if (typeof newQueryObj.user === "string") {
+    newQueryObj.user = toObjectId(newQueryObj.user);
+  }
+
+  console.log('reached')
 
   const query = new QueryBuilder<IOrder>(OrderModel, newQueryObj);
 
@@ -22,6 +28,8 @@ export const getOrders = async (
     .exec();
 
   const queryMeta = await query.getQueryMeta();
+
+  if (!orders || !queryMeta) return throwInternalServerError();
 
   return { orders, queryMeta };
 };
