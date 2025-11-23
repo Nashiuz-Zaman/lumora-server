@@ -9,10 +9,11 @@ export const getOrdersForCustomerController: RequestHandler = catchAsync(
 
     const queryObj = {
       ...req.query,
-      userId,
+      user: userId,
       limitFields:
-        "orderId,createdAt,status,items,subtotal,shippingFee,tax,discount,total",
+        "orderId,createdAt,status,items,subtotal,shippingFee,tax,discount,total,invoice",
     };
+
     const data = await getOrders(queryObj);
 
     return sendSuccess(res, {

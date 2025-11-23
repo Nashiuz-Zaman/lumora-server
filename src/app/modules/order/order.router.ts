@@ -8,6 +8,7 @@ import {
   archiveOrdersController,
   trackOrderController,
   getOrdersForCustomerController,
+  getOrderDetailsCustomerDashboardController,
 } from "./controllers";
 import { userAuthMiddleware } from "@app/middlewares";
 import { UserRoles } from "../user/user.constants";
@@ -27,6 +28,13 @@ orderRouter.get(
   "/customers",
   userAuthMiddleware([customer]),
   getOrdersForCustomerController
+);
+
+// Get detailed orders for the logged-in customer
+orderRouter.get(
+  "/customers/details",
+  userAuthMiddleware([customer]),
+  getOrderDetailsCustomerDashboardController
 );
 
 // Place order

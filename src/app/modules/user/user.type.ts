@@ -1,12 +1,10 @@
 import { Types, HydratedDocument, Model } from "mongoose";
 import { TUserStatus } from "./user.constants";
 import { IRole } from "../role/type/role.type";
-import { ICustomer } from "../customer/customer.type";
-import { IAdmin } from "../admin/admin.type";
 
 export interface IUser {
   _id: Types.ObjectId;
-  name?: string;
+  name: string;
   id: string;
   email: string;
   password?: string | null;
@@ -18,7 +16,7 @@ export interface IUser {
   emailVerifiedAt?: Date;
   status: TUserStatus;
 
-  role: Types.ObjectId;
+  role: Types.ObjectId | IRole;
 
   lastLoginAt?: Date;
 
@@ -26,14 +24,12 @@ export interface IUser {
   updatedAt?: Date;
 }
 
-export type TUserPopulated = IUser & {
-  customerProfile?: ICustomer;
-  adminProfile?: IAdmin;
+export interface IUserPopulated extends IUser {
   role: IRole;
-};
+}
 
 export type TUserDoc = HydratedDocument<IUser>;
-export type TUserPopulatedDoc = HydratedDocument<TUserPopulated>;
+export type TUserPopulatedDoc = HydratedDocument<IUserPopulated>;
 
 export interface IUserModel extends Model<IUser> {
   auth(email: string, password: string): Promise<Omit<IUser, "password">>;

@@ -6,3 +6,9 @@ export interface IAdmin {
 }
 
 export type TAdminDoc = HydratedDocument<IAdmin>;
+
+declare module "../user/user.type" {
+  interface IUserPopulated {
+    adminProfile?: IAdmin;
+  }
+}

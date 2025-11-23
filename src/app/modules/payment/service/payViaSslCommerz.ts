@@ -1,32 +1,17 @@
 import { v4 as uuidv4 } from "uuid";
 import SSLCommerzPayment from "sslcommerz-lts";
 import { config } from "../../../../config/env";
-import { TOrderDoc } from "@app/modules/order/order.type";
+import { IPayPayload } from "../payment.type";
 
 const store_id = config.sslStoreId;
 const store_passwd = config.sslStorePass;
 const is_live = false; // always false for demo/sandbox
 
-interface IPayPayload {
-  order: TOrderDoc;
-  deliveryAddress: string;
-  city?: string;
-  zipCode?: string;
-  name: string;
-  email: string;
-  phone?: string;
-}
-
 export const payViaSslCommerz = async (
   payload: IPayPayload,
   serverUrl: string
 ) => {
-  const { order, deliveryAddress, city, zipCode, name, email, phone } = payload;
-
-  if (phone) {
-    order.phone = phone;
-    await order.save();
-  }
+  const { order, shippingAddress, name, email, phone } = payload;
 
   const productName = `${order.items.length} Products from Lumora`;
   const transactionId = `${order._id}_${uuidv4()}`;
@@ -52,19 +37,19 @@ export const payViaSslCommerz = async (
     cus_email: email,
     cus_add1: "N/A",
     cus_add2: "",
-    cus_city: city || "Dhaka",
+    cus_city: shippingAddress?.city || "Dhaka",
     cus_state: "N/A",
-    cus_postcode: zipCode || "0000",
-    cus_country: "Bangladesh",
+    cus_postcode: shippingAddress?.zipCode || "0000",
+    cus_country: shippingAddress?.country || "Bangladesh",
     cus_phone: phone || "0000000000",
     cus_fax: phone || "0000000000",
     ship_name: name,
-    ship_add1: deliveryAddress || "N/A",
+    ship_add1: shippingAddress?.address || "N/A",
     ship_add2: "",
-    ship_city: city || "Dhaka",
-    ship_state: "N/A",
-    ship_postcode: zipCode || "0000",
-    ship_country: "Bangladesh",
+    ship_city: shippingAddress?.city || "Dhaka",
+    ship_state: shippingAddress?.state || "Dhaka",
+    ship_postcode: shippingAddress?.zipCode || "0000",
+    ship_country: shippingAddress?.country || "Bangladesh",
     value_a: name,
     value_b: email,
   };

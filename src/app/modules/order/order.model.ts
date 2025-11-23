@@ -56,7 +56,7 @@ const OrderItemSchema = new Schema(
     quantity: { type: Number, required: true },
   },
   { _id: false }
-);
+); 
 
 // Main order schema
 const OrderSchema = new Schema<IOrder>(
@@ -74,7 +74,8 @@ const OrderSchema = new Schema<IOrder>(
     name: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String },
-    deliveryAddress: { type: String, required: true },
+    shippingAddress: { type: String, required: true },
+    billingAddress: { type: String, required: true },
     subtotal: { type: Number, required: true },
     total: { type: Number, required: true },
     shippingFee: { type: Number },

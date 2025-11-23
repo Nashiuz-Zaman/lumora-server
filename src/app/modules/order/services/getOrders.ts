@@ -15,8 +15,6 @@ export const getOrders = async (
     newQueryObj.user = toObjectId(newQueryObj.user);
   }
 
-  console.log('reached')
-
   const query = new QueryBuilder<IOrder>(OrderModel, newQueryObj);
 
   const orders = await query

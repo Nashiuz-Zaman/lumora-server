@@ -8,7 +8,6 @@ import { throwInternalServerError } from "@utils/index";
 
 export const placeOrder = async (orderData: IOrder, serverUrl: string) => {
   const session = await mongoose.startSession();
-
   let order;
 
   try {
@@ -21,7 +20,7 @@ export const placeOrder = async (orderData: IOrder, serverUrl: string) => {
 
     order = await createOrder(orderData, session);
 
-    if (!order?._id) return throwInternalServerError("Failed to create order");
+    if (!order?._id) return throwInternalServerError("Payment was not initiated");
 
     const paymentUrl = await initiateOrderPayment(order, serverUrl);
 

@@ -2,8 +2,12 @@ import { UserRoles, UserSearchableFields } from "./../user.constants";
 import { QueryBuilder } from "@app/classes/QueryBuilder";
 import { AdminModel } from "@app/modules/admin/admin.model";
 import { CustomerModel } from "@app/modules/customer/customer.model";
+import { Model } from "mongoose";
 
-const MODEL_MAP = {
+const MODEL_MAP: Record<
+  typeof UserRoles.customer | typeof UserRoles.admin,
+  Model<any>
+> = {
   customer: CustomerModel,
   admin: AdminModel,
 };

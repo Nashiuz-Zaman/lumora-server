@@ -14,7 +14,8 @@ export const trackOrder = async (orderId: string) => {
     status: order.status,
     activities: order.activities,
     name: order.name,
-    deliveryAddress: order.deliveryAddress,
+    shippingAddress: order.shippingAddress,
+    billingAddress: order.billingAddress,
     phone: order.phone,
     email: order.email,
     estimatedDelivery: order?.estimatedDelivery

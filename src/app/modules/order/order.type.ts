@@ -1,6 +1,8 @@
 import { TPopulatedCartItem } from "@app/modules/cart/cart.type";
 import { Types, HydratedDocument } from "mongoose";
 import { TOrderStatusValue } from "./order.constants";
+import { ICustomer } from "../customer/customer.type";
+import { IUser } from "../user/user.type";
 
 export interface IOrderActivity {
   time: Date;
@@ -13,10 +15,11 @@ export interface IOrder {
   orderId?: string;
   cartId?: string;
   user?: Types.ObjectId | "guest"; // optional for guests
-  name: string;
-  email: string;
-  phone?: string;
-  deliveryAddress: string;
+  name: IUser["name"];
+  email: IUser["email"];
+  phone: NonNullable<IUser["phone"]>;
+  shippingAddress: ICustomer["shippingAddress"];
+  billingAddress: ICustomer["billingAddress"];
   subtotal: number;
   total: number;
   shippingFee?: number;

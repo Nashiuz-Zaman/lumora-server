@@ -12,19 +12,25 @@ export interface ICustomerAddress {
 export interface ICustomer {
   _id?: Types.ObjectId;
   user: Types.ObjectId;
-  billingAddress?: ICustomerAddress;
-  shippingAddress?: ICustomerAddress;
+  billingAddress: ICustomerAddress;
+  shippingAddress: ICustomerAddress;
 }
 
 export interface ICustomerProfile {
   name: IUser["name"];
   email: IUser["email"];
-  phone: IUser["phone"];
+  phone: NonNullable<IUser["phone"]>;
   image?: IUser["image"];
   lastLoginAt?: IUser["lastLoginAt"];
   createdAt?: IUser["createdAt"];
-  billingAddress?: ICustomerAddress;
-  shippingAddress?: ICustomerAddress;
+  billingAddress: ICustomer["billingAddress"];
+  shippingAddress: ICustomer["shippingAddress"];
 }
 
 export type TCustomerDoc = HydratedDocument<ICustomer>;
+
+declare module "../user/user.type" {
+  interface IUserPopulated {
+    customerProfile?: ICustomer;
+  }
+}

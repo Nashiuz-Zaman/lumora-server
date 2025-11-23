@@ -6,3 +6,4 @@ export * from "./markOrderDelivered";
 export * from "./archiveOrders";
 export * from "./trackOrder";
 export * from "./getOrdersForCustomer";
+export * from "./getOrderDetailsCustomerDashboard";

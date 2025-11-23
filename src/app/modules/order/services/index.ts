@@ -5,7 +5,6 @@ export * from "./getOrders";
 export * from "./updateShippingDetails";
 export * from "./markOrdersDelivered";
 export * from "./trackOrder";
-export * from "./fetchRecentOrdersForUser";
-export * from "./getUserOrderStats";
 export * from "./placeOrder";
 export * from "./archiveOrders";
+export * from "./getOrder";
