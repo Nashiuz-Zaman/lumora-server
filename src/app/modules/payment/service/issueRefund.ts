@@ -48,7 +48,7 @@ export const issueRefund = async (
     name: payment.name,
     orderId: payment.orderId,
     orderObjId: payment.order,
-    transactionId: refundResult.trans_id!,
+    transactionId: refundResult.refund_ref_id as string,
     details: {
       ...refundResult,
       refundReason: reason,

@@ -7,7 +7,10 @@ import { updateStock } from "@app/modules/product/service";
 import { PaymentModel } from "@app/modules/payment/payment.model";
 import { issueRefund } from "@app/modules/payment/service";
 
-export const cancelOrders = async (_ids: string[], reason?: string) => {
+export const cancelOrders = async (
+  _ids: string[],
+  cancellationReason: string = "Admin Cancelled"
+) => {
   if (!Array.isArray(_ids) || _ids.length === 0)
     return throwBadRequest("_ids not provided");
 
@@ -38,7 +41,7 @@ export const cancelOrders = async (_ids: string[], reason?: string) => {
         .lean();
 
       if (paymentForOrder?._id) {
-        await issueRefund(paymentForOrder._id, "Admin Cancelled", 0, session);
+        await issueRefund(paymentForOrder._id, cancellationReason, 0, session);
       }
     }
 
@@ -50,7 +53,7 @@ export const cancelOrders = async (_ids: string[], reason?: string) => {
       {
         $set: {
           status: OrderStatus.Cancelled,
-          cancellationReason: reason,
+          cancellationReason,
         },
         $push: {
           activities: {

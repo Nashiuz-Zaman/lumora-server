@@ -4,11 +4,12 @@ import {
   getOrdersPrivateController,
   markOrderShippedController,
   markOrdersDeliveredController,
-  cancelOrdersController,
+  cancelOrdersAdminController,
   archiveOrdersController,
   trackOrderController,
   getOrdersForCustomerController,
   getOrderDetailsCustomerDashboardController,
+  cancelOrdersCustomerController,
 } from "./controllers";
 import { userAuthMiddleware } from "@app/middlewares";
 import { UserRoles } from "../user/user.constants";
@@ -28,6 +29,13 @@ orderRouter.get(
   "/customers",
   userAuthMiddleware([customer]),
   getOrdersForCustomerController
+);
+
+// Cancel orders (customer)
+orderRouter.patch(
+  "/customer/cancel",
+  userAuthMiddleware([customer]),
+  cancelOrdersCustomerController
 );
 
 // Get detailed orders for the logged-in customer
@@ -65,11 +73,11 @@ orderRouter.patch(
   markOrdersDeliveredController
 );
 
-// Cancel orders
+// Cancel orders (Admin)
 orderRouter.patch(
-  "/cancel",
+  "/admin/cancel",
   userAuthMiddleware([admin, superAdmin]),
-  cancelOrdersController
+  cancelOrdersAdminController
 );
 
 // Archive orders

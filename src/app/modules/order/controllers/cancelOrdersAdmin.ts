@@ -6,7 +6,7 @@ import {
   throwInternalServerError,
 } from "@utils/index";
 
-export const cancelOrdersController: RequestHandler = catchAsync(
+export const cancelOrdersAdminController: RequestHandler = catchAsync(
   async (req, res) => {
     const { _ids, reason } = req.body;
     const message = await cancelOrders(_ids, reason);

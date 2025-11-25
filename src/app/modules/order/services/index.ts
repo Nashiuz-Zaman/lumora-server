@@ -8,3 +8,4 @@ export * from "./trackOrder";
 export * from "./placeOrder";
 export * from "./archiveOrders";
 export * from "./getOrder";
+export * from "./verifyOrderOwnership";
