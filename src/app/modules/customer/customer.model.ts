@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { ICustomer } from "./customer.type";
 
-const addressSchema = new Schema(
+export const addressSchema = new Schema(
   {
     companyName: { type: String, default: "" },
     address: { type: String, default: "" },

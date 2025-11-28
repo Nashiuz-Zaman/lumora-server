@@ -5,6 +5,7 @@ import { getNextSequence } from "../counter/counter.util";
 import { AppError } from "@app/classes";
 import { decrementCouponUsageByCode } from "../coupon/service";
 import { isObjectId } from "@utils/index";
+import { addressSchema } from "../customer/customer.model";
 
 // Activity sub-schema
 const OrderActivitySchema = new Schema(
@@ -56,7 +57,7 @@ const OrderItemSchema = new Schema(
     quantity: { type: Number, required: true },
   },
   { _id: false }
-); 
+);
 
 // Main order schema
 const OrderSchema = new Schema<IOrder>(
@@ -74,8 +75,14 @@ const OrderSchema = new Schema<IOrder>(
     name: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String },
-    shippingAddress: { type: String, required: true },
-    billingAddress: { type: String, required: true },
+    shippingAddress: {
+      type: addressSchema,
+      default: () => ({}), // create an address with all fields as ""
+    },
+    billingAddress: {
+      type: addressSchema,
+      default: () => ({}), // create an address with all fields as ""
+    },
     subtotal: { type: Number, required: true },
     total: { type: Number, required: true },
     shippingFee: { type: Number },
