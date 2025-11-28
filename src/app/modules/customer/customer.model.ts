@@ -3,7 +3,6 @@ import { ICustomer } from "./customer.type";
 
 export const addressSchema = new Schema(
   {
-    companyName: { type: String, default: "" },
     address: { type: String, default: "" },
     country: { type: String, default: "" },
     city: { type: String, default: "" },
