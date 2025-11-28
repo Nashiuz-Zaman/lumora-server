@@ -5,13 +5,14 @@ export interface ICategory {
   title: string;
   slug: string;
   parentCategory?: Types.ObjectId | null;
+  categoryImages?: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 export interface ICategoryTreeItem {
-  topCategory: Partial<ICategory>;
-  subCategories: Partial<ICategory>[];
+  topCategory: ICategory;
+  subCategories: ICategory[];
 }
 
 export type TCategoryDoc = HydratedDocument<ICategory>;

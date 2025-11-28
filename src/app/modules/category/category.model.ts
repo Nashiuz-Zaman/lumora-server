@@ -5,10 +5,16 @@ const CategorySchema = new Schema<ICategory>(
   {
     title: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
+
     parentCategory: {
       type: Schema.Types.ObjectId,
       ref: "Category",
       default: null,
+    },
+
+    categoryImages: {
+      type: [String],
+      default: [],
     },
   },
   { timestamps: true }

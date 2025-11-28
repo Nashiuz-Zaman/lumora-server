@@ -15,6 +15,6 @@ export const getCategoryTreeController: RequestHandler = catchAsync(
     if (!categoryTree)
       return throwInternalServerError("Categories query server error");
 
-    sendSuccess(res, { data: { categoryTree } });
+    return sendSuccess(res, { data: { categoryTree } });
   }
 );

@@ -1,18 +1,73 @@
 export const topCategories = [
-  { title: "Fashion & Accessories", slug: "fashion-accessories" },
-  { title: "Gaming & Entertainment", slug: "gaming-entertainment" },
+  {
+    title: "Fashion & Accessories",
+    slug: "fashion-accessories",
+    categoryImages: [
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080347/lumora/top-categories/fashion-1_1_xtzuvw.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080273/lumora/top-categories/fashion-2_sciglm.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080282/lumora/top-categories/fashion-3_xesu1a.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080277/lumora/top-categories/fashion-4_lsuksm.webp",
+    ],
+  },
+  {
+    title: "Gaming & Entertainment",
+    slug: "gaming-entertainment",
+    categoryImages: [
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080480/lumora/top-categories/entertainment-1_ogxlmo.webp",
+    ],
+  },
   {
     title: "Mobile Phones & Electronics",
     slug: "mobile-phones-electronics",
+    categoryImages: [
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757091587/lumora/top-categories/mobile-1_1_ynn7zr.webp",
+    ],
   },
-  { title: "Food & Snacks", slug: "food-snacks" },
-  { title: "Kitchen Essentials", slug: "kitchen-essentials" },
+  {
+    title: "Food & Snacks",
+    slug: "food-snacks",
+    categoryImages: [
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080550/lumora/top-categories/food-1_dxurgc.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080552/lumora/top-categories/food-2_n8xqpb.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080554/lumora/top-categories/food-3_lpkzoo.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080548/lumora/top-categories/food-4_nifdn9.webp",
+    ],
+  },
+  {
+    title: "Kitchen Essentials",
+    slug: "kitchen-essentials",
+    categoryImages: [
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080778/lumora/top-categories/kitchen-1_1_ta3vaw.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080775/lumora/top-categories/kitchen-2_ga1pht.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080782/lumora/top-categories/kitchen-3_cwuizw.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080780/lumora/top-categories/kitchen-4_kj3ugn.webp",
+    ],
+  },
   {
     title: "Home Appliances & Essentials",
     slug: "home-appliances-essentials",
+    categoryImages: [
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757080886/lumora/top-categories/home-1_qclzjx.webp",
+    ],
   },
-  { title: "Health & Wellness", slug: "health-wellness" },
-  { title: "Outdoors", slug: "outdoors" },
+  {
+    title: "Health & Wellness",
+    slug: "health-wellness",
+    categoryImages: [
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757082267/lumora/top-categories/health-1_2_hmfjbq.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757081415/lumora/top-categories/health-2_1_b8egro.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757081799/lumora/top-categories/health-3_1_k1av2n.webp",
+    ],
+  },
+  {
+    title: "Outdoors",
+    slug: "outdoors",
+    categoryImages: [
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757260940/lumora/top-categories/outdoor-1_amgxnj.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757260940/lumora/top-categories/outdoor-2_vpamfz.webp",
+      "https://res.cloudinary.com/diwzuhlc3/image/upload/v1757260939/lumora/top-categories/outdoor-3_h5ta1h.webp",
+    ],
+  },
 ];
 
 export const subCategoriesMap: Record<
@@ -23,8 +78,6 @@ export const subCategoriesMap: Record<
     { title: "Men's Clothing", slug: "mens-clothing" },
     { title: "Women's Clothing", slug: "womens-clothing" },
     { title: "Shoes", slug: "shoes" },
-    { title: "Sneakers", slug: "sneakers" },
-    { title: "Boots", slug: "boots" },
     { title: "Bags & Wallets", slug: "bags-wallets" },
     { title: "Watches", slug: "watches" },
     { title: "Jewelry", slug: "jewelry" },
