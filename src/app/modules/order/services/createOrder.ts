@@ -16,8 +16,11 @@ export const createOrder = async (
 
     orderData.user = existingUser?._id || "guest";
   } else {
-    // Type assertion is needed since the data is coming from client and the user is currently a string type
-    orderData.user = toObjectId(orderData.user as string);
+    if ((orderData.user as string).trim() !== "guest") {
+      orderData.user = toObjectId(orderData.user as string);
+    }else {
+      orderData.user = 'guest'
+    }
   }
 
   // Create the order (with session if provided)
