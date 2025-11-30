@@ -8,6 +8,8 @@ export const getUserCartOptionalMergeController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {
     const { cartId, userId } = req.decoded!;
 
+    console.log(cartId, userId);
+
     // if cart ID from decoded cookie exists then it means there is a session cart for guest cart, we have to merge it
     if (cartId) {
       const newMergedCart = await mergeCart(res, userId!, cartId);

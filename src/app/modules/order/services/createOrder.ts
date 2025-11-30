@@ -2,7 +2,7 @@ import { ClientSession } from "mongoose";
 import { UserModel } from "@app/modules/user/user.model";
 import { OrderModel } from "../order.model";
 import { IOrder } from "../order.type";
-import { toObjectId } from "@utils/objectIdUtils";
+import { toObjectId } from "@utils/index";
 
 export const createOrder = async (
   orderData: IOrder & { city?: string; zipCode?: string },
