@@ -24,8 +24,8 @@ export const confirmOrder = async (order: TOrderDoc) => {
 
     if (uploadedUrl) {
       order.invoice = uploadedUrl;
-    }else{
-      order.invoice= 'Invoice generation failed';
+    } else {
+      order.invoice = "Invoice generation failed";
     }
 
     const cartId = order.cartId;
@@ -42,11 +42,11 @@ export const confirmOrder = async (order: TOrderDoc) => {
     await session.commitTransaction();
 
     // 6. Send order placed email (outside session)
-    await sendOrderPlacedEmail(updatedOrder?.toObject(), {
+    sendOrderPlacedEmail(updatedOrder?.toObject(), {
       filename: `Invoice for ${updatedOrder?.orderId}.pdf`,
       content: buffer,
       contentType: "application/pdf",
-    });
+    }).catch(console.log);
 
     return updatedOrder;
   } catch (err) {
