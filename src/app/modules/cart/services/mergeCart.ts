@@ -10,7 +10,7 @@ export const mergeCart = async (
   cartId: string
 ) => {
   // if there is no session cart there is nothing to merge so abort
-  const sessionCart = await CartModel.findById(cartId);
+  const sessionCart = await CartModel.findById(toObjectId(cartId));
   if (!sessionCart) return null;
 
   if (!userId) return throwBadRequest("User is required to merge");
@@ -18,6 +18,8 @@ export const mergeCart = async (
   const existingUserCart = await CartModel.findOne({
     user: toObjectId(userId),
   });
+
+  console.log('exising cart', existingUserCart)
 
   // if there is a session cart then we have to either merge with an existing of the same user or if there is no existing cart of the user just create a new one and return
 
