@@ -9,24 +9,29 @@ Jump to: [Features](#-features) | [Client Setup](#client-how-to-run) |
 
 ### Frontend
 
-- **Next.js 15** (App Router + Turbopack)
+- ### Frontend
+
+- **Next.js 15+** (App Router)
+- **TypeScript**
 - **React 19**
 - **Redux Toolkit**
 - **TailwindCSS 4**
 - **Firebase Authentication**
-- **GSAP** for animations
-- **React Hook Form** for powerful form handling
-- **Axios** for API communication
+- **GSAP** 
+- **React Hook Form** 
+- **Axios** 
 
 ### Backend
 
 - **Express**
 - **TypeScript**
-- **MongoDB (Mongoose)**
+- **MongoDB**
+- **Mongoose**
 - **JWT Authentication**
-- **Cloudinary** for image storage
-- **Nodemailer** for emails
-- **SSLCommerz** for payment gateway
+- **Puppeteer**
+- **Cloudinary** 
+- **Nodemailer** 
+- **SSLCommerz** 
 
 ## 🧩 Features
 
