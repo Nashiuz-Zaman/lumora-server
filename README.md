@@ -237,4 +237,4 @@ npm start
 
 Developed by **Nashiuz Zaman**
 
-[Back to top](#-lumora)
+[Back to top](#lumora)
