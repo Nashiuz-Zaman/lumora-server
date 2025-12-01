@@ -9,8 +9,6 @@ Jump to: [Features](#-features) | [Client Setup](#client-how-to-run) |
 
 ### Frontend
 
-- ### Frontend
-
 - **Next.js 15+** (App Router)
 - **TypeScript**
 - **React 19**
