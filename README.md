@@ -1,13 +1,9 @@
-# 🌙 Lumora
+# Lumora
 
 A full modern eCommerce platform built with a **Next.js 15 + React 19** frontend and a **Node.js/Express + TypeScript + MongoDB** backend — powered by **Redux Toolkit**, **TailwindCSS 4**, **Firebase Authentication**, **Cloudinary**, **JWT auth**, **Nodemailer**, and **SSLCommerz payments**.
 
-Engineered for performance, scalability, and a smooth, fluid user experience.
-
-Jump to: [Client Setup](#client-how-to-run) |
+Jump to: [Features](#-features) | [Client Setup](#client-how-to-run) |
 [Server Setup](#server-how-to-run)
-
----
 
 ## 🚀 Tech Stack
 
@@ -24,15 +20,13 @@ Jump to: [Client Setup](#client-how-to-run) |
 
 ### Backend
 
-- **Node.js + Express**
+- **Express**
 - **TypeScript**
 - **MongoDB (Mongoose)**
 - **JWT Authentication**
 - **Cloudinary** for image storage
 - **Nodemailer** for emails
 - **SSLCommerz** for payment gateway
-
----
 
 ## 🧩 Features
 
@@ -142,13 +136,6 @@ Open your browser:
 
 ---
 
-## 📝 Notes
-
-- Firebase handles **Google logins**.
-- Ensure your `.env.local` is properly configured before running the app.
-
----
-
 # Server How to run
 
 [Back to top](#-lumora)
@@ -235,6 +222,8 @@ npm start
 
 ## 🧩 Notes
 
+- Firebase handles **Google logins**.
+- Ensure your `.env.local` is properly configured before running the app.
 - Make sure MongoDB is running and accessible from your connection string.
 - Configure your `.env` file carefully before deployment.
 - Uses **module-alias** for clean imports (e.g. `@app`, `@utils`, etc.).
