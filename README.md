@@ -15,9 +15,10 @@ Jump to: [Features](#-features) | [Client Setup](#client-how-to-run) |
 - **Redux Toolkit**
 - **TailwindCSS 4**
 - **Firebase Authentication**
-- **GSAP** 
-- **React Hook Form** 
-- **Axios** 
+- **GSAP**
+- **React Hook Form**
+- **Axios**
+- **DND-Kit**
 
 ### Backend
 
@@ -27,9 +28,9 @@ Jump to: [Features](#-features) | [Client Setup](#client-how-to-run) |
 - **Mongoose**
 - **JWT Authentication**
 - **Puppeteer**
-- **Cloudinary** 
-- **Nodemailer** 
-- **SSLCommerz** 
+- **Cloudinary**
+- **Nodemailer**
+- **SSLCommerz**
 
 ## 🧩 Features
 

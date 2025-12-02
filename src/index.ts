@@ -79,10 +79,10 @@ const main = async (): Promise<void> => {
     if (config.environment !== "production") {
       console.log("Seeding initial data...");
       try {
-        // await seedSuperAdminAndDemoAdmin();
-        // await seedCategories();
-        // await seedProductCollections();
-        // await seedBackupProductCollections();
+        await seedSuperAdminAndDemoAdmin();
+        await seedCategories();
+        await seedProductCollections();
+        await seedBackupProductCollections();
         console.log("Database seeding completed ✅");
       } catch (err) {
         console.error("Seeding error:", err);
