@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "rimraf dist && tsc && tsc-alias",
-    "start": "cross-env NODE_ENV=production node dist/index.js"
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "seed:categories": "tsx seed/seedCategories.ts",
+    "seed:productCollections": "tsx seed/seedProductCollections.ts",
+    "seed:backupProductCollections": "tsx seed/seedBackupProductCollections.ts",
+    "seed:all": "tsx seed/seedCategories.ts && tsx seed/seedProductCollections.ts && tsx seed/seedBackupProductCollections.ts"
   },
   "keywords": [],
   "author": "",

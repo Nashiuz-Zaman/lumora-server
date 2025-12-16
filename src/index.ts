@@ -18,9 +18,6 @@ import { initialMiddlewares, globalErrorHandler } from "@app/middlewares";
 import mainRouter from "@app/main-router";
 
 // Seeding services
-import { seedCategories } from "@app/modules/category/service/seedCategories";
-import { seedProductCollections } from "@app/modules/productCollection/service/seedProductCollections";
-import { seedBackupProductCollections } from "@app/modules/backupProductCollection/service";
 import { seedSuperAdminAndDemoAdmin } from "@app/modules/admin/services";
 
 // ------------------------------------------------------
@@ -77,13 +74,9 @@ const main = async (): Promise<void> => {
 
     // Seed DB in non-prod environments
     if (config.environment !== "production") {
-      console.log("Seeding initial data...");
       try {
         await seedSuperAdminAndDemoAdmin();
-        await seedCategories();
-        await seedProductCollections();
-        await seedBackupProductCollections();
-        console.log("Database seeding completed ✅");
+        console.log("Admin seeding completed ✅");
       } catch (err) {
         console.error("Seeding error:", err);
         process.exit(1);

@@ -215,6 +215,27 @@ npm run dev
 
 ---
 
+### 💡 Initial Data Seeding
+
+When running in **development**, the **superadmin** and **demo admin** accounts are automatically seeded.
+
+Other initial data, such as **categories, product collections, and backup collections**, need to be seeded manually using the CLI scripts:
+
+```bash
+# Seed categories
+npm run seed:categories
+
+# Seed product collections
+npm run seed:productCollections
+
+# Seed backup product collections
+npm run seed:backupProductCollections
+```
+
+> ⚠️ **Note:** In production, seeding is not automatic. Only run these scripts intentionally to avoid overwriting live data.
+
+---
+
 ### 🏗️ Build and Run Production
 
 ```bash
