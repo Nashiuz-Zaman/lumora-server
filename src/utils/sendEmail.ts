@@ -17,11 +17,14 @@ export const sendEmail = async (
     to = Array.isArray(to) ? to.join(",") : to;
 
     const smtpTransporter = nodemailer.createTransport({
-      service: "gmail", // lets nodemailer handle host/port/secure
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
       auth: {
         user: config.smtpUser,
-        pass: config.smtpPass, // App Password
+        pass: config.smtpPass,
       },
+      tls: { rejectUnauthorized: false },
     });
 
     await smtpTransporter.verify();
