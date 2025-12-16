@@ -2,7 +2,6 @@
 import { config } from "@config/env";
 import nodemailer from "nodemailer";
 
-
 export const sendEmail = async (
   to: string | string[],
   subject: string,
@@ -18,14 +17,10 @@ export const sendEmail = async (
     to = Array.isArray(to) ? to.join(",") : to;
 
     const smtpTransporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
+      service: "gmail", // lets nodemailer handle host/port/secure
       auth: {
         user: config.smtpUser,
-        pass: config.smtpPass,
-      },
-      tls: {
-        rejectUnauthorized: false,
+        pass: config.smtpPass, // App Password
       },
     });
 
