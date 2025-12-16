@@ -8,6 +8,11 @@ import { throwBadRequest, throwUnauthorized } from "@utils/index";
 import { getNextSequence } from "../counter/counter.util";
 import { IRole } from "../role/type/role.type";
 
+// Reverse map
+const UserStatusByValue = Object.fromEntries(
+  Object.entries(UserStatus).map(([k, v]) => [v, k])
+);
+
 const userSchema = new Schema<IUser, IUserModel>(
   {
     name: { type: String },
@@ -118,8 +123,10 @@ userSchema.statics.auth = async function (email: string, password: string) {
   if (!user.isVerified)
     return throwUnauthorized("Your account is not verified");
 
-  if (user.status !== UserStatus.active)
-    return throwUnauthorized(`Your account has been ${user.status}`);
+  if (user.status !== UserStatus.active) {
+    const statusText = UserStatusByValue[user.status]; // "blocked" or "deleted"
+    return throwUnauthorized(`Your account has been ${statusText}`);
+  }
 
   // If password checking is required here:
   const isMatch = await bcrypt.compare(password, user.password);
