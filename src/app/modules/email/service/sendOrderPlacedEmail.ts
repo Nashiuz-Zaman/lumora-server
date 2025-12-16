@@ -10,14 +10,16 @@ export const sendOrderPlacedEmail = async (
     content: Buffer;
     contentType: string;
   }
-): Promise<void> => {
+) => {
   const html = getOrderPlacedEmailHtml(order, new Date().getFullYear());
 
-  await sendEmail(
+  const result = await sendEmail(
     order.email,
     `Order Placed – ${order.orderId}`,
     html,
     undefined,
     attachment ? [attachment] : undefined
   );
+
+  return result ? true : false;
 };

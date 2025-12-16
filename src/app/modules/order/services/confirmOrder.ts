@@ -38,17 +38,18 @@ export const confirmOrder = async (order: TOrderDoc) => {
       await CartModel.deleteOne({ _id: toObjectId(cartId) }).session(session);
     }
 
-    // 5. Commit transaction
-    await session.commitTransaction();
-
-    // 6. Send order placed email (outside session)
-    sendOrderPlacedEmail(updatedOrder?.toObject(), {
+    const result = await sendOrderPlacedEmail(updatedOrder?.toObject(), {
       filename: `Invoice for ${updatedOrder?.orderId}.pdf`,
       content: buffer,
       contentType: "application/pdf",
-    }).catch(console.log);
+    });
 
-    return updatedOrder;
+    if (result) {
+      await session.commitTransaction();
+      return updatedOrder;
+    } else {
+      return;
+    }
   } catch (err) {
     await session.abortTransaction();
     throw err;
