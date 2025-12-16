@@ -2,13 +2,7 @@
 import { Router } from "express";
 import multer from "multer";
 import { userAuthMiddleware } from "@app/middlewares";
-import {
-  addAdminController,
-  getAdminLIstController,
-  blockAdminController,
-  unblockAdminController,
-  deleteAdminController,
-} from "./controllers";
+import { addAdminController, getAdminLIstController } from "./controllers";
 import { UserRoles } from "../user/user.constants";
 
 // destructure roles
@@ -27,23 +21,5 @@ adminRouter.post(
 );
 
 adminRouter.get("/", userAuthMiddleware([superAdmin]), getAdminLIstController);
-
-adminRouter.patch(
-  "/block/:id",
-  userAuthMiddleware([superAdmin]),
-  blockAdminController
-);
-
-adminRouter.patch(
-  "/unblock/:id",
-  userAuthMiddleware([superAdmin]),
-  unblockAdminController
-);
-
-adminRouter.delete(
-  "/:id",
-  userAuthMiddleware([superAdmin]),
-  deleteAdminController
-);
 
 export default adminRouter;
