@@ -57,9 +57,7 @@ export const issueRefund = async (
   });
 
   if (refund._id) {
-    sendPaymentRefundedEmail(refund).catch((err) =>
-      console.log("Failed to send refund email:", err)
-    );
+    await sendPaymentRefundedEmail(refund);
     return refund;
   }
 };

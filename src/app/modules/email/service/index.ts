@@ -1,5 +1,5 @@
 export * from "./resendAccountVerificationEmail";
 export * from "./sendAccountVerificationEmail";
-export * from "./sendPaymentRefundedEmailToCustomer";
+export * from "./sendPaymentRefundedEmail";
 export * from "./sendOrderPlacedEmail";
 export * from "./sendOrderShippedEmail";
