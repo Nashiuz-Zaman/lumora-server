@@ -16,8 +16,8 @@ export const sendPaymentRefundedEmail = async (
   if (!order) return throwNotFound("Order not found");
 
   const html = getRefundProcessedEmailHtml(
-    financialTransaction?.name,
     order.orderId!,
+    financialTransaction?.name,
     formatPrice(financialTransaction?.amount),
     financialTransaction?.details?.refundReason || "Refund processed by admin",
     new Date().getFullYear()
