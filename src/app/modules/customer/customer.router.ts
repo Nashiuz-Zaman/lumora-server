@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 
-import { userAuthMiddleware, approveTargetUser } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares";
 
 import {
   signupCustomerController,
@@ -11,9 +11,9 @@ import {
   updateBillingAddressController,
   updateShippingAddressController,
   getCustomerListController,
-  blockCustomerController,
-  unblockCustomerController,
-  deleteCustomerController,
+  blockCustomersController,
+  unblockCustomersController,
+  deleteCustomersController,
   getMyCustomerProfileController,
 } from "./controllers";
 
@@ -68,25 +68,24 @@ customerRouter.get(
   getCustomerListController
 );
 
+// ----------------------------- Multiple Block -----------------------------
 customerRouter.patch(
-  "/block/:id",
+  "/block",
   userAuthMiddleware([admin, superAdmin]),
-  approveTargetUser([customer]),
-  blockCustomerController
+  blockCustomersController
+);
+
+// ----------------------------- Multiple Unblock -----------------------------
+customerRouter.patch(
+  "/unblock",
+  userAuthMiddleware([admin, superAdmin]),
+  unblockCustomersController
 );
 
 customerRouter.patch(
-  "/unblock/:id",
-  userAuthMiddleware([admin, superAdmin]),
-  approveTargetUser([customer]),
-  unblockCustomerController
-);
-
-customerRouter.delete(
-  "/:id",
+  "/delete",
   userAuthMiddleware([superAdmin]),
-  approveTargetUser([customer]),
-  deleteCustomerController
+  deleteCustomersController
 );
 
 export default customerRouter;

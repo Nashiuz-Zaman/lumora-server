@@ -2,6 +2,7 @@ import { getReviewCountAndAverage } from "@app/modules/review/service";
 import { getCollectionProducts } from "./getCollectionProducts";
 import { Types } from "mongoose";
 import { TPopulatedProductInCollectionWithReviewStats } from "@app/modules/productCollection/productCollection.type";
+import { hasElements } from "@utils/index";
 
 export const getCollectionProductsReviewCountAvg = async (
   queryObj: Record<string, any>
@@ -9,7 +10,7 @@ export const getCollectionProductsReviewCountAvg = async (
   // get collection products
   const { products, queryMeta } = await getCollectionProducts(queryObj);
 
-  if (!Array.isArray(products) || products.length === 0) {
+  if (!hasElements(products)) {
     return { products: [], queryMeta };
   }
 

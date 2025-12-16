@@ -1,4 +1,3 @@
-export * from "./approveTargetUser";
 export * from "./userAuthMiddleware";
 export * from "./globalErrorHandler";
 export * from "./initialMiddlewares";

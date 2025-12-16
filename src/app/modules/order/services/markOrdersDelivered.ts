@@ -1,10 +1,9 @@
-import { toObjectId, throwBadRequest } from "@utils/index";
+import { toObjectId, throwBadRequest, hasElements } from "@utils/index";
 import { OrderStatus } from "../order.constants";
 import { OrderModel } from "../order.model";
 
 export const markOrdersDelivered = async (_ids: string[]): Promise<string> => {
-  if (!Array.isArray(_ids) || _ids.length === 0)
-    return throwBadRequest("_ids array needed");
+  if (!hasElements(_ids)) return throwBadRequest("_ids array needed");
 
   const objectIds = _ids.map((_id) => toObjectId(_id));
 

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { ProductModel } from "../product.model";
 import { throwBadRequest } from "@utils/operationalErrors";
+import { hasElements } from "@utils/hasElements";
 
 /**
  * Service to add/update "Frequently Bought Together" products
@@ -10,7 +11,7 @@ export const addBoughtTogether = async (
   relatedIds: string[]
 ) => {
   // Validate incoming IDs
-  if (!Array.isArray(relatedIds) || relatedIds.length === 0) return;
+  if (!hasElements(relatedIds)) return;
   throwBadRequest("ids must be a non-empty array of product _ids");
 
   const uniqueIds = [

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { OrderModel } from "../order.model";
 import { OrderStatus } from "../order.constants";
 import { decrementCouponUsageByCode } from "@app/modules/coupon/service";
-import { toObjectId, throwBadRequest } from "@utils/index";
+import { toObjectId, throwBadRequest, hasElements } from "@utils/index";
 import { updateStock } from "@app/modules/product/service";
 import { PaymentModel } from "@app/modules/payment/payment.model";
 import { issueRefund } from "@app/modules/payment/service";
@@ -11,8 +11,7 @@ export const cancelOrders = async (
   _ids: string[],
   cancellationReason: string = "Admin Cancelled"
 ) => {
-  if (!Array.isArray(_ids) || _ids.length === 0)
-    return throwBadRequest("_ids not provided");
+  if (!hasElements(_ids)) return throwBadRequest("_ids not provided");
 
   const session = await mongoose.startSession();
 

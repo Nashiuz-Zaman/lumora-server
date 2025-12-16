@@ -3,12 +3,13 @@ import { catchAsync } from "@utils/catchAsync";
 import { sendSuccess } from "@utils/sendSuccess";
 import { throwBadRequest } from "@utils/operationalErrors";
 import { bulkDeleteReviews } from "../service/bulkSoftDeleteReviews";
+import { hasElements } from "@utils/hasElements";
 
 export const bulkDeleteReviewsController: RequestHandler = catchAsync(
   async (req, res) => {
     const { ids } = req.body;
 
-    if (!Array.isArray(ids) || ids.length === 0) {
+    if (!hasElements(ids)) {
       return throwBadRequest("Review IDs are required");
     }
 

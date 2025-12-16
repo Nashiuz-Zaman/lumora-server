@@ -1,4 +1,5 @@
 import {
+  hasElements,
   throwBadRequest,
   throwInternalServerError,
   toObjectId,
@@ -6,7 +7,7 @@ import {
 import { ReturnRequestModel } from "../returnRequest.model";
 
 export const deleteReturnRequests = async (_ids: string[]) => {
-  if (!Array.isArray(_ids) || _ids.length === 0)
+  if (!hasElements(_ids))
     return throwBadRequest("No request IDs provided for deletion");
 
   const objectIds = _ids.map(toObjectId);

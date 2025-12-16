@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { ReviewModel } from "../review.model";
 import { ReviewStatus } from "../review.constants";
+import { hasElements } from "@utils/hasElements";
 
 type TReturnValue = {
   productId: Types.ObjectId;
@@ -11,7 +12,7 @@ type TReturnValue = {
 export const getReviewCountAndAverage = async (
   productIds: Types.ObjectId[]
 ): Promise<TReturnValue> => {
-  if (!Array.isArray(productIds) || productIds.length === 0) return [];
+  if (!hasElements(productIds)) return [];
 
   const stats = await ReviewModel.aggregate([
     {

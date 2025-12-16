@@ -1,4 +1,4 @@
-import { blockUser } from "@app/modules/user/services/blockUser";
+import { blockUser } from "@app/modules/user/services/blockUsers";
 import { ISecureRequest } from "@app/shared/types";
 import {
   catchAsync,

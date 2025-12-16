@@ -9,9 +9,9 @@ export const UserRoles = Object.freeze({
 export type TUserRole = (typeof UserRoles)[keyof typeof UserRoles];
 
 export const UserStatus = Object.freeze({
-  active: "active",
-  blocked: "blocked",
-  deleted: "deleted", // optional, if you're using a "deleted" status
+  active: 1,
+  blocked: 0,
+  deleted: -1,
 } as const);
 
 export type TUserStatus = (typeof UserStatus)[keyof typeof UserStatus];

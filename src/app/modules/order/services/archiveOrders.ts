@@ -1,10 +1,9 @@
 import { OrderStatus } from "../order.constants";
 import { OrderModel } from "../order.model";
-import { toObjectId, throwBadRequest } from "@utils/index";
+import { toObjectId, throwBadRequest, hasElements } from "@utils/index";
 
 export const archiveOrders = async (_ids: string[]) => {
-  if (!Array.isArray(_ids) || _ids.length === 0)
-    return throwBadRequest("_ids not provided");
+  if (!hasElements(_ids)) return throwBadRequest("_ids not provided");
 
   const objectIds = _ids.map((id) => toObjectId(id));
 

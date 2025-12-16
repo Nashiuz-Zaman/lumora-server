@@ -1,7 +1,7 @@
 // imports
 import { Router } from "express";
 import multer from "multer";
-import { userAuthMiddleware, approveTargetUser } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares";
 import {
   addAdminController,
   getAdminLIstController,
@@ -26,30 +26,23 @@ adminRouter.post(
   addAdminController
 );
 
-adminRouter.get(
-  "/",
-  userAuthMiddleware([superAdmin]),
-  getAdminLIstController
-);
+adminRouter.get("/", userAuthMiddleware([superAdmin]), getAdminLIstController);
 
 adminRouter.patch(
   "/block/:id",
   userAuthMiddleware([superAdmin]),
-  approveTargetUser([admin]),
   blockAdminController
 );
 
 adminRouter.patch(
   "/unblock/:id",
   userAuthMiddleware([superAdmin]),
-  approveTargetUser([admin]),
   unblockAdminController
 );
 
 adminRouter.delete(
   "/:id",
   userAuthMiddleware([superAdmin]),
-  approveTargetUser([admin]),
   deleteAdminController
 );
 

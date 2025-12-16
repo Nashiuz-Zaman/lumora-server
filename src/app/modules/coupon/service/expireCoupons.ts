@@ -1,10 +1,10 @@
 // service/expireCoupons.ts
 import { CouponModel } from "../coupon.model";
 import { CouponStatus } from "../coupon.constant";
-import { throwBadRequest, toObjectId } from "@utils/index";
+import { hasElements, throwBadRequest, toObjectId } from "@utils/index";
 
 export const expireCoupons = async (_ids: string[]) => {
-  if (!Array.isArray(_ids) || _ids.length === 0)
+  if (!hasElements(_ids))
     return throwBadRequest("No coupon IDs provided for expiration");
 
   const objectIds = _ids.map(toObjectId);

@@ -28,7 +28,7 @@ const userSchema = new Schema<IUser, IUserModel>(
     emailVerifiedAt: { type: Date },
 
     status: {
-      type: String,
+      type: Number,
       enum: Object.values(UserStatus),
       default: UserStatus.active,
     },

@@ -1,6 +1,10 @@
 import { Schema, model, CallbackError } from "mongoose";
 import { IProduct, IVariant } from "./product.type";
-import { convertToTwoDecimalNumber, generateSlug } from "@utils/index";
+import {
+  convertToTwoDecimalNumber,
+  generateSlug,
+  hasElements,
+} from "@utils/index";
 import { ProductStatus } from "./product.constants";
 import { getNextSequence } from "../counter/counter.util";
 import { config } from "@config/env";
@@ -66,7 +70,7 @@ const productSchema = new Schema<IProduct>(
 
 // Virtual for defaultOldPrice
 productSchema.virtual("defaultOldPrice").get(function (this: IProduct) {
-  if (Array.isArray(this.variants) && this.variants.length > 0) {
+  if (hasElements(this.variants)) {
     return this.variants[0].oldPrice ?? null;
   }
   return null;
@@ -92,7 +96,7 @@ productSchema.pre("save", async function (next) {
     }
 
     // Set default price from first variant
-    if (Array.isArray(this.variants) && this.variants.length > 0) {
+    if (hasElements(this.variants)) {
       this.defaultPrice = this.variants[0].price;
 
       // Calculate total stock as sum of all variant stocks
@@ -104,7 +108,7 @@ productSchema.pre("save", async function (next) {
     }
 
     // Set default image from first image
-    if (Array.isArray(this.images) && this.images.length > 0) {
+    if (hasElements(this.images)) {
       this.defaultImage = this.images[0];
     } else {
       this.defaultImage = "";
