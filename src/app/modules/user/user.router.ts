@@ -1,13 +1,18 @@
 // imports
 import { Router } from "express";
-import { requestNewVerificationEmail } from "./controllers/requestNewVerificationEmail.controller";
-import { verifyUserAccountController } from "./controllers/verifyUserAccount";
+import {
+  verifyUserAccountController,
+  requestNewVerificationEmailController,
+} from "./controllers";
 
 // create instances
 const userRouter = Router();
 
 // routes
-userRouter.patch("/new-confirmation-email", requestNewVerificationEmail);
+userRouter.patch(
+  "/new-confirmation-email",
+  requestNewVerificationEmailController
+);
 userRouter.get("/confirm-user", verifyUserAccountController);
 
 export default userRouter;

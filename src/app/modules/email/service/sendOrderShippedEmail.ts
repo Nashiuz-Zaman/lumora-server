@@ -2,7 +2,7 @@ import { sendEmail } from "@utils/index";
 import { IOrder } from "@app/modules/order/order.type";
 import { getOrderShippedEmailHtml } from "../generator-helpers";
 
-export const sendOrderShippedEmail = async (order: IOrder): Promise<void> => {
+export const sendOrderShippedEmail = async (order: IOrder) => {
   const {
     orderId,
     name,
@@ -19,5 +19,11 @@ export const sendOrderShippedEmail = async (order: IOrder): Promise<void> => {
     new Date().getFullYear()
   );
 
-  await sendEmail(order.email, `Order Shipped – ${order.orderId}`, html);
+  const result = await sendEmail(
+    order.email,
+    `Order Shipped – ${order.orderId}`,
+    html
+  );
+
+  return result ? true : false;
 };

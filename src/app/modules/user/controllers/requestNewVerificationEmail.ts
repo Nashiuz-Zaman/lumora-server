@@ -6,7 +6,7 @@ import { catchAsync, sendSuccess } from "@utils/index";
 import { clientUrl } from "index";
 import { resendAccountVerificationEmail } from "@app/modules/email/service";
 
-export const requestNewVerificationEmail: RequestHandler = catchAsync(
+export const requestNewVerificationEmailController: RequestHandler = catchAsync(
   async (req, res) => {
     const email = req.body.email;
 
@@ -18,8 +18,7 @@ export const requestNewVerificationEmail: RequestHandler = catchAsync(
     const result = await resendAccountVerificationEmail(req, email);
 
     if (!result) {
-      res.redirect(clientUrl);
-      return;
+      return res.redirect(clientUrl);
     }
 
     if (result) return sendSuccess(res, { message: "Confirmation email sent" });

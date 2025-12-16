@@ -7,7 +7,7 @@ import { throwNotFound } from "@utils/operationalErrors";
 
 export const sendPaymentRefundedEmail = async (
   financialTransaction: IPayment
-): Promise<void> => {
+) => {
   const order = await OrderModel.findById(
     financialTransaction.order,
     "orderId"
@@ -23,9 +23,11 @@ export const sendPaymentRefundedEmail = async (
     new Date().getFullYear()
   );
 
-  await sendEmail(
+  const result = await sendEmail(
     financialTransaction.email,
     `Refund Processed – Order #${order?.orderId}`,
     html
   );
+
+  return result ? true : false;
 };

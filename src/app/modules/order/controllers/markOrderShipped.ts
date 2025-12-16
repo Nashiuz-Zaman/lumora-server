@@ -11,11 +11,14 @@ export const markOrderShippedController: RequestHandler = catchAsync(
   async (req, res) => {
     const { _id, ...rest } = req.body;
     const newOrder = await updateShippingDetails(_id, rest);
-    
+
     if (newOrder?._id) {
-      sendOrderShippedEmail(newOrder).catch((err) => {
+      try {
+        await sendOrderShippedEmail(newOrder);
+      } catch (err) {
         console.error("Failed to send order shipped email:", err);
-      });
+      }
+
       return sendSuccess(res, {
         message: "Shipping updated successfully",
       });
