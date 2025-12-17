@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { ClientSession, Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import { IUser, IUserModel } from "./user.type";
 import { AppError } from "../../classes/AppError";
@@ -72,6 +72,31 @@ userSchema.virtual("adminProfile", {
   localField: "_id",
   foreignField: "user",
   justOne: true,
+});
+
+// Cascade Delete
+userSchema.post("findOneAndDelete", async function (doc, next) {
+  if (!doc) return next();
+
+  try {
+    const session = this.getOptions()?.session;
+
+    const Customer = this.model.db.model("Customer");
+    const Admin = this.model.db.model("Admin");
+
+    await Promise.all([
+      Customer.deleteOne({ user: doc._id }).session(
+        session as ClientSession | null
+      ),
+      Admin.deleteOne({ user: doc._id }).session(
+        session as ClientSession | null
+      ),
+    ]);
+
+    next();
+  } catch (err: any) {
+    next(err);
+  }
 });
 
 // presave hook

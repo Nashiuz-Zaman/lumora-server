@@ -4,3 +4,4 @@ export * from "./softDeleteUsers";
 export * from "./unblockUsers";
 export * from "./verifyUserAccountEmail";
 export * from "./getUserWithProfile";
+export * from "./hardDeleteUser";
