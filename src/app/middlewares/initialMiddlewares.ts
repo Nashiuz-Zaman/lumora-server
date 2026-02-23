@@ -7,6 +7,7 @@ const allowedOrigins = [
   config.prodClientURL, // "https://lumora-client.vercel.app"
   "https://lumora-client-85n1.onrender.com",
   "https://sandbox.sslcommerz.com",
+  "http://localhost:3000"
 ];
 
 if (config.environment !== "production") {
