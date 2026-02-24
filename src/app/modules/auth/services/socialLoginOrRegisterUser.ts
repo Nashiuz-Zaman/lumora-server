@@ -19,6 +19,7 @@ import {
   throwBadRequest,
   throwUnauthorized,
   generateAvatar,
+  viewDetailedLog,
 } from "@utils/index";
 import { getUserWithProfile } from "@app/modules/user/services";
 
@@ -40,9 +41,11 @@ export const socialLoginOrRegisterUser = async ({
     return throwUnauthorized("Admins must login using email and password");
   }
 
-  const existingUser: TUserDoc | null = await UserModel.findOne({
-    email,
-  });
+  const existingUser = await getUserWithProfile({ email }, false, [
+    "isVerified",
+  ]);
+
+  viewDetailedLog(existingUser);
 
   if (existingUser) {
     return existingUser;
@@ -75,7 +78,7 @@ export const socialLoginOrRegisterUser = async ({
         {
           email,
         },
-        false
+        false,
       );
 
       if (user) {

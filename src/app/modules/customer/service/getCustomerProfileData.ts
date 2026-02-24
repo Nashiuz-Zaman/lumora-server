@@ -4,13 +4,11 @@ import { toObjectId } from "@utils/objectIdUtils";
 import { ICustomerProfile } from "../customer.type";
 
 export const getCustomerProfileData = async (
-  id: string
+  id: string,
 ): Promise<ICustomerProfile> => {
-  const user = await getUserWithProfile(
-    { _id: toObjectId(id) },
-    true,
-    "createdAt"
-  );
+  const user = await getUserWithProfile({ _id: toObjectId(id) }, true, [
+    "createdAt",
+  ]);
 
   if (!user || !user.customerProfile)
     return throwNotFound("Customer profile not found");

@@ -16,9 +16,9 @@ import { getUserWithProfile } from "@app/modules/user/services";
 
 export const resendAccountVerificationEmail = async (
   req: Request,
-  email: string
+  email: string,
 ) => {
-  const user = await getUserWithProfile({ email }, false, "isVerified");
+  const user = await getUserWithProfile({ email }, false, ["isVerified"]);
 
   // No user or already verified
   if (!user || user.isVerified || user.status !== UserStatus.active)
@@ -27,7 +27,7 @@ export const resendAccountVerificationEmail = async (
   const tempAccessToken = generateToken(
     { email },
     config.accessTokenSecret,
-    "10m"
+    "10m",
   );
 
   user.emailVerificationToken = tempAccessToken;

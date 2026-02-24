@@ -33,17 +33,15 @@ export type TVerifyUserAccountResult =
 export const verifyUserAccountEmail = async (
   req: Request,
   email: string,
-  token: string
+  token: string,
 ): Promise<TVerifyUserAccountResult> => {
   if (!email || !token) {
     return { status: "redirect", url: clientUrl }; // fallback URL
   }
 
-  const user = await getUserWithProfile(
-    { email },
-    false,
-    "emailVerificationToken"
-  );
+  const user = await getUserWithProfile({ email }, false, [
+    "emailVerificationToken",
+  ]);
 
   if (!user || user.status !== UserStatus.active) {
     return { status: "redirect", url: clientUrl };
@@ -96,7 +94,7 @@ export const verifyUserAccountEmail = async (
   const tempAccessToken = generateToken(
     { email: user.email! },
     config.accessTokenSecret,
-    "10m"
+    "10m",
   );
 
   user.emailVerificationToken = tempAccessToken;
