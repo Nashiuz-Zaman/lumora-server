@@ -8,9 +8,7 @@ import {
   TPopulatedCartItem,
 } from "./cart.type";
 import { ProductModel } from "../product/product.model";
-import { AppError } from "@app/classes";
 import { convertToTwoDecimalNumber, throwNotFound } from "@utils/index";
-import { calculateCouponDiscount, validateCoupon } from "../coupon/service";
 import { calculateCartTotals } from "./services/calculateCartTotals";
 
 // ----- Cart Item Schema -----
@@ -26,7 +24,7 @@ const CartItemSchema = new Schema<TDatabaseCartItem>(
 // ----- Cart Schema -----
 const CartSchema = new Schema<TDatabaseCart>(
   {
-    user: { type: Schema.Types.Mixed, required: true, default: "guest" },
+    user: { type: Schema.Types.ObjectId, required: true, default: "guest" },
     items: { type: [CartItemSchema], default: [] },
     couponCode: { type: String, default: "" },
     discount: { type: Number, default: 0, set: convertToTwoDecimalNumber },
