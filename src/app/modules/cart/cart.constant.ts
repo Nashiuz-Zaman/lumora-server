@@ -2,7 +2,7 @@ export const cartCookieName = "Cart_Token";
 
 export const emptyCart = {
   _id: undefined,
-  user: "",
+  user: null,
   items: [],
   couponCode: "",
   discount: 0,

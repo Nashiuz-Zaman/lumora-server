@@ -1,37 +1,22 @@
 import { CartModel } from "../cart.model";
 import { throwBadRequest, throwNotFound, toObjectId } from "@utils/index";
-import { TDatabaseCartDoc } from "../cart.type";
+import { validateCoupon } from "@app/modules/coupon/service";
 
-export const addCouponToCart = async ({
-  userId,
-  cartId,
-  code,
-}: {
-  userId?: string;
-  cartId?: string;
-  code: string;
-}) => {
-  if (!code) return throwBadRequest("couponCode is required");
+export const addCouponToCart = async (cartId: string, couponCode: string) => {
+  if (!cartId)
+    return throwBadRequest("The cart is empty, please add a product first");
+  if (!couponCode) return throwBadRequest("couponCode is required");
 
-  let cart: TDatabaseCartDoc | null;
-
-  if (userId) {
-    // Find the cart associated with the user
-    cart = await CartModel.findOne({ user: toObjectId(userId) });
-  } else if (cartId) {
-    // Find the guest cart by its _id
-    cart = await CartModel.findById(toObjectId(cartId));
-  } else {
-    return throwBadRequest("Either userId or cartId must be provided");
-  }
-
+  const cart = await CartModel.findById(toObjectId(cartId));
   if (!cart) return throwNotFound("Cart not found");
 
+  const coupon = await validateCoupon(couponCode, cart.subtotal!);
+
   // Attach coupon code
-  cart.couponCode = code;
+  cart.couponCode = coupon.code;
 
   // Save cart and pre-save hook will handle recalculation
-  const newCart = await cart.save();
+  await cart.save();
 
   return cart;
 };

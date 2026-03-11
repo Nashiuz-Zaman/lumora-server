@@ -8,3 +8,4 @@ export const clearCart = async (cartId: string) => {
 
   return true;
 };
+ 
