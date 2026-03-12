@@ -4,47 +4,36 @@ import { CartModel } from "../cart.model";
 import { emptyCart } from "../cart.constant";
 import { convertGuestCartToUserCart } from "./convertGuestCartToUserCart";
 import { mergeGuestCartIntoUserCart } from "./mergeGuestCartIntoUserCart";
+import { resolveCart } from "./resolveCart";
 
 export const getCart = async (
   userId?: string,
   cartId?: string,
-): Promise<{ cart: TPopulatedCart; removeCartCookie?: boolean }> => {
-  const guestCartId = cartId?.trim() ? toObjectId(cartId) : null;
-  const userObjId = userId?.trim() ? toObjectId(userId) : null;
+): Promise<TPopulatedCart> => {
+  // --- Early return if neither exists ---
+  if (!cartId && !userId) return emptyCart;
 
-  const guestCart: TDatabaseCartDoc | null = guestCartId
-    ? await CartModel.findById(guestCartId)
-    : null;
+  // --- Resolve carts ---
+  const guestCart: TDatabaseCartDoc | null = cartId ? await resolveCart(cartId) : null;
+  const userCart: TDatabaseCartDoc | null = userId ? await resolveCart(undefined, userId) : null;
 
-  const userCart: TDatabaseCartDoc | null = userObjId
-    ? await CartModel.findOne({ user: userObjId })
-    : null;
-
-  // Guest user
-  if (!userObjId) {
-    if (!guestCart) {
-      return { cart: emptyCart, removeCartCookie: !!guestCartId };
-    }
-
-    const populated = await CartModel.getPopulatedCart(guestCart._id);
-    return { cart: populated! };
+  // --- Guest user only ---
+  if (!userId) {
+    if (!guestCart) return emptyCart;
+    return (await CartModel.getPopulatedCart(guestCart._id)) ?? emptyCart;
   }
 
-  // Logged-in user with no guest cart
+  // --- Logged-in user, no guest cart ---
   if (!guestCart) {
-    if (!userCart) {
-      return { cart: emptyCart };
-    }
-
-    const populated = await CartModel.getPopulatedCart(userCart._id);
-    return { cart: populated!, removeCartCookie: true };
+    if (!userCart) return emptyCart;
+    return (await CartModel.getPopulatedCart(userCart._id)) ?? emptyCart;
   }
 
-  // Guest cart exists but no user cart → convert
+  // --- Guest cart exists but no user cart → convert guest cart ---
   if (!userCart) {
-    return await convertGuestCartToUserCart(guestCart, userObjId);
+    return await convertGuestCartToUserCart(guestCart, toObjectId(userId));
   }
 
-  // Both exist → merge
+  // --- Both guest and user cart exist → merge them ---
   return await mergeGuestCartIntoUserCart(userCart, guestCart);
 };

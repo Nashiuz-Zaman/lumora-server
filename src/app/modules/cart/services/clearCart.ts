@@ -1,11 +1,17 @@
 import { CartModel } from "../cart.model";
-import { throwInternalServerError } from "@utils/operationalErrors";
+import { resolveCart } from "./resolveCart";
 
-export const clearCart = async (cartId: string) => {
-  const result = await CartModel.deleteOne({ _id: cartId });
+export const clearCart = async (
+  cartId?: string,
+  userId?: string,
+): Promise<boolean> => {
+  if (!cartId && !userId) return true;
 
-  if (!result) return throwInternalServerError();
+  const cart = await resolveCart(cartId, userId);
 
-  return true;
+  if (!cart) return true;
+
+  const deleteResult = await CartModel.deleteOne({ _id: cart._id });
+
+  return Boolean(deleteResult?.deletedCount === 1);
 };
- 

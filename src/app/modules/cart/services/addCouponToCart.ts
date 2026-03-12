@@ -1,22 +1,37 @@
 import { CartModel } from "../cart.model";
-import { throwBadRequest, throwNotFound, toObjectId } from "@utils/index";
+import { throwBadRequest, throwNotFound } from "@utils/index";
 import { validateCoupon } from "@app/modules/coupon/service";
+import { resolveCart } from "./resolveCart";
+import { calculateCartTotals } from "./calculateCartTotals";
+import { TPopulatedCart } from "../cart.type";
 
-export const addCouponToCart = async (cartId: string, couponCode: string) => {
-  if (!cartId)
-    return throwBadRequest("The cart is empty, please add a product first");
+export const addCouponToCart = async (
+  couponCode: string,
+  cartId?: string,
+  userId?: string,
+): Promise<TPopulatedCart> => {
+  if (!cartId && !userId) {
+    return throwBadRequest("Cart ID or User ID is required");
+  }
   if (!couponCode) return throwBadRequest("couponCode is required");
 
-  const cart = await CartModel.findById(toObjectId(cartId));
+  // Resolve the cart (guest via cookie or user via userId)
+  const cart = await resolveCart(cartId, userId);
   if (!cart) return throwNotFound("Cart not found");
 
-  const coupon = await validateCoupon(couponCode, cart.subtotal!);
+  if (!cart.items.length) {
+    return throwBadRequest("The cart is empty, please add a product first");
+  }
+
+  const coupon = await validateCoupon(couponCode, cart.subtotal ?? 0);
 
   // Attach coupon code
   cart.couponCode = coupon.code;
 
+  await calculateCartTotals(cart);
+
   // Save cart and pre-save hook will handle recalculation
   await cart.save();
 
-  return cart;
+  return (await CartModel.getPopulatedCart(cart._id)) as TPopulatedCart;
 };

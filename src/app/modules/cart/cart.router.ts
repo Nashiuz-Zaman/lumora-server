@@ -1,78 +1,38 @@
 import { Router } from "express";
-
-import { userAuthMiddleware, cartAuthMiddleware } from "@app/middlewares";
 import {
-  createUserCartController,
-  createGuestCartController,
-  getUserCartOptionalMergeController,
-  getGuestCartController,
-  updateUserCartItemsController,
-  updateGuestCartItemsController,
-  clearUserCartController,
-  clearGuestCartController,
-  addCouponToUserCartController,
-  addCouponToGuestCartController,
-  removeCouponFromUserCartController,
-  removeCouponFromGuestCartController,
-} from "./controllers";
+  getCartController,
+  addItemToCartController,
+  removeItemFromCartController,
+  updateCartItemQtyController,
+  clearCartController,
+  addCouponToCartController,
+  removeCouponFromCartController,
+} from "./cart.controller";
+
+import { cartAuthMiddleware } from "@app/middlewares/cartAuthMiddleware";
+import { optionalAuthMiddleware } from "@app/middlewares/optionalAuthMiddleware";
 
 const cartRouter = Router();
 
-// --- CREATE CARTS ---
-cartRouter.post("/user-cart", userAuthMiddleware(), createUserCartController);
-cartRouter.post("/guest-cart", createGuestCartController);
+cartRouter.use(optionalAuthMiddleware);
+cartRouter.use(cartAuthMiddleware);
 
-// --- GET CART DATA ---
-cartRouter.post(
-  "/user-cart/fetch-or-merge",
-  userAuthMiddleware(),
-  cartAuthMiddleware(),
-  getUserCartOptionalMergeController
-);
-cartRouter.get("/guest-cart", cartAuthMiddleware(), getGuestCartController);
+/* ---------------- CART ---------------- */
 
-// --- UPDATE CARTS ---
-cartRouter.patch(
-  "/user-cart",
-  userAuthMiddleware(),
-  updateUserCartItemsController
-);
-cartRouter.patch(
-  "/guest-cart",
-  cartAuthMiddleware(),
-  updateGuestCartItemsController
-);
+cartRouter.get("/", getCartController);
 
-// --- APPLY COUPON ---
-cartRouter.patch(
-  "/user-cart/add-coupon",
-  userAuthMiddleware(),
-  addCouponToUserCartController
-);
-cartRouter.patch(
-  "/guest-cart/add-coupon",
-  cartAuthMiddleware(),
-  addCouponToGuestCartController
-);
+cartRouter.post("/item", addItemToCartController);
 
-// --- REMOVE COUPON ---
-cartRouter.patch(
-  "/user-cart/remove-coupon",
-  userAuthMiddleware(),
-  removeCouponFromUserCartController
-);
-cartRouter.patch(
-  "/guest-cart/remove-coupon",
-  cartAuthMiddleware(),
-  removeCouponFromGuestCartController
-);
+cartRouter.patch("/item/:cartItemId", updateCartItemQtyController);
 
-// --- DELETE CARTS ---
-cartRouter.delete("/user-cart", userAuthMiddleware(), clearUserCartController);
-cartRouter.delete(
-  "/guest-cart",
-  cartAuthMiddleware(),
-  clearGuestCartController
-);
+cartRouter.delete("/item/:cartItemId", removeItemFromCartController);
 
-export default cartRouter;
+cartRouter.delete("/clear", clearCartController);
+
+/* ---------------- COUPON ---------------- */
+
+cartRouter.post("/coupon", addCouponToCartController);
+
+cartRouter.delete("/coupon", removeCouponFromCartController);
+
+export const CartRouter = cartRouter;

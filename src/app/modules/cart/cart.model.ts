@@ -2,24 +2,19 @@ import { Schema, model, Types } from "mongoose";
 import {
   TDatabaseCart,
   TDatabaseCartItem,
-  TDatabaseCartDoc,
   IDatabaseCartModel,
   TPopulatedCart,
   TPopulatedCartItem,
 } from "./cart.type";
 import { ProductModel } from "../product/product.model";
 import { convertToTwoDecimalNumber, throwNotFound } from "@utils/index";
-import { calculateCartTotals } from "./services/calculateCartTotals";
 
 // ----- Cart Item Schema -----
-const CartItemSchema = new Schema<TDatabaseCartItem>(
-  {
-    product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
-    variant: { type: Schema.Types.ObjectId, required: true },
-    quantity: { type: Number, required: true, min: 1 },
-  },
-  { _id: false },
-);
+const CartItemSchema = new Schema<TDatabaseCartItem>({
+  product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+  variant: { type: Schema.Types.ObjectId, required: true },
+  quantity: { type: Number, required: true, min: 1 },
+});
 
 // ----- Cart Schema -----
 const CartSchema = new Schema<TDatabaseCart>(
@@ -36,16 +31,6 @@ const CartSchema = new Schema<TDatabaseCart>(
   },
   { timestamps: true },
 );
-
-// ----- Pre-save hook to calculate totals -----
-CartSchema.pre<TDatabaseCartDoc>("save", async function (next) {
-  try {
-    await calculateCartTotals(this);
-    next();
-  } catch (err) {
-    next(err as Error);
-  }
-});
 
 // Static method populate cart
 CartSchema.statics.getPopulatedCart = async function (

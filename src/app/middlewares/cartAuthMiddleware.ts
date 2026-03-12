@@ -1,11 +1,11 @@
 import { cartCookieName } from "@app/modules/cart/cart.constant";
 import { config } from "@config/env";
-import { Response, NextFunction, Request } from "express";
+import { Response, NextFunction } from "express";
 import { catchAsync, cleanCookie, verifyToken } from "@utils/index";
 import { ISecureRequest } from "@app/shared/types";
 
-export const cartAuthMiddleware = () =>
-  catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+export const cartAuthMiddleware = catchAsync(
+  async (req: ISecureRequest, res: Response, next: NextFunction) => {
     const cartToken = req.cookies?.[cartCookieName];
 
     // no cart cookie
@@ -17,18 +17,19 @@ export const cartAuthMiddleware = () =>
 
     // Invalid or forged cookie
     if (!result?.valid) {
-      cleanCookie(res, "Cart_Token");
+      cleanCookie(res, cartCookieName);
       return next();
     }
 
     if ("decoded" in req) {
       req.decoded = {
-        ...(req as ISecureRequest)?.decoded,
+        ...req.decoded,
         cartId: result?.decoded.cartId,
       };
     } else {
-      (req as ISecureRequest).decoded = result.decoded;
+      req.decoded = result.decoded;
     }
 
     next();
-  });
+  },
+);

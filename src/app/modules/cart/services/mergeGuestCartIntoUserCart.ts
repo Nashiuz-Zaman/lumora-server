@@ -1,11 +1,15 @@
 import { throwBadRequest } from "@utils/operationalErrors";
 import { CartModel } from "../cart.model";
-import { TDatabaseCartDoc, TDatabaseCartItem } from "../cart.type";
+import {
+  TDatabaseCartDoc,
+  TDatabaseCartItem,
+  TPopulatedCart,
+} from "../cart.type";
 
 export const mergeGuestCartIntoUserCart = async (
   userCart: TDatabaseCartDoc,
   guestCart: TDatabaseCartDoc,
-) => {
+): Promise<TPopulatedCart> => {
   if (!userCart || !guestCart)
     return throwBadRequest("User cart and guest cart both should exist");
 
@@ -41,8 +45,5 @@ export const mergeGuestCartIntoUserCart = async (
 
   const mergedCart = await CartModel.getPopulatedCart(updatedCart._id);
 
-  return {
-    cart: mergedCart!,
-    removeCartCookie: true,
-  };
+  return mergedCart!;
 };

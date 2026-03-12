@@ -6,6 +6,7 @@ export interface ICartItem<P = Types.ObjectId, V = Types.ObjectId> {
   product: P;
   variant: V;
   quantity: number;
+  _id?: Types.ObjectId;
 }
 
 // unpopulated cart item:

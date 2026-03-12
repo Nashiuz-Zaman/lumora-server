@@ -1,14 +1,9 @@
 import { CartModel } from "../cart.model";
-import { calculateCartTotals } from "./calculateCartTotals";
-import { TDatabaseCartDoc } from "../cart.type";
+import { TDatabaseCartDoc, TPopulatedCart } from "../cart.type";
 import { throwBadRequest } from "@utils/operationalErrors";
+import { resolveCart } from "./resolveCart";
 import { toObjectId } from "@utils/objectIdUtils";
-
-interface IAddItemResult {
-  cartData: TDatabaseCartDoc;
-  isNewCart: boolean;
-  cartType: "user" | "guest";
-}
+import { calculateCartTotals } from "./calculateCartTotals";
 
 export const addItemToCart = async (
   productId: string,
@@ -16,38 +11,34 @@ export const addItemToCart = async (
   quantity: number = 1,
   cartId?: string,
   userId?: string,
-): Promise<IAddItemResult> => {
+): Promise<TPopulatedCart> => {
   if (!productId) return throwBadRequest("Product ID is required");
   if (!variantId) return throwBadRequest("Variant ID is required");
 
-  const cartType = userId ? "user" : "guest";
+  const cartType: "user" | "guest" = userId ? "user" : "guest";
   let isNewCart = false;
-  let cart: TDatabaseCartDoc | null = null;
 
   // Convert IDs to ObjectId
-  const userObjId = userId ? toObjectId(userId) : null;
-  const cartObjId = cartId ? toObjectId(cartId) : null;
   const productObjId = toObjectId(productId);
   const variantObjId = toObjectId(variantId);
 
-  // --- Fetch or create cart ---
-  if (cartType === "guest") {
-    if (!cartObjId) {
-      cart = new CartModel({ user: null, items: [] });
-      isNewCart = true;
-    } else {
-      cart = await CartModel.findById(cartObjId);
-      if (!cart) {
-        cart = new CartModel({ user: null, items: [] });
-        isNewCart = true;
-      }
+  // --- Fetch existing cart or create a new one ---
+  let cart: TDatabaseCartDoc | null = null;
+
+  if (cartId || userId) {
+    try {
+      cart = await resolveCart(cartId, userId);
+    } catch {
+      cart = null; // will create new cart if not found
     }
-  } else {
-    cart = await CartModel.findOne({ user: userObjId });
-    if (!cart) {
-      cart = new CartModel({ user: userObjId, items: [] });
-      isNewCart = true;
-    }
+  }
+
+  if (!cart) {
+    cart = new CartModel({
+      user: userId ? toObjectId(userId) : null,
+      items: [],
+    });
+    isNewCart = true;
   }
 
   // --- Add or update item in cart ---
@@ -66,15 +57,8 @@ export const addItemToCart = async (
     });
   }
 
-  // --- Recalculate totals ---
   await calculateCartTotals(cart);
-
-  // --- Save cart ---
   const savedCart = await cart.save();
 
-  return {
-    cartData: savedCart,
-    isNewCart,
-    cartType,
-  };
+  return await CartModel.getPopulatedCart(savedCart._id) as TPopulatedCart;
 };

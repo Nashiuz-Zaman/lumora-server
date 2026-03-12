@@ -1,17 +1,28 @@
+import { TPopulatedCart } from "../cart.type";
+import { throwBadRequest, throwNotFound } from "@utils/index";
+import { resolveCart } from "./resolveCart";
+import { calculateCartTotals } from "./calculateCartTotals";
 import { CartModel } from "../cart.model";
-import { throwBadRequest, throwNotFound, toObjectId } from "@utils/index";
 
-export const removeCouponFromCart = async (cartId: string) => {
-  if (!cartId) return throwBadRequest("Cart id must be provided");
+/**
+ * Removes coupon from a cart
+ */
+export const removeCouponFromCart = async (
+  cartId?: string,
+  userId?: string,
+): Promise<TPopulatedCart> => {
+  if (!cartId && !userId)
+    return throwBadRequest("Cart ID or User ID is required");
 
-  const cart = await CartModel.findById(toObjectId(cartId));
+  // Resolve cart
+  const cart = await resolveCart(cartId, userId);
   if (!cart) return throwNotFound("Cart not found");
 
   // Remove coupon
   cart.couponCode = "";
 
-  // Save cart and pre-save hook will handle recalculation
+  await calculateCartTotals(cart);
   await cart.save();
 
-  return cart;
+  return (await CartModel.getPopulatedCart(cart._id)) as TPopulatedCart;
 };

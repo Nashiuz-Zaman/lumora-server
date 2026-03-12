@@ -1,48 +1,33 @@
-import { Types } from "mongoose";
-import { CartModel } from "../cart.model";
-import { calculateCartTotals } from "./calculateCartTotals";
 import { TDatabaseCartDoc } from "../cart.type";
 import { throwBadRequest, throwNotFound } from "@utils/operationalErrors";
-
-interface IRemoveItemResult {
-  cartData: TDatabaseCartDoc;
-}
+import { resolveCart } from "./resolveCart";
+import { calculateCartTotals } from "./calculateCartTotals";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const removeItemFromCart = async (
-  cartId: string,
-  productId: string,
-  variantId: string,
-): Promise<IRemoveItemResult> => {
-  if (!cartId || !productId || !variantId) {
-    return throwBadRequest("Cart ID, Product ID, and Variant ID are required");
+  cartItemId?: string,
+  cartId?: string,
+  userId?: string,
+): Promise<TDatabaseCartDoc> => {
+  if (!cartItemId) {
+    return throwBadRequest("Cart item ID is required");
   }
 
-  const cartObjId = new Types.ObjectId(cartId);
-  const productObjId = new Types.ObjectId(productId);
-  const variantObjId = new Types.ObjectId(variantId);
-
-  // Find cart
-  const cart = await CartModel.findById(cartObjId);
+  const cart = await resolveCart(cartId, userId);
   if (!cart) return throwNotFound("Cart not found");
 
-  // Find the index of the item to remove
-  const itemIndex = cart.items.findIndex(
-    (item) =>
-      item.product.equals(productObjId) && item.variant.equals(variantObjId),
-  );
+  let itemIndex = -1;
 
-  if (itemIndex === -1) {
-    return throwNotFound("Item not found in the specified cart");
+  if (cartItemId) {
+    itemIndex = cart.items.findIndex((item) =>
+      item._id?.equals(toObjectId(cartItemId)),
+    );
   }
 
-  // Remove item
+  if (itemIndex === -1) return throwNotFound("Item not found in cart");
+
   cart.items.splice(itemIndex, 1);
 
-  // Recalculate totals
   await calculateCartTotals(cart);
-
-  // Save cart
-  const savedCart = await cart.save();
-
-  return { cartData: savedCart };
+  return await cart.save();
 };
