@@ -1,53 +1,82 @@
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "../classes/AppError";
 import mongoose from "mongoose";
+import { AppError } from "@app/classes";
+
+// Helper to keep the handler clean
+const sendResponse = (error: AppError, res: Response) => {
+  const statusCode = error.statusCode || 500;
+  const status = error.status || "error";
+
+  if (process.env.NODE_ENV === "development") {
+    res.status(statusCode).json({
+      status,
+      message: error.message,
+      stack: error.stack,
+      error: error,
+    });
+  } else {
+    res.status(statusCode).json({
+      status,
+      message: error.isOperational
+        ? error.message
+        : "Something went wrong. Please try later",
+    });
+  }
+};
 
 export const globalErrorHandler = (
-  err: Error,
-  req: Request,
+  err: any,
+  _: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
-  console.log(err);
-  // 1. AppError: trusted operational errors
-  if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message,
-    });
+  let error = err;
+
+  // 1. --- CHECK IF ALREADY AN APPERROR ---
+  if (error instanceof AppError) {
+    return sendResponse(error, res);
   }
 
-  // 2. Mongoose ValidationError
-  if (err instanceof mongoose.Error.ValidationError) {
+  // 2. --- MONGOOSE DUPLICATE KEY ERROR (E.G., UNIQUE: TRUE) ---
+  if (err.code === 11000) {
+    const field = Object.keys(err.keyValue).join(", ");
+    error = new AppError(
+      `The ${field} already exists. Please use another.`,
+      400,
+    );
+  }
+
+  // 3. --- MONGOOSE VALIDATION ERRORS ---
+  else if (err instanceof mongoose.Error.ValidationError) {
     const messages = Object.values(err.errors).map((el: any) => el.message);
-    return res.status(400).json({
-      status: "fail",
-      message: messages.join(", "),
-    });
+    error = new AppError(`Invalid input data: ${messages.join(". ")}`, 400);
   }
 
-  // 3. Mongoose CastError (e.g. invalid ObjectId)
-  if (err instanceof mongoose.Error.CastError) {
-    return res.status(400).json({
-      status: "fail",
-      message: `Invalid ${err.path}: ${err.value}`,
-    });
+  // 4. --- MONGOOSE CAST ERROR (E.G., INVALID OBJECTID) ---
+  else if (err instanceof mongoose.Error.CastError) {
+    error = new AppError(`Invalid ${err.path}: ${err.value}.`, 400);
   }
 
-  // 4. Handle duplicate key error
-  if ((err as any).code === 11000) {
-    const dupKey = Object.keys((err as any).keyValue)[0];
-    return res.status(400).json({
-      status: "fail",
-      message: `Duplicate value for ${dupKey}`,
-    });
+  // 5. --- MONGOOSE DISCONNECTED/TIMEOUT (SIMILAR TO P1001) ---
+  else if (err.name === "MongooseServerSelectionError") {
+    error = new AppError(
+      "Database connection issue. Please try again in a few seconds.",
+      503,
+    );
   }
 
-  // 5. Unexpected internal error
-  console.error("UNEXPECTED ERROR 💥", err);
+  // 6. --- FINAL FALLBACK ---
+  if (!(error instanceof AppError)) {
+    error = new AppError(
+      err.message || "Internal Server Error",
+      err.statusCode || 500,
+    );
 
-  return res.status(500).json({
-    status: "error",
-    message: "Something went wrong. Please try again later.",
-  });
+    // Mark as non-operational if it's a generic 500 to hide details in production
+    if (!err.statusCode || err.statusCode === 500) {
+      error.isOperational = false;
+    }
+  }
+
+  return sendResponse(error, res);
 };

@@ -1,34 +1,29 @@
+import { TPopulatedCart } from "../cart.type";
+import { throwBadRequest, throwNotFound } from "@utils/index";
+import { resolveCart } from "./resolveCart";
+import { calculateCartTotals } from "./calculateCartTotals";
 import { CartModel } from "../cart.model";
-import { throwBadRequest, throwNotFound, toObjectId } from "@utils/index";
-import { TDatabaseCartDoc } from "../cart.type";
+import { emptyCart } from "../cart.constant";
 
-export const removeCouponFromCart = async ({
-  userId,
-  cartId,
-}: {
-  userId?: string;
-  cartId?: string;
-}) => {
-  if (!userId && !cartId)
-    return throwBadRequest("Either userId or cartId must be provided");
+/**
+ * Removes coupon from a cart
+ */
+export const removeCouponFromCart = async (
+  cartId?: string,
+  userId?: string,
+): Promise<TPopulatedCart> => {
+  if (!cartId && !userId)
+    return throwBadRequest("Cart ID or User ID is required");
 
-  let cart: TDatabaseCartDoc | null;
-
-  if (userId) {
-    // Find the cart associated with the user
-    cart = await CartModel.findOne({ user: toObjectId(userId) });
-  } else {
-    // Find the guest cart by its _id
-    cart = await CartModel.findById(toObjectId(cartId!));
-  }
-
+  // Resolve cart
+  const cart = await resolveCart(cartId, userId);
   if (!cart) return throwNotFound("Cart not found");
 
   // Remove coupon
   cart.couponCode = "";
 
-  // Save cart and pre-save hook will handle recalculation
+  await calculateCartTotals(cart);
   await cart.save();
 
-  return cart;
+  return (await CartModel.getPopulatedCart(cart._id)) ?? emptyCart;
 };

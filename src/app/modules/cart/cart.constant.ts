@@ -2,7 +2,7 @@ export const cartCookieName = "Cart_Token";
 
 export const emptyCart = {
   _id: undefined,
-  user: "",
+  user: null,
   items: [],
   couponCode: "",
   discount: 0,
@@ -12,8 +12,3 @@ export const emptyCart = {
   totalItemQty: 0,
   total: 0,
 };
-
-export const CartActions = Object.freeze({
-  add: "add",
-  remove: "remove",
-} as const);
