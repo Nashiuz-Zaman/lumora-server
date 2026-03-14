@@ -18,6 +18,10 @@ export const getCartController: RequestHandler = catchAsync(
 
     const cart = await getCart(userId, cartId);
 
+    if (cart?._id) {
+      setCartCookie(res, cart?._id!.toString());
+    }
+
     sendSuccess(res, { data: { cart } });
   },
 );
@@ -63,7 +67,7 @@ export const removeItemFromCartController: RequestHandler = catchAsync(
     if (cartDeleted) {
       cleanCookie(res, cartCookieName);
     } else {
-      setCartCookie(res, cart._id.toString());
+      setCartCookie(res, cart._id!.toString());
     }
 
     sendSuccess(res, {
@@ -91,7 +95,7 @@ export const updateCartItemQtyController: RequestHandler = catchAsync(
     if (cartDeleted) {
       cleanCookie(res, cartCookieName);
     } else {
-      setCartCookie(res, cart._id.toString());
+      setCartCookie(res, cart._id!.toString());
     }
 
     sendSuccess(res, {

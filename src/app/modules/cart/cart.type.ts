@@ -1,6 +1,5 @@
 import { HydratedDocument, Model, Types } from "mongoose";
 import { IProduct, IVariant } from "../product/product.type";
-import { CartActions } from "./cart.constant";
 
 export interface ICartItem<P = Types.ObjectId, V = Types.ObjectId> {
   product: P;
@@ -31,13 +30,6 @@ export interface ICart<C> {
   subtotal?: number;
   totalItemQty?: number;
   total?: number;
-}
-
-export interface ICartAction {
-  product: string;
-  variant: string;
-  action: keyof typeof CartActions;
-  quantity: number;
 }
 
 export type TDatabaseCart = ICart<TDatabaseCartItem>;

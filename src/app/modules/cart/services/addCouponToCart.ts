@@ -4,6 +4,7 @@ import { validateCoupon } from "@app/modules/coupon/service";
 import { resolveCart } from "./resolveCart";
 import { calculateCartTotals } from "./calculateCartTotals";
 import { TPopulatedCart } from "../cart.type";
+import { emptyCart } from "../cart.constant";
 
 export const addCouponToCart = async (
   couponCode: string,
@@ -33,5 +34,5 @@ export const addCouponToCart = async (
   // Save cart and pre-save hook will handle recalculation
   await cart.save();
 
-  return (await CartModel.getPopulatedCart(cart._id)) as TPopulatedCart;
+  return (await CartModel.getPopulatedCart(cart._id)) ?? emptyCart;
 };

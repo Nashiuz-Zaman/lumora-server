@@ -3,6 +3,7 @@ import { throwBadRequest, throwNotFound } from "@utils/index";
 import { resolveCart } from "./resolveCart";
 import { calculateCartTotals } from "./calculateCartTotals";
 import { CartModel } from "../cart.model";
+import { emptyCart } from "../cart.constant";
 
 /**
  * Removes coupon from a cart
@@ -24,5 +25,5 @@ export const removeCouponFromCart = async (
   await calculateCartTotals(cart);
   await cart.save();
 
-  return (await CartModel.getPopulatedCart(cart._id)) as TPopulatedCart;
+  return (await CartModel.getPopulatedCart(cart._id)) ?? emptyCart;
 };

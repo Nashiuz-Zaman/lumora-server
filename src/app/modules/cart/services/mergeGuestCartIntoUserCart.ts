@@ -5,6 +5,7 @@ import {
   TDatabaseCartItem,
   TPopulatedCart,
 } from "../cart.type";
+import { calculateCartTotals } from "./calculateCartTotals";
 
 export const mergeGuestCartIntoUserCart = async (
   userCart: TDatabaseCartDoc,
@@ -39,6 +40,8 @@ export const mergeGuestCartIntoUserCart = async (
   if (!userCart.couponCode && guestCart.couponCode) {
     userCart.couponCode = guestCart.couponCode;
   }
+
+  await calculateCartTotals(userCart);
 
   const updatedCart = await userCart.save();
   await guestCart.deleteOne();

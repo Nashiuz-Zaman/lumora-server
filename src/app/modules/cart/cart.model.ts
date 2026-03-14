@@ -19,7 +19,7 @@ const CartItemSchema = new Schema<TDatabaseCartItem>({
 // ----- Cart Schema -----
 const CartSchema = new Schema<TDatabaseCart>(
   {
-    user: { type: Schema.Types.ObjectId, required: true, default: "guest" },
+    user: { type: Schema.Types.ObjectId, default: null },
     items: { type: [CartItemSchema], default: [] },
     couponCode: { type: String, default: "" },
     discount: { type: Number, default: 0, set: convertToTwoDecimalNumber },
@@ -63,6 +63,7 @@ CartSchema.statics.getPopulatedCart = async function (
       };
 
       return {
+        _id: item._id,
         product: filteredProduct,
         variant,
         quantity: item.quantity,

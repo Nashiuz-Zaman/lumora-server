@@ -35,4 +35,4 @@ cartRouter.post("/coupon", addCouponToCartController);
 
 cartRouter.delete("/coupon", removeCouponFromCartController);
 
-export const CartRouter = cartRouter;
+export default cartRouter

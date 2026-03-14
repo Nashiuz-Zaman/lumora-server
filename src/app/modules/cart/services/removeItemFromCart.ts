@@ -1,14 +1,16 @@
-import { TDatabaseCartDoc } from "../cart.type";
+import { TPopulatedCart } from "../cart.type";
 import { throwBadRequest, throwNotFound } from "@utils/operationalErrors";
 import { resolveCart } from "./resolveCart";
 import { calculateCartTotals } from "./calculateCartTotals";
 import { toObjectId } from "@utils/objectIdUtils";
+import { CartModel } from "../cart.model";
+import { emptyCart } from "../cart.constant";
 
 export const removeItemFromCart = async (
   cartItemId?: string,
   cartId?: string,
   userId?: string,
-): Promise<TDatabaseCartDoc> => {
+): Promise<TPopulatedCart> => {
   if (!cartItemId) {
     return throwBadRequest("Cart item ID is required");
   }
@@ -29,5 +31,6 @@ export const removeItemFromCart = async (
   cart.items.splice(itemIndex, 1);
 
   await calculateCartTotals(cart);
-  return await cart.save();
+  await cart.save();
+  return (await CartModel.getPopulatedCart(cart?._id)) ?? emptyCart;
 };

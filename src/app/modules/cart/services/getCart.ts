@@ -10,30 +10,49 @@ export const getCart = async (
   userId?: string,
   cartId?: string,
 ): Promise<TPopulatedCart> => {
-  // --- Early return if neither exists ---
+  /* ---------------- EARLY RETURN ---------------- */
+
   if (!cartId && !userId) return emptyCart;
 
-  // --- Resolve carts ---
-  const guestCart: TDatabaseCartDoc | null = cartId ? await resolveCart(cartId) : null;
-  const userCart: TDatabaseCartDoc | null = userId ? await resolveCart(undefined, userId) : null;
+  /* ---------------- RESOLVE CARTS ---------------- */
 
-  // --- Guest user only ---
+  const guestCart: TDatabaseCartDoc | null = cartId
+    ? await resolveCart(cartId, userId)
+    : null;
+
+  const userCart: TDatabaseCartDoc | null = userId
+    ? await resolveCart(undefined, userId)
+    : null;
+
+  /* ---------------- GUEST USER ---------------- */
+
   if (!userId) {
     if (!guestCart) return emptyCart;
+
     return (await CartModel.getPopulatedCart(guestCart._id)) ?? emptyCart;
   }
 
-  // --- Logged-in user, no guest cart ---
+  /* ---------------- AUTH USER: NO COOKIE CART ---------------- */
+
   if (!guestCart) {
     if (!userCart) return emptyCart;
+
     return (await CartModel.getPopulatedCart(userCart._id)) ?? emptyCart;
   }
 
-  // --- Guest cart exists but no user cart → convert guest cart ---
+  /* ---------------- AUTH USER: CONVERT GUEST CART ---------------- */
+
   if (!userCart) {
     return await convertGuestCartToUserCart(guestCart, toObjectId(userId));
   }
 
-  // --- Both guest and user cart exist → merge them ---
+  /* ---------------- AUTH USER: SAME CART ---------------- */
+
+  if (userCart && guestCart && userCart._id.equals(guestCart._id)) {
+    return (await CartModel.getPopulatedCart(userCart._id)) ?? emptyCart;
+  }
+
+  /* ---------------- AUTH USER: MERGE CARTS ---------------- */
+
   return await mergeGuestCartIntoUserCart(userCart, guestCart);
 };

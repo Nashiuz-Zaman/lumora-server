@@ -12,8 +12,3 @@ export const emptyCart = {
   totalItemQty: 0,
   total: 0,
 };
-
-export const CartActions = Object.freeze({
-  add: "add",
-  remove: "remove",
-} as const);

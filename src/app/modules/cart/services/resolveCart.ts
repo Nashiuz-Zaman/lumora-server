@@ -6,10 +6,27 @@ export const resolveCart = async (
   cartId?: string,
   userId?: string,
 ): Promise<TDatabaseCartDoc | null> => {
-  // If cartId is provided, use it
+  /* ---------------- CART ID PROVIDED ---------------- */
+
   if (cartId) {
-    return await CartModel.findById(toObjectId(cartId));
+    const cart = await CartModel.findById(toObjectId(cartId));
+
+    if (!cart) return null;
+
+    // Guest request → only allow guest carts
+    if (!userId && cart.user) return null;
+
+    // Authenticated request → cart must belong to the user or be a guest cart
+    if (userId && cart.user && cart.user.toString() !== userId) return null;
+
+    return cart;
   }
 
-  return await CartModel.findOne({ user: toObjectId(userId!) });
+  /* ---------------- USER CART LOOKUP ---------------- */
+
+  if (userId) {
+    return await CartModel.findOne({ user: toObjectId(userId) });
+  }
+
+  return null;
 };
