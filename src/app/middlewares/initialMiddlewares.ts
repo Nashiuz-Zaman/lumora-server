@@ -7,7 +7,6 @@ const allowedOrigins = [
   config.prodClientURL, // "https://lumora-client.vercel.app"
   "https://lumora-client-85n1.onrender.com",
   "https://sandbox.sslcommerz.com",
-  "http://localhost:3000"
 ];
 
 if (config.environment !== "production") {
@@ -21,7 +20,7 @@ export const initialMiddlewares = (app: Express) => {
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       allowedHeaders: ["Content-Type"],
       credentials: true,
-    })
+    }),
   );
 
   app.use(express.json());
