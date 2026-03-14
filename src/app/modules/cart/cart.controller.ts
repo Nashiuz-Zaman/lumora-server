@@ -1,5 +1,7 @@
 import { RequestHandler } from "express";
-import { catchAsync, cleanCookie, sendSuccess } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { cleanCookie } from "@utils/cleanCookie";
+import { sendSuccess } from "@utils/sendSuccess";
 import { ISecureRequest } from "@app/shared/types";
 import { getCart } from "./services/getCart";
 import { addItemToCart } from "./services/addItemToCart";

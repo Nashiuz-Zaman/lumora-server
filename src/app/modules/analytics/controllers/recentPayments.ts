@@ -1,5 +1,6 @@
-import { getPayments } from "@app/modules/payment/service";
-import { catchAsync, sendSuccess } from "@utils/index";
+import { getPayments } from "@app/modules/payment/service/getPayments";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
 
 export const recentPaymentsController = catchAsync(async (req, res) => {
   const { payments } = await getPayments({

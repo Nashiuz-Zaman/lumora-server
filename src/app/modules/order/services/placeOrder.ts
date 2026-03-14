@@ -2,9 +2,9 @@
 import mongoose from "mongoose";
 import { IOrder } from "../order.type";
 import { createOrder } from "./createOrder";
-import { initiateOrderPayment } from "@app/modules/payment/service";
-import { validateCoupon } from "@app/modules/coupon/service";
-import { throwInternalServerError } from "@utils/index";
+import { initiateOrderPayment } from "@app/modules/payment/service/initiateOrderPayment";
+import { validateCoupon } from "@app/modules/coupon/service/validateCoupon";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const placeOrder = async (orderData: IOrder, serverUrl: string) => {
   const session = await mongoose.startSession();

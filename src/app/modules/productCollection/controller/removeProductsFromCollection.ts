@@ -1,12 +1,10 @@
 import { RequestHandler } from "express";
 
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
-import { removeProductsFromCollection } from "../service";
-import { removeProductsFromBackupCollection } from "@app/modules/backupProductCollection/service";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { removeProductsFromCollection } from "../service/removeProductsFromCollection";
+import { removeProductsFromBackupCollection } from "@app/modules/backupProductCollection/service/removeProductsFromBackupCollection";
 import { ISecureRequest } from "@app/shared/types";
 import { UserRoles } from "@app/modules/user/user.constants";
 

@@ -1,6 +1,6 @@
 import { CartModel } from "../cart.model";
-import { throwBadRequest, throwNotFound } from "@utils/index";
-import { validateCoupon } from "@app/modules/coupon/service";
+import { throwBadRequest, throwNotFound } from "@utils/operationalErrors";
+import { validateCoupon } from "@app/modules/coupon/service/validateCoupon";
 import { resolveCart } from "./resolveCart";
 import { calculateCartTotals } from "./calculateCartTotals";
 import { TPopulatedCart } from "../cart.type";

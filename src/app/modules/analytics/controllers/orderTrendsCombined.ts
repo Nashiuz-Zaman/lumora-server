@@ -1,6 +1,8 @@
 import { RequestHandler } from "express";
-import { catchAsync, sendSuccess } from "@utils/index";
-import { getOrderTrendsData, getOrderCancelledTrend } from "../services";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { getOrderTrendsData } from "../services/getOrderPlacedTrend";
+import { getOrderCancelledTrend } from "../services/getOrderCancelledTrend";
 
 export const orderTrendsCombinedController: RequestHandler = catchAsync(
   async (req, res) => {

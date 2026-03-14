@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 
-import { userAuthMiddleware } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares/userAuthMiddleware";
 
 import {
   signupCustomerController,

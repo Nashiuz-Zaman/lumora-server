@@ -1,10 +1,8 @@
 import { CustomerModel } from "@app/modules/customer/customer.model";
-import {
-  extractDateRangeFilterFromQuery,
-  getGranularityFromDateRange,
-  getMongoDateFormat,
-  padMissingDates,
-} from "../helpers";
+import { extractDateRangeFilterFromQuery } from "../helpers/extractDateRangeFilterFromQuery";
+import { getGranularityFromDateRange } from "../helpers/getGranularityFromDateRange";
+import { getMongoDateFormat } from "../helpers/getMongoDateFormat";
+import { padMissingDates } from "../helpers/padMissingDates";
 
 export const getCustomerGrowthTrends = async (
   query: Record<string, any>

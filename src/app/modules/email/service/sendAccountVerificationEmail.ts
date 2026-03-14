@@ -1,6 +1,7 @@
 import { TUserDoc } from "@app/modules/user/user.type";
 import { Request } from "express";
-import { sendEmail, getServerUrl } from "@utils/index";
+import { sendEmail } from "@utils/sendEmail";
+import { getServerUrl } from "@utils/getServerUrl";
 import { getVerificationEmailHtml } from "../generator-helpers";
 
 export const sendAccountVerificationEmail = async (

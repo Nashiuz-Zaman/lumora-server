@@ -1,6 +1,6 @@
 // getOrderPlacedEmailHtml.ts
 import { IOrder } from "@app/modules/order/order.type";
-import { formatPrice } from "@utils/index";
+import { formatPrice } from "@utils/formatPrice";
 import {
   getEmailWrapperStart,
   emailWrapperEnd,

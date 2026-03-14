@@ -2,8 +2,9 @@
 import { RequestHandler } from "express";
 
 // utils
-import { catchAsync, sendSuccess } from "@utils/index";
-import { localLogin } from "../services";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { localLogin } from "../services/localLogin";
 
 export const localLoginController: RequestHandler = catchAsync(
   async (req, res) => {

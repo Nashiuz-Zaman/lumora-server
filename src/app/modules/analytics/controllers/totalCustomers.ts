@@ -1,5 +1,6 @@
-import { catchAsync, sendSuccess } from "@utils/index";
-import { getTotalCustomers } from "../services";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { getTotalCustomers } from "../services/getTotalCustomers";
 
 export const totalCustomersController = catchAsync(async (_req, res) => {
   const totalCustomers = await getTotalCustomers();

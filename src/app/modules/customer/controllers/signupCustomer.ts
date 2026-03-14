@@ -2,12 +2,10 @@
 import { RequestHandler } from "express";
 
 // utils
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
-import { createCustomer } from "../service";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { createCustomer } from "../service/createCustomer";
 
 export const signupCustomerController: RequestHandler = catchAsync(
   async (req, res) => {

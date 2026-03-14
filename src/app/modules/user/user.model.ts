@@ -4,7 +4,7 @@ import { IUser, IUserModel } from "./user.type";
 import { AppError } from "../../classes/AppError";
 import { RoleModel } from "../role/model/role.model";
 import { UserStatus } from "./user.constants";
-import { throwBadRequest, throwUnauthorized } from "@utils/index";
+import { throwBadRequest, throwUnauthorized } from "@utils/operationalErrors";
 import { getNextSequence } from "../counter/counter.util";
 import { IRole } from "../role/type/role.type";
 

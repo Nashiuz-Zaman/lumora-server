@@ -1,7 +1,8 @@
 import { RequestHandler } from "express";
-import { catchAsync, sendSuccess } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
 import { UserRoles } from "@app/modules/user/user.constants";
-import { getPaginatedUsersByRole } from "@app/modules/user/services";
+import { getPaginatedUsersByRole } from "@app/modules/user/services/getPaginatedUsersByRole";
 
 export const getCustomerListController: RequestHandler = catchAsync(
   async (req, res) => {

@@ -1,4 +1,4 @@
-import { QueryBuilder } from "@app/classes";
+import { QueryBuilder } from "@app/classes/QueryBuilder";
 import { BackupProductCollectionModel } from "../backupProductCollection.model";
 import { IProductCollection } from "@app/modules/productCollection/productCollection.type";
 

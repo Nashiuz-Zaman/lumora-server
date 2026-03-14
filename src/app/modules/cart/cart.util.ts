@@ -1,7 +1,8 @@
 import { Response } from "express";
 import { config } from "@config/env";
 import { cartCookieName } from "@app/modules/cart/cart.constant";
-import { setCookie, generateToken } from "@utils/index";
+import { setCookie } from "@utils/setCookie";
+import { generateToken } from "@utils/generateToken";
 
 export const setCartCookie = (res: Response, cartId: string) => {
   // Remove old cookie if exists

@@ -1,9 +1,7 @@
 import { RequestHandler } from "express";
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
 import { expireCoupons } from "../service/expireCoupons";
 
 export const expireCouponsController: RequestHandler = catchAsync(

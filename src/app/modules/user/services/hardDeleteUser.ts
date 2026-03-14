@@ -1,10 +1,7 @@
 import { UserModel } from "../user.model";
 
-import {
-  throwBadRequest,
-  throwInternalServerError,
-  toObjectId,
-} from "@utils/index";
+import { throwBadRequest, throwInternalServerError } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const hardDeleteUser = async (_id: string) => {
   if (!_id) {

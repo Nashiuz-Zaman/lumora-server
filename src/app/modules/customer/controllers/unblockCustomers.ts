@@ -5,10 +5,11 @@ import { RequestHandler } from "express";
 import { ISecureRequest } from "@app/shared/types";
 
 // services
-import { unblockUsers } from "@app/modules/user/services";
+import { unblockUsers } from "@app/modules/user/services/unblockUsers";
 
 // utils
-import { catchAsync, sendSuccess } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
 
 export const unblockCustomersController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {

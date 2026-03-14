@@ -1,4 +1,5 @@
-import { throwNotFound, throwBadRequest, toObjectId } from "@utils/index";
+import { throwNotFound, throwBadRequest } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 import { ReturnRequestStatus } from "../returnRequest.constants";
 import { ReturnRequestModel } from "../returnRequest.model";
 

@@ -8,7 +8,7 @@ import {
 } from "./controller";
 
 import { UserRoles } from "../user/user.constants";
-import { userAuthMiddleware } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares/userAuthMiddleware";
 import { deleteReturnRequestsController } from "./controller/deleteReturnRequests";
 
 const returnRequestRouter = Router();

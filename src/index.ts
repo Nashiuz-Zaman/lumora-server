@@ -8,17 +8,18 @@ import { config } from "@config/env";
 import { connectDb } from "@config/db";
 
 // Classes & Utils
-import { AppError } from "@app/classes";
-import { renderHomePage } from "@utils/index";
+import { AppError } from "@app/classes/AppError";
+import { renderHomePage } from "@utils/renderHomePage";
 
 // Middlewares
-import { initialMiddlewares, globalErrorHandler } from "@app/middlewares";
+import { initialMiddlewares } from "@app/middlewares/initialMiddlewares";
+import { globalErrorHandler } from "@app/middlewares/globalErrorHandler";
 
 // Routers
 import mainRouter from "@app/main-router";
 
 // Seeding services
-import { seedSuperAdminAndDemoAdmin } from "@app/modules/admin/services";
+import { seedSuperAdminAndDemoAdmin } from "@app/modules/admin/services/seedSuperAdminAndDemoAdmin";
 
 // ------------------------------------------------------
 // Client info

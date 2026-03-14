@@ -2,7 +2,8 @@
 import { RequestHandler } from "express";
 
 // utils
-import { catchAsync, sendSuccess } from "../../../../utils";
+import { catchAsync } from "../../../../utils/catchAsync";
+import { sendSuccess } from "../../../../utils/sendSuccess";
 
 // service
 import { getAllRolesFromDb } from "../service/getAll.service";

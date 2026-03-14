@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userAuthMiddleware } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares/userAuthMiddleware";
 import { UserRoles } from "../user/user.constants";
 
 import {

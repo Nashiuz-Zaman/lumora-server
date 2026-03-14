@@ -1,11 +1,8 @@
 import { UserModel } from "../user.model";
 import { UserStatus } from "../user.constants";
-import {
-  hasElements,
-  throwBadRequest,
-  throwInternalServerError,
-  toObjectId,
-} from "@utils/index";
+import { hasElements } from "@utils/hasElements";
+import { throwBadRequest, throwInternalServerError } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const softDeleteUsers = async (_ids: string[]) => {
   if (!hasElements(_ids)) {

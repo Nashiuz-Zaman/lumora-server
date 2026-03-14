@@ -1,14 +1,12 @@
 import { Schema, model, CallbackError } from "mongoose";
 import { IProduct, IVariant } from "./product.type";
-import {
-  convertToTwoDecimalNumber,
-  generateSlug,
-  hasElements,
-} from "@utils/index";
+import { convertToTwoDecimalNumber } from "@utils/convertToTwoDecimalNumber";
+import { generateSlug } from "@utils/generateSlug";
+import { hasElements } from "@utils/hasElements";
 import { ProductStatus } from "./product.constants";
 import { getNextSequence } from "../counter/counter.util";
 import { config } from "@config/env";
-import { AppError } from "@app/classes";
+import { AppError } from "@app/classes/AppError";
 
 // Variant schema
 const variantSchema = new Schema<IVariant>(

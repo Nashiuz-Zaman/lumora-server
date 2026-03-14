@@ -1,5 +1,5 @@
 import { TPopulatedCart } from "../cart.type";
-import { throwBadRequest, throwNotFound } from "@utils/index";
+import { throwBadRequest, throwNotFound } from "@utils/operationalErrors";
 import { resolveCart } from "./resolveCart";
 import { calculateCartTotals } from "./calculateCartTotals";
 import { CartModel } from "../cart.model";

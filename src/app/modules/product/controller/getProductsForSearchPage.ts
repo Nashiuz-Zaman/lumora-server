@@ -2,13 +2,11 @@
 import { RequestHandler } from "express";
 
 // Utilities
-import {
-  sendSuccess,
-  catchAsync,
-  throwInternalServerError,
-} from "@utils/index";
+import { sendSuccess } from "@utils/sendSuccess";
+import { catchAsync } from "@utils/catchAsync";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
-import { getProductsForSearchPage } from "../service";
+import { getProductsForSearchPage } from "../service/getProductsForSearchPage";
 
 export const getProductsForSearchPageController: RequestHandler = catchAsync(
   async (req, res) => {

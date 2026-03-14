@@ -1,7 +1,8 @@
 import { ReviewModel } from "../review.model";
 import { QueryBuilder } from "@app/classes/QueryBuilder";
 import { ReviewStatus } from "../review.constants";
-import { toObjectId, throwBadRequest } from "@utils/index";
+import { toObjectId } from "@utils/objectIdUtils";
+import { throwBadRequest } from "@utils/operationalErrors";
 
 export const getProductReviewsWithStats = async (
   queryObj: Record<string, any>

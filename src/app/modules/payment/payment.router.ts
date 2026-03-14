@@ -5,7 +5,7 @@ import {
   getPaymentList,
   refundPaymentController,
 } from "./controllers";
-import { userAuthMiddleware } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares/userAuthMiddleware";
 import { UserRoles } from "../user/user.constants";
 
 const paymentRouter = Router();

@@ -1,7 +1,7 @@
 import { OrderStatus } from "@app/modules/order/order.constants";
 import { CategoryModel } from "@app/modules/category/category.model";
-import { throwInternalServerError } from "@utils/index";
-import { extractDateRangeFilterFromQuery } from "../helpers";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { extractDateRangeFilterFromQuery } from "../helpers/extractDateRangeFilterFromQuery";
 
 export const getTopCategorySalesPercentage = async (
   queryObj: Record<string, any>

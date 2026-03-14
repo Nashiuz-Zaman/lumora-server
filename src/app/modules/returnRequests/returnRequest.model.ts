@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { ReturnRequestStatus } from "./returnRequest.constants";
 import { IReturnRequest } from "./returnRequest.type";
 import { OrderModel } from "../order/order.model";
-import { AppError } from "@app/classes";
+import { AppError } from "@app/classes/AppError";
 import { PaymentModel } from "../payment/payment.model";
 
 const returnRequestSchema = new Schema<IReturnRequest>(

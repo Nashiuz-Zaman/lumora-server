@@ -1,5 +1,6 @@
-import { catchAsync, sendSuccess } from "@utils/index";
-import { getTopCategorySalesPercentage } from "../services";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { getTopCategorySalesPercentage } from "../services/getTopCategorySalesPercentage";
 
 export const topCategorySalesPercentageController = catchAsync(
   async (req, res) => {

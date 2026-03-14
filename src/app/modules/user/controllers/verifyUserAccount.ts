@@ -2,12 +2,12 @@
 import { RequestHandler } from "express";
 
 // utils
-import { catchAsync } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
 import {
   verifyUserAccountEmail,
   TVerifyUserAccountResult,
 } from "@app/modules/user/services/verifyUserAccountEmail";
-import { setAuthCookies } from "@app/modules/auth/services";
+import { setAuthCookies } from "@app/modules/auth/services/manageAuthCookies";
 import { clientUrl } from "index";
 
 export const verifyUserAccountController: RequestHandler = catchAsync(

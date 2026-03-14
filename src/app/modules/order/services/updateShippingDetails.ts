@@ -1,5 +1,6 @@
 import { OrderModel } from "../order.model";
-import { throwNotFound, toObjectId } from "@utils/index";
+import { throwNotFound } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 import { OrderStatus } from "../order.constants";
 
 export const updateShippingDetails = async (

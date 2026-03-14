@@ -1,5 +1,5 @@
-import { generatePdfBufferFromHtml } from "@utils/index";
-import { uploadPdfFiles } from "@app/modules/cloudinary/service";
+import { generatePdfBufferFromHtml } from "@utils/generatePdfBufferFromHtml";
+import { uploadPdfFiles } from "@app/modules/cloudinary/service/uploadPdfFiles";
 import { IOrder } from "../order.type";
 import { getInvoiceHTML } from "@app/modules/email/generator-helpers";
 

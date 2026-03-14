@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
-import { approveReturnRequest } from "../services";
-import { catchAsync, sendSuccess } from "@utils/index";
+import { approveReturnRequest } from "../services/approveReturnRequest";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
 
 export const approveReturnRequestController: RequestHandler = catchAsync(
   async (req, res) => {

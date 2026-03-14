@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
-import { validateAndChangePassword } from "../service";
-import { sendSuccess, catchAsync } from "@utils/index";
+import { validateAndChangePassword } from "../service/validateAndChangePassword";
+import { sendSuccess } from "@utils/sendSuccess";
+import { catchAsync } from "@utils/catchAsync";
 import { ISecureRequest } from "@app/shared/types";
 
 export const changeCustomerPasswordFromSettingsController: RequestHandler =

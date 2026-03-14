@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
-import { getRelatedProducts } from "../service";
-import {
-  sendSuccess,
-  catchAsync,
-  throwInternalServerError,
-} from "@utils/index";
+import { getRelatedProducts } from "../service/getRelatedProducts";
+import { sendSuccess } from "@utils/sendSuccess";
+import { catchAsync } from "@utils/catchAsync";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const getRelatedProductsController = catchAsync(
   async (req: Request, res: Response) => {

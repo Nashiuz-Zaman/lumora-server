@@ -15,13 +15,10 @@ import { ICustomer } from "@app/modules/customer/customer.type";
 import { getAdmins } from "@app/modules/admin/services/getAdmins";
 
 // utils
-import {
-  throwBadRequest,
-  throwUnauthorized,
-  generateAvatar,
-  viewDetailedLog,
-} from "@utils/index";
-import { getUserWithProfile } from "@app/modules/user/services";
+import { throwBadRequest, throwUnauthorized } from "@utils/operationalErrors";
+import { generateAvatar } from "@utils/generateAvatar";
+import { viewDetailedLog } from "@utils/viewDetailedLog";
+import { getUserWithProfile } from "@app/modules/user/services/getUserWithProfile";
 
 export const socialLoginOrRegisterUser = async ({
   name,

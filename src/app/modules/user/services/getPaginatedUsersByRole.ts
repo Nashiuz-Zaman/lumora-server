@@ -2,7 +2,7 @@ import { UserRoles, UserSearchableFields } from "./../user.constants";
 import { IQueryMeta, QueryBuilder } from "@app/classes/QueryBuilder";
 import { AdminModel } from "@app/modules/admin/admin.model";
 import { CustomerModel } from "@app/modules/customer/customer.model";
-import { normalizeStatusFilter } from "@utils/index";
+import { normalizeStatusFilter } from "@utils/normalizeQueryParam";
 import { Model } from "mongoose";
 import { IUser } from "../user.type";
 import { IAdmin } from "@app/modules/admin/admin.type";

@@ -6,20 +6,11 @@ import {
   UserStatus,
 } from "@app/modules/user/user.constants";
 import { ISecureRequest } from "@app/shared/types";
-import {
-  setAuthCookies,
-  cleanAuthCookies,
-  accessTokenName,
-  refreshTokenName,
-} from "@app/modules/auth/services";
+import { setAuthCookies, cleanAuthCookies, accessTokenName, refreshTokenName } from "@app/modules/auth/services/manageAuthCookies";
 
-import {
-  verifyToken,
-  catchAsync,
-  throwNotFound,
-  throwUnauthorized,
-  throwForbidden,
-} from "@utils/index";
+import { verifyToken } from "@utils/verifyToken";
+import { catchAsync } from "@utils/catchAsync";
+import { throwNotFound, throwUnauthorized, throwForbidden } from "@utils/operationalErrors";
 import { getUserWithProfile } from "@app/modules/user/services/getUserWithProfile";
 
 const validateUserAccess = async (

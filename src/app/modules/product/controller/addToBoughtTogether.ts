@@ -1,4 +1,5 @@
-import { catchAsync, sendSuccess } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
 import { addBoughtTogether } from "../service/addBoughtTogetherProducts";
 
 export const addToBoughtTogetherController = catchAsync(async (req, res) => {

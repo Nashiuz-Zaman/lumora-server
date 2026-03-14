@@ -2,9 +2,9 @@ import { Schema, model, Types } from "mongoose";
 import { IOrder } from "./order.type";
 import { OrderStatus, TOrderStatusValue } from "./order.constants";
 import { getNextSequence } from "../counter/counter.util";
-import { AppError } from "@app/classes";
-import { decrementCouponUsageByCode } from "../coupon/service";
-import { isObjectId } from "@utils/index";
+import { AppError } from "@app/classes/AppError";
+import { decrementCouponUsageByCode } from "../coupon/service/decrementCouponUsageByCode";
+import { isObjectId } from "@utils/objectIdUtils";
 import { addressSchema } from "../customer/customer.model";
 
 // Activity sub-schema

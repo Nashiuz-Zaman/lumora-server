@@ -1,9 +1,7 @@
 import { ProductModel } from "@app/modules/product/product.model";
 import { TDatabaseCartDoc } from "../cart.type";
-import {
-  calculateCouponDiscount,
-  validateCoupon,
-} from "@app/modules/coupon/service";
+import { calculateCouponDiscount } from "@app/modules/coupon/service/calculateCouponDiscount";
+import { validateCoupon } from "@app/modules/coupon/service/validateCoupon";
 import { throwNotFound } from "@utils/operationalErrors";
 
 export const calculateCartTotals = async (cart: TDatabaseCartDoc) => {

@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
-import { catchAsync, sendSuccess } from "@utils/index";
-import { deleteReturnRequests } from "../services";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { deleteReturnRequests } from "../services/deleteReturnRequests";
 
 export const deleteReturnRequestsController: RequestHandler = catchAsync(
   async (req, res) => {

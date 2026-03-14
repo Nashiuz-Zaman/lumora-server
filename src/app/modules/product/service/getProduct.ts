@@ -3,7 +3,7 @@
 import { ProductModel } from "../product.model";
 import { FilterQuery } from "mongoose";
 import { IProduct } from "../product.type";
-import { throwNotFound } from "@utils/index";
+import { throwNotFound } from "@utils/operationalErrors";
 
 const populateableFields = ["topCategory", "subCategory"];
 

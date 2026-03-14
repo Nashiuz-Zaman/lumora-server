@@ -1,4 +1,4 @@
-import { getUserWithProfile } from "@app/modules/user/services";
+import { getUserWithProfile } from "@app/modules/user/services/getUserWithProfile";
 import { throwNotFound } from "@utils/operationalErrors";
 import { toObjectId } from "@utils/objectIdUtils";
 import { ICustomerProfile } from "../customer.type";

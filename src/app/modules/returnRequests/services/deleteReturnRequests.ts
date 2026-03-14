@@ -1,9 +1,6 @@
-import {
-  hasElements,
-  throwBadRequest,
-  throwInternalServerError,
-  toObjectId,
-} from "@utils/index";
+import { hasElements } from "@utils/hasElements";
+import { throwBadRequest, throwInternalServerError } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 import { ReturnRequestModel } from "../returnRequest.model";
 
 export const deleteReturnRequests = async (_ids: string[]) => {

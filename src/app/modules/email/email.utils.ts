@@ -1,4 +1,4 @@
-import { formatPrice } from "@utils/index";
+import { formatPrice } from "@utils/formatPrice";
 import { TPopulatedCartItem } from "../cart/cart.type";
 import { IOrder } from "../order/order.type";
 import { IVariant } from "../product/product.type";

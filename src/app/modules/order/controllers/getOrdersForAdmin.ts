@@ -1,9 +1,7 @@
 import { RequestHandler } from "express";
-import {
-  catchAsync,
-  throwInternalServerError,
-  sendSuccess,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { sendSuccess } from "@utils/sendSuccess";
 import { getOrders } from "../services/getOrders";
 import { ISecureRequest } from "@app/shared/types";
 

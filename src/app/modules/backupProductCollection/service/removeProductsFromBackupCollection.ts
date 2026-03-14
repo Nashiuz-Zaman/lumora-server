@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-import { isObjectId, throwBadRequest, toObjectId } from "@utils/index";
+import { isObjectId, toObjectId } from "@utils/objectIdUtils";
+import { throwBadRequest } from "@utils/operationalErrors";
 import { BackupProductCollectionModel } from "../backupProductCollection.model";
 
 export const removeProductsFromBackupCollection = async (

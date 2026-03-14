@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
-import { AppError } from "@app/classes";
+import { AppError } from "@app/classes/AppError";
 
 // Helper to keep the handler clean
 const sendResponse = (error: AppError, res: Response) => {

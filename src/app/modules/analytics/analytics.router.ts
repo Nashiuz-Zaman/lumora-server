@@ -14,7 +14,7 @@ import {
   topCategorySalesPercentageController,
   orderTrendsCombinedController,
 } from "./controllers";
-import { userAuthMiddleware } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares/userAuthMiddleware";
 
 const analyticsRouter = Router();
 const { superAdmin, admin } = UserRoles;

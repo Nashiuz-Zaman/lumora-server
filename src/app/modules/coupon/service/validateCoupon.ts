@@ -1,7 +1,7 @@
 import { CouponStatus } from "../coupon.constant";
 import { CouponModel } from "../coupon.model";
 import { ClientSession } from "mongoose";
-import { throwBadRequest } from "@utils/index";
+import { throwBadRequest } from "@utils/operationalErrors";
 
 export const validateCoupon = async (
   code: string,

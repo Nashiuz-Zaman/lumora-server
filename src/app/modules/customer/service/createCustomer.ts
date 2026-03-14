@@ -12,8 +12,10 @@ import { CustomerModel } from "@app/modules/customer/customer.model";
 import { ICustomer } from "@app/modules/customer/customer.type";
 
 // services & utils
-import { sendAccountVerificationEmail } from "@app/modules/email/service";
-import { generateToken, generateAvatar, throwBadRequest } from "@utils/index";
+import { sendAccountVerificationEmail } from "@app/modules/email/service/sendAccountVerificationEmail";
+import { generateToken } from "@utils/generateToken";
+import { generateAvatar } from "@utils/generateAvatar";
+import { throwBadRequest } from "@utils/operationalErrors";
 
 export const createCustomer = async (req: Request, user: Partial<IUser>) => {
   // Check if email user already exists

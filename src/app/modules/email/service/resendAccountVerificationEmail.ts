@@ -11,8 +11,9 @@ import { UserStatus } from "../../user/user.constants";
 import { sendAccountVerificationEmail } from "./sendAccountVerificationEmail";
 
 // utils
-import { generateToken, throwInternalServerError } from "@utils/index";
-import { getUserWithProfile } from "@app/modules/user/services";
+import { generateToken } from "@utils/generateToken";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { getUserWithProfile } from "@app/modules/user/services/getUserWithProfile";
 
 export const resendAccountVerificationEmail = async (
   req: Request,

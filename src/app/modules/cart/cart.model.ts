@@ -7,7 +7,8 @@ import {
   TPopulatedCartItem,
 } from "./cart.type";
 import { ProductModel } from "../product/product.model";
-import { convertToTwoDecimalNumber, throwNotFound } from "@utils/index";
+import { convertToTwoDecimalNumber } from "@utils/convertToTwoDecimalNumber";
+import { throwNotFound } from "@utils/operationalErrors";
 
 // ----- Cart Item Schema -----
 const CartItemSchema = new Schema<TDatabaseCartItem>({

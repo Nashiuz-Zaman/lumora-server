@@ -1,12 +1,10 @@
 import { RequestHandler } from "express";
 import { cancelOrders } from "../services/cancelOrders";
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
 import { ISecureRequest } from "@app/shared/types";
-import { verifyOrderOwnership } from "../services";
+import { verifyOrderOwnership } from "../services/verifyOrderOwnership";
 
 export const cancelOrdersCustomerController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {

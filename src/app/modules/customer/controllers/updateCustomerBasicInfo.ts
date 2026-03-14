@@ -8,7 +8,8 @@ import { ISecureRequest } from "@app/shared/types";
 import { updateBasicInfo } from "../service/updateBasicInfo";
 
 // utils
-import { catchAsync, sendSuccess } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
 
 export const updateCustomerBasicInfoController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {

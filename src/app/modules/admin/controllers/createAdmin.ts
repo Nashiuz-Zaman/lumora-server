@@ -5,11 +5,9 @@ import { RequestHandler } from "express";
 import { UserModel } from "../../user/user.model";
 
 // Utils
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const createAdminController: RequestHandler = catchAsync(
   async (req, res) => {

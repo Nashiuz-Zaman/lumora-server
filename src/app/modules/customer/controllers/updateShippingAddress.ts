@@ -8,11 +8,9 @@ import { ISecureRequest } from "@app/shared/types";
 import { updateCustomerAddress } from "../service/updateCustomerAddress";
 
 // utils
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const updateShippingAddressController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {

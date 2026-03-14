@@ -1,7 +1,8 @@
-import { QueryBuilder } from "@app/classes";
+import { QueryBuilder } from "@app/classes/QueryBuilder";
 import { ProductModel } from "../product.model";
 import { ProductSearchableFields, ProductStatus } from "../product.constants";
-import { normalizeStatusFilter, buildInQuery } from "@utils/index";
+import { normalizeStatusFilter } from "@utils/normalizeQueryParam";
+import { buildInQuery } from "@utils/buildInQuery";
 import { ReviewModel } from "../../review/review.model";
 import { ReviewStatus } from "../../review/review.constants";
 import { IProduct } from "../product.type";

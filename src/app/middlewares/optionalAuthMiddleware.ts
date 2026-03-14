@@ -1,13 +1,10 @@
 import { Response, Request, NextFunction } from "express";
 import { config } from "../../config/env";
 import { ISecureRequest } from "@app/shared/types";
-import {
-  accessTokenName,
-  refreshTokenName,
-  setAuthCookies,
-} from "@app/modules/auth/services";
+import { accessTokenName, refreshTokenName, setAuthCookies } from "@app/modules/auth/services/manageAuthCookies";
 
-import { verifyToken, catchAsync } from "@utils/index";
+import { verifyToken } from "@utils/verifyToken";
+import { catchAsync } from "@utils/catchAsync";
 import { getUserWithProfile } from "@app/modules/user/services/getUserWithProfile";
 import { UserStatus } from "@app/modules/user/user.constants";
 

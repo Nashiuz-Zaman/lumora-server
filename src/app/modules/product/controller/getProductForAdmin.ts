@@ -2,13 +2,11 @@
 import { RequestHandler } from "express";
 
 // utils
-import {
-  throwNotFound,
-  toObjectId,
-  sendSuccess,
-  catchAsync,
-} from "@utils/index";
-import { getProduct } from "../service";
+import { throwNotFound } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
+import { sendSuccess } from "@utils/sendSuccess";
+import { catchAsync } from "@utils/catchAsync";
+import { getProduct } from "../service/getProduct";
 
 export const getProductForAdminController: RequestHandler = catchAsync(
   async (req, res) => {

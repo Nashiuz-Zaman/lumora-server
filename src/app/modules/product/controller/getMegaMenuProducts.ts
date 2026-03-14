@@ -1,11 +1,9 @@
 import { RequestHandler } from "express";
 
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
-import { getMegaMenuData } from "../service";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { getMegaMenuData } from "../service/getMegaMenuData";
 
 export const getMegaMenuDataController: RequestHandler = catchAsync(
   async (_req, res) => {

@@ -1,7 +1,9 @@
 import { RequestHandler } from "express";
-import { catchAsync, sendSuccess, toObjectId } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { toObjectId } from "@utils/objectIdUtils";
 import { ISecureRequest } from "@app/shared/types";
-import { getOrder } from "../services";
+import { getOrder } from "../services/getOrder";
 
 export const getOrderDetailsCustomerDashboardController: RequestHandler =
   catchAsync(async (req: ISecureRequest, res) => {

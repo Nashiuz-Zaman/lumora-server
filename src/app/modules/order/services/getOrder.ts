@@ -3,7 +3,7 @@
 import { OrderModel } from "../order.model";
 import { FilterQuery } from "mongoose";
 import { IOrder } from "../order.type";
-import { throwNotFound } from "@utils/index";
+import { throwNotFound } from "@utils/operationalErrors";
 
 const populateableFields = ["user"] as const;
 

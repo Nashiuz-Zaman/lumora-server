@@ -1,11 +1,8 @@
 import { Response } from "express";
 import { config } from "@config/env";
-import {
-  cleanCookie,
-  generateToken,
-  IJwtPayload,
-  setCookie,
-} from "@utils/index";
+import { cleanCookie } from "@utils/cleanCookie";
+import { generateToken, IJwtPayload } from "@utils/generateToken";
+import { setCookie } from "@utils/setCookie";
 
 export const accessTokenName = "accessToken";
 export const refreshTokenName = "refreshToken";

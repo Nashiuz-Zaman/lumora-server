@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { getCustomerProfileData } from "../service/getCustomerProfileData";
-import { sendSuccess, catchAsync } from "@utils/index";
+import { sendSuccess } from "@utils/sendSuccess";
+import { catchAsync } from "@utils/catchAsync";
 import { ISecureRequest } from "@app/shared/types";
 
 export const getMyCustomerProfileController: RequestHandler = catchAsync(

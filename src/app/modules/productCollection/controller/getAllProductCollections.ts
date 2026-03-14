@@ -1,10 +1,8 @@
 import { RequestHandler } from "express";
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
-import { getAllProductCollections } from "../service";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { getAllProductCollections } from "../service/getAllProductCollections";
 
 export const getAllProductCollectionsController: RequestHandler = catchAsync(
   async (_req, res) => {

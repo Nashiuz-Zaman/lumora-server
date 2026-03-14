@@ -2,11 +2,9 @@
 import { RequestHandler } from "express";
 
 // Utilities
-import {
-  sendSuccess,
-  catchAsync,
-  throwInternalServerError,
-} from "@utils/index";
+import { sendSuccess } from "@utils/sendSuccess";
+import { catchAsync } from "@utils/catchAsync";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 // Services
 import { getProducts } from "../service/getProducts";

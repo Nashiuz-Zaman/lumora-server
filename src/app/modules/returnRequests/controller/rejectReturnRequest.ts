@@ -1,10 +1,8 @@
 import { RequestHandler } from "express";
-import { rejectReturnRequest } from "../services";
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { rejectReturnRequest } from "../services/rejectReturnRequest";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const rejectReturnRequestController: RequestHandler = catchAsync(
   async (req, res) => {

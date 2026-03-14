@@ -1,5 +1,6 @@
 import { OrderModel } from "../order.model";
-import { formatDateTime, throwNotFound } from "@utils/index";
+import { formatDateTime } from "@utils/formatDateTime";
+import { throwNotFound } from "@utils/operationalErrors";
 
 export const trackOrder = async (orderId: string) => {
   const order = await OrderModel.findOne({ orderId });

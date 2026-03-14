@@ -1,8 +1,8 @@
-import { getReviewCountAndAverage } from "@app/modules/review/service";
+import { getReviewCountAndAverage } from "@app/modules/review/service/getReviewCountAndAverage";
 import { getCollectionProducts } from "./getCollectionProducts";
 import { Types } from "mongoose";
 import { TPopulatedProductInCollectionWithReviewStats } from "@app/modules/productCollection/productCollection.type";
-import { hasElements } from "@utils/index";
+import { hasElements } from "@utils/hasElements";
 
 export const getCollectionProductsReviewCountAvg = async (
   queryObj: Record<string, any>

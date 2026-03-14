@@ -1,6 +1,6 @@
 import { FilterQuery } from "mongoose";
 import { IReturnRequest } from "../returnRequest.type";
-import { throwNotFound } from "@utils/index";
+import { throwNotFound } from "@utils/operationalErrors";
 import { ReturnRequestModel } from "../returnRequest.model";
 
 const populateableFields = ["order", "payment"];

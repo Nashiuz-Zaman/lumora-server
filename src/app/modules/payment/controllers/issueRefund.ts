@@ -2,15 +2,13 @@
 import { RequestHandler } from "express";
 
 // services
-import { issueRefund } from "../service";
+import { issueRefund } from "../service/issueRefund";
 
 // utils
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-  toObjectId,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const refundPaymentController: RequestHandler = catchAsync(
   async (req, res) => {

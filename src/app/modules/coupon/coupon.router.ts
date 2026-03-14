@@ -9,7 +9,7 @@ import {
 } from "./controllers";
 
 // Middlewares & Utilities
-import { userAuthMiddleware } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares/userAuthMiddleware";
 import { UserRoles } from "../user/user.constants";
 
 const couponRouter = Router();

@@ -2,7 +2,8 @@
 import { RequestHandler } from "express";
 
 // Utils
-import { catchAsync, sendSuccess } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
 
 // Services
 import { getPaginatedUsersByRole } from "@app/modules/user/services/getPaginatedUsersByRole";

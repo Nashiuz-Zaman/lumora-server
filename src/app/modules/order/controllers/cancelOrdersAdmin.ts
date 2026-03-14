@@ -1,10 +1,8 @@
 import { RequestHandler } from "express";
 import { cancelOrders } from "../services/cancelOrders";
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const cancelOrdersAdminController: RequestHandler = catchAsync(
   async (req, res) => {

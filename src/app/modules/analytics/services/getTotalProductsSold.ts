@@ -1,6 +1,6 @@
 import { OrderModel } from "@app/modules/order/order.model";
 import { OrderStatus } from "@app/modules/order/order.constants";
-import { throwInternalServerError } from "@utils/index";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const getTotalProductsSold = async (): Promise<number> => {
   const result = await OrderModel.aggregate([

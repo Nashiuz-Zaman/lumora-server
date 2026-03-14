@@ -1,6 +1,6 @@
 import { IOrder } from "@app/modules/order/order.type";
 import { TPopulatedCartItem } from "@app/modules/cart/cart.type";
-import { formatPrice } from "@utils/index";
+import { formatPrice } from "@utils/formatPrice";
 
 export const getInvoiceHTML = (order: IOrder): string => {
   const escapeHtml = (unsafe: unknown) => {

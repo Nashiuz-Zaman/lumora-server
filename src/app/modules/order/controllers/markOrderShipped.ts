@@ -1,10 +1,8 @@
 import { RequestHandler } from "express";
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
-import { updateShippingDetails } from "../services";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { updateShippingDetails } from "../services/updateShippingDetails";
 import { sendOrderShippedEmail } from "@app/modules/email/service/sendOrderShippedEmail";
 
 export const markOrderShippedController: RequestHandler = catchAsync(

@@ -1,7 +1,7 @@
 import { ProductStatus } from "../product.constants";
 import { ICategoryTreeItem } from "@app/modules/category/category.type";
 import { IProduct } from "../product.type";
-import { getCategoryTree } from "@app/modules/category/service";
+import { getCategoryTree } from "@app/modules/category/service/getCategoryTree";
 import { getProducts } from "./getProducts";
 
 export type TMegaMenuItem = ICategoryTreeItem & {

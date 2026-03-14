@@ -1,5 +1,5 @@
 import { OrderModel } from "../order.model";
-import { throwUnauthorized } from "@utils/index";
+import { throwUnauthorized } from "@utils/operationalErrors";
 
 export const verifyOrderOwnership = async (
   orderIds: string[],

@@ -1,4 +1,4 @@
-import { QueryBuilder } from "@app/classes";
+import { QueryBuilder } from "@app/classes/QueryBuilder";
 import { ProductCollectionModel } from "../productCollection.model";
 import { IProductCollection } from "../productCollection.type";
 

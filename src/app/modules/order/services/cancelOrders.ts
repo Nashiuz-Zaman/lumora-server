@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 import { OrderModel } from "../order.model";
 import { OrderStatus } from "../order.constants";
-import { decrementCouponUsageByCode } from "@app/modules/coupon/service";
-import { toObjectId, throwBadRequest, hasElements } from "@utils/index";
-import { updateStock } from "@app/modules/product/service";
+import { decrementCouponUsageByCode } from "@app/modules/coupon/service/decrementCouponUsageByCode";
+import { toObjectId } from "@utils/objectIdUtils";
+import { throwBadRequest } from "@utils/operationalErrors";
+import { hasElements } from "@utils/hasElements";
+import { updateStock } from "@app/modules/product/service/updateStock";
 import { PaymentModel } from "@app/modules/payment/payment.model";
-import { issueRefund } from "@app/modules/payment/service";
+import { issueRefund } from "@app/modules/payment/service/issueRefund";
 
 export const cancelOrders = async (
   _ids: string[],

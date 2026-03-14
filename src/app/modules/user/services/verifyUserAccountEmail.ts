@@ -10,14 +10,12 @@ import { IRole } from "@app/modules/role/type/role.type";
 import { UserStatus } from "../user.constants";
 
 // services
-import { sendAccountVerificationEmail } from "@app/modules/email/service";
+import { sendAccountVerificationEmail } from "@app/modules/email/service/sendAccountVerificationEmail";
 
 // utils
-import {
-  generateToken,
-  throwInternalServerError,
-  verifyToken,
-} from "@utils/index";
+import { generateToken } from "@utils/generateToken";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { verifyToken } from "@utils/verifyToken";
 import { getUserWithProfile } from "./getUserWithProfile";
 import { clientUrl } from "index";
 

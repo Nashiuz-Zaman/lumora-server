@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
-import { catchAsync, sendSuccess } from "@utils/index";
-import { getOrderStats } from "../services";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { getOrderStats } from "../services/getOrderStats";
 
 export const orderStatsController: RequestHandler = catchAsync(
   async (req, res) => {

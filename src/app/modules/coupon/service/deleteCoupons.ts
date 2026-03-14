@@ -1,10 +1,7 @@
 import { CouponModel } from "../coupon.model";
-import {
-  hasElements,
-  throwBadRequest,
-  throwInternalServerError,
-  toObjectId,
-} from "@utils/index";
+import { hasElements } from "@utils/hasElements";
+import { throwBadRequest, throwInternalServerError } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const deleteCoupons = async (_ids: string[]) => {
   if (!hasElements(_ids))

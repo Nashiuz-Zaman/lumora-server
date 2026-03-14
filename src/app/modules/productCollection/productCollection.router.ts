@@ -4,7 +4,7 @@ import {
   removeProductsFromCollectionController,
   getAllProductCollectionsController,
 } from "./controller";
-import { userAuthMiddleware } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares/userAuthMiddleware";
 import { UserRoles } from "../user/user.constants";
 
 const productCollectionRouter = Router();

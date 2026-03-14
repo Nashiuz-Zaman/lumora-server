@@ -1,12 +1,10 @@
 // controllers/category.controller.ts
 
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
 import { RequestHandler } from "express";
-import { getCategoryTree } from "../service";
+import { getCategoryTree } from "../service/getCategoryTree";
 
 export const getCategoryTreeController: RequestHandler = catchAsync(
   async (_req, res) => {

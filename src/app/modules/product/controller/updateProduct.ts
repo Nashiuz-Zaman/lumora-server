@@ -2,12 +2,10 @@
 import { RequestHandler } from "express";
 
 // Utilities
-import {
-  sendSuccess,
-  catchAsync,
-  throwInternalServerError,
-  toObjectId,
-} from "@utils/index";
+import { sendSuccess } from "@utils/sendSuccess";
+import { catchAsync } from "@utils/catchAsync";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 
 // Services
 import { updateProduct } from "../service/updateProduct";

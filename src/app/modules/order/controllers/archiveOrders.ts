@@ -1,9 +1,7 @@
-import {
-  sendSuccess,
-  catchAsync,
-  throwInternalServerError,
-} from "@utils/index";
-import { archiveOrders } from "../services";
+import { sendSuccess } from "@utils/sendSuccess";
+import { catchAsync } from "@utils/catchAsync";
+import { throwInternalServerError } from "@utils/operationalErrors";
+import { archiveOrders } from "../services/archiveOrders";
 
 export const archiveOrdersController = catchAsync(async (req, res) => {
   const { _ids } = req.body;

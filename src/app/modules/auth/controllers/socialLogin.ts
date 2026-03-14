@@ -5,14 +5,13 @@ import { RequestHandler } from "express";
 import { IRole } from "@app/modules/role/type/role.type";
 
 // Services
-import { setAuthCookies, socialLoginOrRegisterUser } from "../services";
+import { setAuthCookies } from "../services/manageAuthCookies";
+import { socialLoginOrRegisterUser } from "../services/socialLoginOrRegisterUser";
 
 // Utils
-import {
-  sendSuccess,
-  catchAsync,
-  throwInternalServerError,
-} from "@utils/index";
+import { sendSuccess } from "@utils/sendSuccess";
+import { catchAsync } from "@utils/catchAsync";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const socialLoginController: RequestHandler = catchAsync(
   async (req, res) => {

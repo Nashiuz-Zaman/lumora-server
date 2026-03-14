@@ -1,11 +1,9 @@
 import { RequestHandler } from "express";
-import { createAdmin } from "../services";
+import { createAdmin } from "../services/createAdmin";
 
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const addAdminController: RequestHandler = catchAsync(
   async (req, res) => {

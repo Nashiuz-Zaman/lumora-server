@@ -1,6 +1,6 @@
 import { PaymentType } from "@app/modules/payment/payment.constant";
 import { PaymentModel } from "@app/modules/payment/payment.model";
-import { throwInternalServerError } from "@utils/index";
+import { throwInternalServerError } from "@utils/operationalErrors";
 
 export const getTotalRevenue = async (): Promise<number> => {
   const result = await PaymentModel.aggregate([

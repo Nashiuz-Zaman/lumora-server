@@ -1,4 +1,4 @@
-import { sendEmail } from "@utils/index";
+import { sendEmail } from "@utils/sendEmail";
 import { IOrder } from "@app/modules/order/order.type";
 
 import { getOrderPlacedEmailHtml } from "../generator-helpers/getOrderPlacedEmailHtml";

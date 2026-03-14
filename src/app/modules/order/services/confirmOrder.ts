@@ -3,9 +3,9 @@ import { sendOrderPlacedEmail } from "@app/modules/email/service/sendOrderPlaced
 import { OrderStatus } from "../order.constants";
 import { TOrderDoc } from "../order.type";
 import { generateAndUploadInvoicePdf } from "./generateAndUploadInvoicePdf";
-import { updateStock } from "@app/modules/product/service";
+import { updateStock } from "@app/modules/product/service/updateStock";
 import { CartModel } from "@app/modules/cart/cart.model";
-import { toObjectId } from "@utils/index";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const confirmOrder = async (order: TOrderDoc) => {
   const session = await mongoose.startSession();

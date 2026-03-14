@@ -1,8 +1,8 @@
 // Classes
-import { QueryBuilder } from "@app/classes";
+import { QueryBuilder } from "@app/classes/QueryBuilder";
 
 // Utils
-import { normalizeStatusFilter } from "@utils/index";
+import { normalizeStatusFilter } from "@utils/normalizeQueryParam";
 
 // Constants
 import { CouponSearchableFields } from "../coupon.constant";

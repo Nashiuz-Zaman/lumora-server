@@ -5,10 +5,11 @@ import { RequestHandler } from "express";
 import { ISecureRequest } from "@app/shared/types";
 
 // Services
-import { getUserWithProfile } from "@app/modules/user/services";
+import { getUserWithProfile } from "@app/modules/user/services/getUserWithProfile";
 
 // Utils
-import { catchAsync, sendSuccess } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
 
 export const checkAuthController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {

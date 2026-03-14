@@ -1,5 +1,6 @@
-import { catchAsync, sendSuccess } from "@utils/index";
-import { getCustomerGrowthTrends } from "../services";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { getCustomerGrowthTrends } from "../services/getCustomerGrowth";
 
 export const customerGrowthController = catchAsync(async (req, res) => {
   const data = await getCustomerGrowthTrends(req.query);

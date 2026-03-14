@@ -1,14 +1,12 @@
 import { RequestHandler } from "express";
 
-import {
-  catchAsync,
-  sendSuccess,
-  throwInternalServerError,
-} from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { throwInternalServerError } from "@utils/operationalErrors";
 import { addProductsToCollection } from "../service/addProductsToCollection";
 import { ISecureRequest } from "@app/shared/types";
 import { UserRoles } from "@app/modules/user/user.constants";
-import { addProductsToBackupCollection } from "@app/modules/backupProductCollection/service";
+import { addProductsToBackupCollection } from "@app/modules/backupProductCollection/service/addProductsToBackupCollection";
 
 export const addProductsToCollectionController: RequestHandler = catchAsync(
   async (req: ISecureRequest, res) => {

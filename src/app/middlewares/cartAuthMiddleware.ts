@@ -1,7 +1,9 @@
 import { cartCookieName } from "@app/modules/cart/cart.constant";
 import { config } from "@config/env";
 import { Response, NextFunction } from "express";
-import { catchAsync, cleanCookie, verifyToken } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { cleanCookie } from "@utils/cleanCookie";
+import { verifyToken } from "@utils/verifyToken";
 import { ISecureRequest } from "@app/shared/types";
 
 export const cartAuthMiddleware = catchAsync(

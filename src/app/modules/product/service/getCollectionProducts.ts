@@ -1,5 +1,5 @@
 import { ProductCollectionModel } from "@app/modules/productCollection/productCollection.model";
-import { QueryBuilder } from "@app/classes";
+import { QueryBuilder } from "@app/classes/QueryBuilder";
 import {
   IProductCollection,
   TPopulatedProductInCollection,

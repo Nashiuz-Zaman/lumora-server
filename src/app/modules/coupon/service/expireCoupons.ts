@@ -1,7 +1,9 @@
 // service/expireCoupons.ts
 import { CouponModel } from "../coupon.model";
 import { CouponStatus } from "../coupon.constant";
-import { hasElements, throwBadRequest, toObjectId } from "@utils/index";
+import { hasElements } from "@utils/hasElements";
+import { throwBadRequest } from "@utils/operationalErrors";
+import { toObjectId } from "@utils/objectIdUtils";
 
 export const expireCoupons = async (_ids: string[]) => {
   if (!hasElements(_ids))

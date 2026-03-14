@@ -1,7 +1,7 @@
 // imports
 import { Router } from "express";
 import multer from "multer";
-import { userAuthMiddleware } from "@app/middlewares";
+import { userAuthMiddleware } from "@app/middlewares/userAuthMiddleware";
 import { addAdminController, getAdminLIstController } from "./controllers";
 import { UserRoles } from "../user/user.constants";
 

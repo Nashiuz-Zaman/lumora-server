@@ -1,5 +1,7 @@
 import { RequestHandler } from "express";
-import { catchAsync, sendSuccess, toObjectId } from "@utils/index";
+import { catchAsync } from "@utils/catchAsync";
+import { sendSuccess } from "@utils/sendSuccess";
+import { toObjectId } from "@utils/objectIdUtils";
 import { getOrders } from "../services/getOrders";
 import { ISecureRequest } from "@app/shared/types";
 
